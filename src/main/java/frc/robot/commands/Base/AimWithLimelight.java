@@ -39,8 +39,8 @@ public class AimWithLimelight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    rot = rotationController.calculate(camera.getXOffset(), 0);
-    base.drive(0, 0, rot, false);
+    rot = rotationController.calculate(camera.getXOffset()/KLimelightRange, 0);
+    base.drive(0, 0, -rot, false);
   }
 
   // Called once the command ends or is interrupted.
@@ -55,7 +55,7 @@ public class AimWithLimelight extends CommandBase {
     if (camera.getTargetFound() == 0) {
       return true;
     }
-    if (camera.getXOffset() > KNegativeXOffsetDeadzone && camera.getXOffset() < kPositiveXOffsetDeadzone) {
+    if (camera.getXOffset() < kXOffsetDeadzone && camera.getXOffset() > -kXOffsetDeadzone) {
       return true;
     }
     return false;
