@@ -22,10 +22,8 @@ public class AimWithLimelight extends CommandBase {
   public AimWithLimelight(NeoBase base, Camera camera) {
     this.base = base;
     this.camera = camera;
-    pidGains = new Gains(0.006, 0, 0, 0);
+    pidGains = new Gains(1, 0, 0, 0);
     rotationController = new PIDController(pidGains.kP, pidGains.kI, pidGains.kD);
-
-    addRequirements(base, camera);
   }
 
   // Called when the command is initially scheduled.
@@ -41,6 +39,7 @@ public class AimWithLimelight extends CommandBase {
   public void execute() {
     rot = rotationController.calculate(camera.getXOffset()/KLimelightRange, 0);
     base.drive(0, 0, -rot, false);
+    SmartDashboard.putNumber("Rotation", rot);
   }
 
   // Called once the command ends or is interrupted.

@@ -280,6 +280,7 @@ public class NeoBase extends SubsystemBase {
 
     //comment out when testing so robot doesn't explode
     angleMotor.set(angleMotorOutput);
+    SmartDashboard.putNumber("angleOutput", angleMotorOutput);
 
     SmartDashboard.putNumber("drive output", desiredState.speedMetersPerSecond);
     SmartDashboard.putString("desiredState", desiredState.toString());
@@ -289,6 +290,7 @@ public class NeoBase extends SubsystemBase {
     }
     //comment out when testing so robot doesn't explode 
     driveMotor.set(driveOutput); // Motor smoky, check
+    SmartDashboard.putNumber("Drive Output", driveOutput);
     }
   }
 }
