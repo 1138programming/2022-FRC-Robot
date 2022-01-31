@@ -33,6 +33,10 @@ public class Camera extends SubsystemBase {
     SmartDashboard.putNumber("LimelightArea", area);
   }
 
+  public double getTargetFound() {
+    return tv.getDouble(0.0);
+  }
+
   public double getYOffset() {
     return ty.getDouble(0.0);
   }

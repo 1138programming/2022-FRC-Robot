@@ -253,14 +253,14 @@ public class NeoBase extends SubsystemBase {
      */
     public void setDesiredState(SwerveModuleState desiredState) {
 
-    Rotation2d currentAngleR2D = getAngleR2D();
+      Rotation2d currentAngleR2D = getAngleR2D();
 
-    //if no controller input, stop and exit
-    if (Math.abs(desiredState.speedMetersPerSecond) < 0.001) {
-      angleMotor.set(0);
-      driveMotor.set(0);
-      return;
-    }
+      //if no controller input, stop and exit
+      if (Math.abs(desiredState.speedMetersPerSecond) < 0.001) {
+        angleMotor.set(0);
+        driveMotor.set(0);
+        return;
+      }
     
     //Find the difference between our current rotational position and our new rotational position
     Rotation2d rotationDelta = desiredState.angle.minus(currentAngleR2D);
