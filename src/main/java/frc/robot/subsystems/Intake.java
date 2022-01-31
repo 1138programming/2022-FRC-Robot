@@ -11,13 +11,19 @@ import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
-  private TalonSRX intakeMotor;
+  private TalonSRX swivelIntakeMotor;
+  private TalonSRX spinIntakeMotor;
 
   public Intake() {
-    intakeMotor = new TalonSRX(KIntakeMotor);
+    swivelIntakeMotor = new TalonSRX(KSwivelIntakeMotor);
+    spinIntakeMotor = new TalonSRX(KSpinIntakeMotor);
   }
 
-  public void move(double speed) {
-    intakeMotor.set(ControlMode.PercentOutput, speed);
+  public void moveSwivel(double swivelSpeed) {
+    swivelIntakeMotor.set(ControlMode.PercentOutput, swivelSpeed);
+  }
+
+  public void moveSpin(double spinSpeed) {
+    spinIntakeMotor.set(ControlMode.PercentOutput, spinSpeed);
   }
 }

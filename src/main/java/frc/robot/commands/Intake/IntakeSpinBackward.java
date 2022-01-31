@@ -9,13 +9,13 @@ import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import static frc.robot.Constants.*;
 
-public class IntakeIn extends CommandBase {
-  private final Intake intake;
+public class IntakeSpinBackward extends CommandBase {
+  private final Intake spinintake;
 
   /** Creates a new IntakeUp. */
-  public IntakeIn(Intake intake) {
-    this.intake = intake;
-    addRequirements(intake);
+  public IntakeSpinBackward(Intake spinintake) {
+    this.spinintake = spinintake;
+    addRequirements(spinintake);
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +25,7 @@ public class IntakeIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.move(KIntakePWM);
+    spinintake.moveSpin(-KIntakeSpinPWM);
   }
 
   // Called once the command ends or is interrupted.

@@ -9,13 +9,13 @@ import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import static frc.robot.Constants.*;
 
-public class IntakeOut extends CommandBase {
-  private final Intake intake;
+public class IntakeSwivelBackward extends CommandBase {
+  private final Intake swivelintake;
 
   /** Creates a new IntakeUp. */
-  public IntakeOut(Intake intake) {
-    this.intake = intake;
-    addRequirements(intake);
+  public IntakeSwivelBackward(Intake swivelintake) {
+    this.swivelintake = swivelintake;
+    addRequirements(swivelintake);
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +25,7 @@ public class IntakeOut extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.move(-KIntakePWM);
+    swivelintake.moveSwivel(-KIntakeSwivelPWM);
   }
 
   // Called once the command ends or is interrupted.

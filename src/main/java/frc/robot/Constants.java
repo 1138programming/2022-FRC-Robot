@@ -38,7 +38,8 @@ public final class Constants {
     public static final int KRightShooterMotor = 12;
 
     //Intake
-    public static final int KIntakeMotor = 10;
+    public static final int KSwivelIntakeMotor = 10;
+    public static final int KSpinIntakeMotor = 10;
 
     //Hang
     public static final int KLeftHangMotor = 15;
@@ -52,7 +53,8 @@ public final class Constants {
 // Default PWM Values
 
     //Intake
-    public static final double KIntakePWM = 1.0;
+    public static final double KIntakeSpinPWM = 1.0;
+    public static final double KIntakeSwivelPWM = 1.0;
 
     // Limelight 
     public static final double kDesiredYOffset = 1;

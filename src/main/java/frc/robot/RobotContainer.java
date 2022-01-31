@@ -19,9 +19,12 @@ import frc.robot.subsystems.Storage;
 
 // Commands
 import frc.robot.commands.Base.DriveWithJoysticks;
-import frc.robot.commands.Intake.IntakeStop;
-import frc.robot.commands.Intake.IntakeIn;
-import frc.robot.commands.Intake.IntakeOut;
+import frc.robot.commands.Intake.IntakeStopSpin;
+import frc.robot.commands.Intake.IntakeStopSwivel;
+import frc.robot.commands.Intake.IntakeSpinBackward;
+import frc.robot.commands.Intake.IntakeSpinForward;
+import frc.robot.commands.Intake.IntakeSwivelBackward;
+import frc.robot.commands.Intake.IntakeSwivelForward;
 import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Storage.StorageStop;
@@ -42,9 +45,12 @@ public class RobotContainer {
   private final Storage storage = new Storage();
 
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
-  private final IntakeIn intakeIn = new IntakeIn(intake);
-  private final IntakeOut intakeOut = new IntakeOut(intake);
-  private final IntakeStop intakeStop = new IntakeStop(intake);
+  private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);
+  private final IntakeSpinForward intakeSpinForward = new IntakeSpinForward(intake);
+  private final IntakeSwivelBackward intakeSwivelBackward = new IntakeSwivelBackward(intake);
+  private final IntakeSwivelForward intakeSwivelForward = new IntakeSwivelForward(intake);
+  private final IntakeStopSpin intakeStopSpin = new IntakeStopSpin(intake);
+  private final IntakeStopSwivel intakeStopSwivel = new IntakeStopSwivel(intake);
   private final Shoot shoot = new Shoot(shooter);
   private final ShooterStop shooterStop = new ShooterStop(shooter);
   private final HangStop hangStop = new HangStop(hang);
@@ -95,7 +101,8 @@ public class RobotContainer {
     //Default commands for each subsystem
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
-    intake.setDefaultCommand(intakeStop);
+    intake.setDefaultCommand(intakeStopSpin);
+    intake.setDefaultCommand(intakeStopSwivel);
     shooter.setDefaultCommand(shooterStop);
     storage.setDefaultCommand(storageStop);
 
@@ -137,8 +144,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     xboxBtnLB.whenHeld(shoot);
-    xboxBtnX.whenHeld(intakeIn);
-    xboxBtnY.whenHeld(intakeOut);
+    xboxBtnX.whenHeld(intakeSpinForward);
+    xboxBtnY.whenHeld(intakeSpinBackward);
+    xboxBtnA.whenHeld(intakeSwivelForward);
+    xboxBtnB.whenHeld(intakeSwivelBackward);
   }
 
   /**
