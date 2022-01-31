@@ -5,10 +5,12 @@
 package frc.robot.commands.Base;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Gains;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.NeoBase;
+import static frc.robot.Constants.*;
 
 public class AimWithLimelight extends CommandBase {
   private Camera camera;
@@ -28,30 +30,34 @@ public class AimWithLimelight extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    if (camera.getTargetFound() == 0) {
+      SmartDashboard.putBoolean("Target Found", false);
+    }
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (camera.getTargetFound() == 0) {
-      rot = 1;
-    }
-    else {
-      rot = rotationController.calculate(camera.getXOffset(), 0);
-    }
+    rot = rotationController.calculate(camera.getXOffset(), 0);
     base.drive(0, 0, rot, false);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    base.drive(0, 0, 0, false);
+    base.drive(0, 0, rot, false);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
+    if (camera.getTargetFound() == 0) {
+      return true;
+    }
+    if (camera.getXOffset() > KNegativeXOffsetDeadzone && camera.getXOffset() < kPositiveXOffsetDeadzone) {
+      return true;
+    }
     return false;
   }
 }
