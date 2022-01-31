@@ -2,13 +2,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
-import javax.accessibility.AccessibleTableModelChange;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 import frc.robot.Gains;
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -22,7 +16,6 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 import com.revrobotics.CANSparkMax;
@@ -31,7 +24,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.MathUtil;
 
@@ -45,7 +37,7 @@ public class NeoBase extends SubsystemBase {
 
   // private double[] KAbsoluteResetPoints = {3192, 3823, 3220, 2280};
   //offset of each module, in degrees
-  private double frontLeftOffset = -1;
+  private double frontLeftOffset = -1.0;
   private double frontRightOffset = -152.5;
   private double backLeftOffset = -103.5; 
   private double backRightOffset = -14.5;
@@ -74,10 +66,10 @@ public class NeoBase extends SubsystemBase {
 
     //swerve module instances init (in an array)
   modules = new SwerveX[] {
-    new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), false), // Front Right
-    new SwerveX(new CANSparkMax(frontLeftDriveId, MotorType.kBrushless), new CANSparkMax(frontLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontLeftMagEncoderId), Rotation2d.fromDegrees(frontLeftOffset), false), // Front Left
-    new SwerveX(new CANSparkMax(backRightDriveId, MotorType.kBrushless), new CANSparkMax(backRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(backRightMagEncoderId), Rotation2d.fromDegrees(backRightOffset), true),  // Back Right
-    new SwerveX(new CANSparkMax(backLeftDriveId, MotorType.kBrushless), new CANSparkMax(backLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(backLeftMagEncoderId), Rotation2d.fromDegrees(backLeftOffset), true) // Back Left
+    new SwerveX(new CANSparkMax(backLeftDriveId, MotorType.kBrushless), new CANSparkMax(backLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(backLeftMagEncoderId), Rotation2d.fromDegrees(backLeftOffset), false), // Back Left
+    new SwerveX(new CANSparkMax(backRightDriveId, MotorType.kBrushless), new CANSparkMax(backRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(backRightMagEncoderId), Rotation2d.fromDegrees(backRightOffset), false),  // Back Right
+    new SwerveX(new CANSparkMax(frontLeftDriveId, MotorType.kBrushless), new CANSparkMax(frontLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontLeftMagEncoderId), Rotation2d.fromDegrees(frontLeftOffset), true), // Front Left
+    new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), true) // Front Right
   };
 
   SmartDashboard.putNumber("Base Drive kP", 0.0);
@@ -109,10 +101,6 @@ public class NeoBase extends SubsystemBase {
     SwerveModuleState state = states[i];
     module.setDesiredState(state);
   }
-
-// SwerveX module = modules[0];
-// SwerveModuleState state = states[0];
-// module.setDesiredState(state);
 }
 
   // public void resetGyro() {
@@ -148,8 +136,6 @@ public class NeoBase extends SubsystemBase {
 
   class SwerveX {
 
-    private final Gains kDriveGains = new Gains(0.1, 0.00, 0, 0.2);
-
     private final Gains kAngleGains = new Gains(0.006, 0.0, 0.0, 0.0); 
 
     private double kEncoderTicksPerRotation = 4096;
@@ -159,16 +145,14 @@ public class NeoBase extends SubsystemBase {
     public double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
     private double kAngleMotorShaftToWheelRatio = 1 / 10.285714; //1/(72/7)
     private double kAngleEncoderRot2Deg = kAngleMotorShaftToWheelRatio * 360;
-    private double kMagEncoderPeriod = 0.04;
-
-    private SwerveModuleState m_desiredState; //for testing
+    private double kMagEncoderPeriod = 0.04; //slower than robot code period (0.02s), which makes the mag encoder not suitable 
 
     private CANSparkMax driveMotor;
     private CANSparkMax angleMotor;
     private DutyCycleEncoder magEncoder;
     private RelativeEncoder driveEncoder;
     private RelativeEncoder angleEncoder;
-    private PIDController driveController, angleController;
+    private PIDController angleController;
     private Rotation2d offset;
     private boolean isInverted;
     private double[] pulseWidthAndPeriod = new double[]{1, 1/244}; //pulse width found in mag encoder manual pdf, period is 1/frequency (also found in pdf)
@@ -182,8 +166,7 @@ public class NeoBase extends SubsystemBase {
       this.offset = offset;
       this.isInverted = isInverted;
       
-      //PIDControllers:
-      driveController = new PIDController(kDriveGains.kP, kDriveGains.kI, kDriveGains.kD);
+      //PIDControllers
       angleController = new PIDController(kAngleGains.kP, kAngleGains.kI, kAngleGains.kD);
       
       //telling the pid controller that 360 deg in one direction is the same as 360 deg in the other direction
@@ -224,7 +207,6 @@ public class NeoBase extends SubsystemBase {
       return Rotation2d.fromDegrees(getAngleEncoderDeg()); 
     }
     public double getAngleDeg() {
-      // double angle = (getAbsoluteTicks() / kticksPerRevolution) * 360;
       double angle = -(getAbsoluteTicks() / kticksPerRevolution) * 360;
       return angle;
     }
@@ -237,7 +219,7 @@ public class NeoBase extends SubsystemBase {
       double magEncoderAbsValue = magEncoder.get();
       if (magEncoderAbsValue < 0)
       {
-        magEncoderAbsValue = kticksPerRevolution + (magEncoder.get() % 1 ) * kticksPerRevolution;
+        magEncoderAbsValue = kticksPerRevolution + (magEncoder.get() % 1 ) * kticksPerRevolution;  //convert from revoltions (unit) to ticks(unit)
       }
       else {
         magEncoderAbsValue = (magEncoder.get() % 1) * kticksPerRevolution;
@@ -267,7 +249,6 @@ public class NeoBase extends SubsystemBase {
 
     //Find the new absolute position of the module based on the difference in degrees
     double deltaDeg = rotationDelta.getDegrees();
-    SmartDashboard.putNumber("rotationDeltaDeg", deltaDeg);
 
     if (Math.abs(deltaDeg) < 2) {
        angleMotorOutput = 0;
@@ -275,21 +256,16 @@ public class NeoBase extends SubsystemBase {
     else {
       angleMotorOutput = angleController.calculate(getAngleEncoderDeg(), desiredState.angle.getDegrees());
     }  
-    SmartDashboard.putNumber("desired angle deg", desiredState.angle.getDegrees());
-    SmartDashboard.putNumber("current rel angle deg", currentAngleR2D.getDegrees());
 
-    //comment out when testing so robot doesn't explode
+    //comment out when testing so fingies dont get chopped off
     angleMotor.set(angleMotorOutput);
 
-    SmartDashboard.putNumber("drive output", desiredState.speedMetersPerSecond);
-    SmartDashboard.putString("desiredState", desiredState.toString());
     double driveOutput = desiredState.speedMetersPerSecond;
     if (isInverted) {
       driveOutput = -driveOutput;
     }
-    //comment out when testing so robot doesn't explode 
+    //comment out when testing so fingies dont get chopped off
     driveMotor.set(driveOutput); // Motor smoky, check
     }
   }
 }
-//Lucia when ur mom
