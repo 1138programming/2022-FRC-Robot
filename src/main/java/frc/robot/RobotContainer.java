@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 // Subsystems:
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Shooter;
@@ -37,6 +38,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final NeoBase base  = new NeoBase();
   private final Hang hang = new Hang();
+  private final Camera camera = new Camera();
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
   private final Storage storage = new Storage();
@@ -100,8 +102,8 @@ public class RobotContainer {
     storage.setDefaultCommand(storageStop);
 
     //Game controllers
-    logitech = new Joystick(KLogitechPort);
-    xbox = new XboxController(KXboxPort);
+    logitech = new Joystick(KLogitechPort); //Logitech Dual Action
+    xbox = new XboxController(KXboxPort);   //Xbox 360 for Windows
 
     // Logitch Buttons 
     logitechBtnX = new JoystickButton(logitech, KLogitechButtonX);

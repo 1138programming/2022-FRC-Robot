@@ -45,30 +45,32 @@ public class NeoBase extends SubsystemBase {
 
   // private double[] KAbsoluteResetPoints = {3192, 3823, 3220, 2280};
   //offset of each module, in degrees
-  private double frontLeftOffset = -1;
+  private double frontLeftOffset = -1.0;
   private double frontRightOffset = -152.5;
   private double backLeftOffset = -103.5; 
   private double backRightOffset = -14.5;
+
+  private double kSwerveModuleLocationFromCoM = 14.5; //distance in inches of a module from the center of mass (we use a square base so )
 
   public NeoBase() {
 
     //defining the physical position of the swerve modules
     kinematics = new SwerveDriveKinematics(
       new Translation2d(
-        Units.inchesToMeters(14.5),
-        Units.inchesToMeters(14.5)
+        Units.inchesToMeters(kSwerveModuleLocationFromCoM),
+        Units.inchesToMeters(kSwerveModuleLocationFromCoM)
       ),
       new Translation2d(
-        Units.inchesToMeters(14.5),
-        Units.inchesToMeters(-14.5)
+        Units.inchesToMeters(kSwerveModuleLocationFromCoM),
+        Units.inchesToMeters(-kSwerveModuleLocationFromCoM)
       ),
       new Translation2d(
-        Units.inchesToMeters(-14.5),
-        Units.inchesToMeters(14.5)
+        Units.inchesToMeters(-kSwerveModuleLocationFromCoM),
+        Units.inchesToMeters(kSwerveModuleLocationFromCoM)
       ),
       new Translation2d(
-        Units.inchesToMeters(-14.5),
-        Units.inchesToMeters(-14.5)
+        Units.inchesToMeters(-kSwerveModuleLocationFromCoM),
+        Units.inchesToMeters(-kSwerveModuleLocationFromCoM)
       )
     );
 
@@ -80,9 +82,6 @@ public class NeoBase extends SubsystemBase {
     new SwerveX(new CANSparkMax(backLeftDriveId, MotorType.kBrushless), new CANSparkMax(backLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(backLeftMagEncoderId), Rotation2d.fromDegrees(backLeftOffset), true) // Back Left
   };
 
-  SmartDashboard.putNumber("Base Drive kP", 0.0);
-  SmartDashboard.putNumber("Base Drive kI", 0.0);
-  SmartDashboard.putNumber("Base Drive kD", 0.0);
   // gyro.reset(); 
   }
 
@@ -110,9 +109,6 @@ public class NeoBase extends SubsystemBase {
     module.setDesiredState(state);
   }
 
-// SwerveX module = modules[0];
-// SwerveModuleState state = states[0];
-// module.setDesiredState(state);
 }
 
   // public void resetGyro() {
@@ -121,13 +117,10 @@ public class NeoBase extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("Left Front Deg Angle", modules[0].getAngleDeg());
     SmartDashboard.putNumber("Front Left Absolute Angle", modules[0].getAngleDeg());
     SmartDashboard.putNumber("Right Front abs Angle", modules[1].getAngleDeg());
     SmartDashboard.putNumber("Left Back abs Angle", modules[2].getAngleDeg());
     SmartDashboard.putNumber("Right Back abs Angle", modules[3].getAngleDeg());
-
-    setModuleGains(SmartDashboard.getNumber("Base Drive kP", 0.0), SmartDashboard.getNumber("Base Drive kI", 0.0), SmartDashboard.getNumber("Base Drive kD", 0.0));
     // This method will be called once per scheduler run
   }
 
@@ -190,8 +183,8 @@ public class NeoBase extends SubsystemBase {
       angleController.enableContinuousInput(-180, 180);
       
       //motor break mode (kBreak or kCoast)
-      angleMotor.setIdleMode(IdleMode.kCoast); //set to coast for testing
-      driveMotor.setIdleMode(IdleMode.kCoast); //set to coast for testing
+      angleMotor.setIdleMode(IdleMode.kCoast);
+      driveMotor.setIdleMode(IdleMode.kBrake); 
       
       driveEncoder = driveMotor.getEncoder();
       angleEncoder = angleMotor.getEncoder();
@@ -292,4 +285,3 @@ public class NeoBase extends SubsystemBase {
     }
   }
 }
-//Lucia when ur mom

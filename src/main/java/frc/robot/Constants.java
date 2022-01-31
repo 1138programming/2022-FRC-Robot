@@ -65,7 +65,7 @@ public final class Constants {
     public static final double kMaxMotorOutput = 1.0;
     public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
     public static final double kticksPerRevolution = 4096;
-    public static double feildCalibration = 0;
+    public static double fieldCalibration = 0;
     public static double frontLeftOffset = 0;
     public static double frontRightOffset = 0;
     public static double backLeftOffset = 0;
