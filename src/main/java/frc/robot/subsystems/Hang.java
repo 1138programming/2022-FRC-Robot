@@ -27,8 +27,8 @@ public class Hang extends SubsystemBase {
     ratchetLinearServo = new Servo(KRatchetLinearServo);
   }
   public void move(double swingMotorSpeed, double levelMotorSpeed){
-    SwingHangMotor.set(swingMotorSpeed);
-    LevelHangMotor.set(levelMotorSpeed);
+    swingHangMotor.set(swingMotorSpeed);
+    levelHangMotor.set(levelMotorSpeed);
   }
 
   public void moveServo(double clawServoPos, double ratchetServoPos) {

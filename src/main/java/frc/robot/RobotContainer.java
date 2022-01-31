@@ -54,7 +54,7 @@ public class RobotContainer {
   private final HangStop hangStop = new HangStop(hang);
   private final HangMove hangMove = new HangMove(hang);
   private final HangServoStop hangServoStop = new HangServoStop(hang);
-  private final HangServoStop hangServoMove = new HangServoMove(hang);
+  private final HangServoMove hangServoMove = new HangServoMove(hang);
   private final StorageStop storageStop= new StorageStop(storage);
 
   //Controller Ports
