@@ -18,9 +18,12 @@ public class Shooter extends SubsystemBase {
     rightShooterMotor = new TalonSRX(KRightShooterMotor);
 
   }
+  
 
   public void move(double speed) {
     rightShooterMotor.set(ControlMode.PercentOutput, speed);
     leftShooterMotor.set(ControlMode.PercentOutput, speed);
   }
+
+
 }

@@ -26,6 +26,10 @@ import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Hang.HangStop;
+import frc.robot.commands.Hang.HangMove;
+import frc.robot.commands.Hang.HangServoStop;
+import frc.robot.commands.Hang.HangServoMove;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -48,6 +52,9 @@ public class RobotContainer {
   private final Shoot shoot = new Shoot(shooter);
   private final ShooterStop shooterStop = new ShooterStop(shooter);
   private final HangStop hangStop = new HangStop(hang);
+  private final HangMove hangMove = new HangMove(hang);
+  private final HangServoStop hangServoStop = new HangServoStop(hang);
+  private final HangServoStop hangServoMove = new HangServoMove(hang);
   private final StorageStop storageStop= new StorageStop(storage);
 
   //Controller Ports
@@ -95,6 +102,9 @@ public class RobotContainer {
     //Default commands for each subsystem
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
+    hang.setDefaultCommand(hangMove);
+    hang.setDefaultCommand(hangServoMove);
+    hang.setDefaultCommand(hangServoStop);
     intake.setDefaultCommand(intakeStop);
     shooter.setDefaultCommand(shooterStop);
     storage.setDefaultCommand(storageStop);

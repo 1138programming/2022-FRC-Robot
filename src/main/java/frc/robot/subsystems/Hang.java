@@ -13,32 +13,27 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Hang extends SubsystemBase {
   /** Creates a new Hang. */
-  private CANSparkMax leftHangMotor;
-  private CANSparkMax rightHangMotor;
-  private CANSparkMax middleHangMotor;
-  private Servo leftLinearServo;
-  private Servo middleLinearServo;
-  private Servo rightLinearServo;
+  private CANSparkMax swingHangMotor;
+  private CANSparkMax levelHangMotor;
+  private Servo clawLinearServo;
+  private Servo ratchetLinearServo;
+  
 
   public Hang() {
-    leftHangMotor = new CANSparkMax(KLeftHangMotor, MotorType.kBrushless);
-    rightHangMotor = new CANSparkMax(KRightHangMotor, MotorType.kBrushless);
-    middleHangMotor = new CANSparkMax(KMiddleHangMotor, MotorType.kBrushless);
+    swingHangMotor = new CANSparkMax(KSwingHangMotor, MotorType.kBrushless);
+    levelHangMotor = new CANSparkMax(KLevelHangMotor, MotorType.kBrushless);
 
-    leftLinearServo = new Servo(KLeftLinearServo);
-    middleLinearServo = new Servo(KMiddleLinearServo);
-    rightLinearServo = new Servo(KRightLinearServo);
+    clawLinearServo = new Servo(KClawLinearServo);
+    ratchetLinearServo = new Servo(KRatchetLinearServo);
   }
-  public void move(double leftMotorSpeed, double rightMotorSpeed, double middleMotorSpeed){
-    leftHangMotor.set(leftMotorSpeed);
-    rightHangMotor.set(rightMotorSpeed);
-    middleHangMotor.set(middleMotorSpeed);
+  public void move(double swingMotorSpeed, double levelMotorSpeed){
+    SwingHangMotor.set(swingMotorSpeed);
+    LevelHangMotor.set(levelMotorSpeed);
   }
 
-  public void moveServo(double position) {
-    leftLinearServo.set(position);
-    middleLinearServo.set(position);
-    rightLinearServo.set(position);
+  public void moveServo(double clawServoPos, double ratchetServoPos) {
+    clawLinearServo.set(clawServoPos);
+    ratchetLinearServo.set(ratchetServoPos);
   }
 
   @Override

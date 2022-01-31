@@ -13,7 +13,7 @@ public class HangStop extends CommandBase {
 
   private final Hang hang;
 
-  public HangStop(Hang hang) {
+  public HangServoMove(Hang hang) {
     this.hang = hang;
     addRequirements(hang);
   }
@@ -25,7 +25,7 @@ public class HangStop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.move(0, 0);
+    hang.move(1, 1); // might have to change values
   }
 
   // Called once the command ends or is interrupted.

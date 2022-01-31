@@ -41,13 +41,12 @@ public final class Constants {
     public static final int KIntakeMotor = 10;
 
     //Hang
-    public static final int KLeftHangMotor = 15;
-    public static final int KRightHangMotor = 17;
-    public static final int KMiddleHangMotor = 19;
+    public static final int KSwingHangMotor = 15;
+    public static final int KLevelHangMotor = 17;
 
-    public static final int KLeftLinearServo = 1;
-    public static final int KMiddleLinearServo = 2;
-    public static final int KRightLinearServo = 3;
+    public static final int KClawLinearServo = 1;
+    public static final int KRatchetLinearServo = 2;
+   
 
 // Default PWM Values
 
