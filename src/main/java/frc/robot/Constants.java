@@ -58,7 +58,7 @@ public final class Constants {
     public static final double kDesiredYOffset = 1;
     public static final double kDesiredXOffset = 1;
     public static final double kYOffsetDeadzone = 10;
-    public static final double kXOffsetDeadzone = 1;
+    public static final double kXOffsetDeadzone = 0.05;
     public static final double KLimelightRange = 29.8;
     
 //Base Constants
