@@ -37,7 +37,7 @@ public class DriveWithJoysticks extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    base.resetAllRelEncoders();  
+    // base.resetAllRelEncoders();  
 
   }
 

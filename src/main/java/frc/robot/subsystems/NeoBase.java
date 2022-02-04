@@ -84,6 +84,7 @@ public class NeoBase extends SubsystemBase {
   SmartDashboard.putNumber("Base Drive kI", 0.0);
   SmartDashboard.putNumber("Base Drive kD", 0.0);
   // gyro.reset(); 
+  resetAllRelEncoders();
   }
 
   /**

@@ -56,7 +56,7 @@ public class RobotContainer {
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
 
   //Controller Ports
-  private static final int KLogitechPort = 0;
+  private static final int KLogitechPort = 1;
   private static final int KXboxPort = 0;  
 
   //Deadzone
@@ -144,7 +144,7 @@ public class RobotContainer {
     xboxBtnLB.whenHeld(shoot);
     xboxBtnX.whenHeld(intakeIn);
     xboxBtnY.whenHeld(intakeOut);
-    xboxBtnB.whenPressed(aimWithLimelight);
+    xboxBtnB.whenHeld(aimWithLimelight);
   }
 
   /**

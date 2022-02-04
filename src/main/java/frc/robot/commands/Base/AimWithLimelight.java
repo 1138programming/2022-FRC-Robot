@@ -29,6 +29,7 @@ public class AimWithLimelight extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    
     if (camera.getTargetFound() == 0) {
       SmartDashboard.putBoolean("Target Found", false);
     }
@@ -51,9 +52,6 @@ public class AimWithLimelight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (camera.getTargetFound() == 0) {
-      return true;
-    }
     if (camera.getXOffset() < kXOffsetDeadzone && camera.getXOffset() > -kXOffsetDeadzone) {
       return true;
     }
