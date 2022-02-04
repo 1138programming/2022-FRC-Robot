@@ -13,7 +13,7 @@ public class Storage extends SubsystemBase {
   public Storage(){
     storageMotor = new CANSparkMax(KStorageSpark, MotorType.kBrushless);
   }
-
+//    
   public void move(double speed) {
     storageMotor.set(speed);
   }
