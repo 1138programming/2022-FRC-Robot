@@ -145,6 +145,8 @@ public class RobotContainer {
     xboxBtnLB.whenHeld(shoot);
     xboxBtnX.whenHeld(intakeIn);
     xboxBtnY.whenHeld(intakeOut);
+    xboxBtnRB.whenActive(storageIn);
+    xboxBtnRT.whenActive(storageOut);
   }
 
   /**
