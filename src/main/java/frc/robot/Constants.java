@@ -46,6 +46,16 @@ public final class Constants {
 
     public static final int KClawLinearServo = 1;
     public static final int KRatchetLinearServo = 2;
+
+    public static final int KLiftTopLimit = 1;
+    public static final int KLiftBottomLimit = 2;
+    public static final int KArmsLimit = 3;
+
+    public static final double KArmSpeed = 0.4;
+    public static final double KLiftSpeed = 0.4;
+
+    public static final double KClawOutPos = 1;
+    public static final double KClawInPos = 0.75;
    
 
 // Default PWM Values
