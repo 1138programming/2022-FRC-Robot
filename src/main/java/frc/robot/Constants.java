@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -31,7 +32,8 @@ public final class Constants {
     public static final int backRightSteerId = 8;
 
     //Storage
-    public static final int KStorageSpark = 9;
+    public static final int KLeftStorageSpark = 9;
+    public static final int KRightStorageSpark = 10;
 
     //Shooter
     public static final int KLeftShooterMotor = 11;
@@ -59,6 +61,9 @@ public final class Constants {
     public static final double kDesiredXOffset = 1;
     public static final double kYOffsetDeadzone = 10;
     public static final double kXOffsetDeadzone = 10;
+
+    //storage
+    public static final double kStorage = 1.0;
 
 //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second

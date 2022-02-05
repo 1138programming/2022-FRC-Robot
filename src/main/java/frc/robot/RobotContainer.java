@@ -24,8 +24,10 @@ import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Shooter.Shoot;
-import frc.robot.commands.Shooter.ShooterStop;
+import frc.robot.commands.Storage.StorageIn;
+import frc.robot.commands.Storage.StorageOut;
 import frc.robot.commands.Storage.StorageStop;
+import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Hang.HangStop;
 
 /**
@@ -51,6 +53,8 @@ public class RobotContainer {
   private final ShooterStop shooterStop = new ShooterStop(shooter);
   private final HangStop hangStop = new HangStop(hang);
   private final StorageStop storageStop= new StorageStop(storage);
+  private final StorageIn storageIn = new StorageIn(storage);
+  private final StorageOut storageOut = new StorageOut(storage);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
