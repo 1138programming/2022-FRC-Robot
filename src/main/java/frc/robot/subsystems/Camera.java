@@ -13,19 +13,19 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Camera extends SubsystemBase {
    NetworkTable table = NetworkTableInstance.getDefault().getTable("key");
-   NetworkTableEntry tv = table.getEntry("tv");
-   NetworkTableEntry tx = table.getEntry("tx");
-   NetworkTableEntry ty = table.getEntry("ty");
-   NetworkTableEntry ta = table.getEntry("ta");
+  double targetFound = 0;
+  double x = 0;
+  double y = 0;
+  double area = 0;
   
   public Camera() {}
 
   @Override
   public void periodic() {
-    double targetFound = tv.getDouble(0.0);
-    double x = tx.getDouble(0.0);
-    double y = ty.getDouble(0.0);
-    double area = ta.getDouble(0.0);
+    targetFound = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+    x = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+    y = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+    area = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 
     SmartDashboard.putNumber("Target Found", targetFound);
     SmartDashboard.putNumber("LimelightX", x);
@@ -33,11 +33,16 @@ public class Camera extends SubsystemBase {
     SmartDashboard.putNumber("LimelightArea", area);
   }
 
+  public double getTargetFound() {
+    // return tv.getDouble(0.0);
+    return targetFound;
+  }
+
   public double getYOffset() {
-    return ty.getDouble(0.0);
+    return y;
   }
 
   public double getXOffset() {
-    return tx.getDouble(0.0);
+    return x;
   }
 }

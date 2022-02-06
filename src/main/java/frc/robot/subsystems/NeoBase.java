@@ -65,12 +65,12 @@ public class NeoBase extends SubsystemBase {
     );
 
     //swerve module instances init (in an array)
-  modules = new SwerveX[] {
-    new SwerveX(new CANSparkMax(backLeftDriveId, MotorType.kBrushless), new CANSparkMax(backLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(backLeftMagEncoderId), Rotation2d.fromDegrees(backLeftOffset), false), // Back Left
-    new SwerveX(new CANSparkMax(backRightDriveId, MotorType.kBrushless), new CANSparkMax(backRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(backRightMagEncoderId), Rotation2d.fromDegrees(backRightOffset), false),  // Back Right
-    new SwerveX(new CANSparkMax(frontLeftDriveId, MotorType.kBrushless), new CANSparkMax(frontLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontLeftMagEncoderId), Rotation2d.fromDegrees(frontLeftOffset), true), // Front Left
-    new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), true) // Front Right
-  };
+    modules = new SwerveX[] {
+      new SwerveX(new CANSparkMax(backLeftDriveId, MotorType.kBrushless), new CANSparkMax(backLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(backLeftMagEncoderId), Rotation2d.fromDegrees(backLeftOffset), true), // Back Left
+      new SwerveX(new CANSparkMax(backRightDriveId, MotorType.kBrushless), new CANSparkMax(backRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(backRightMagEncoderId), Rotation2d.fromDegrees(backRightOffset), true),  // Back Right
+      new SwerveX(new CANSparkMax(frontLeftDriveId, MotorType.kBrushless), new CANSparkMax(frontLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontLeftMagEncoderId), Rotation2d.fromDegrees(frontLeftOffset), false), // Front Left
+      new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), false) // Front Right
+    };
 
   SmartDashboard.putNumber("Base Drive kP", 0.0);
   SmartDashboard.putNumber("Base Drive kI", 0.0);
@@ -109,13 +109,11 @@ public class NeoBase extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("Left Front Deg Angle", modules[0].getAngleDeg());
     SmartDashboard.putNumber("Front Left Absolute Angle", modules[0].getAngleDeg());
     SmartDashboard.putNumber("Right Front abs Angle", modules[1].getAngleDeg());
     SmartDashboard.putNumber("Left Back abs Angle", modules[2].getAngleDeg());
     SmartDashboard.putNumber("Right Back abs Angle", modules[3].getAngleDeg());
 
-    setModuleGains(SmartDashboard.getNumber("Base Drive kP", 0.0), SmartDashboard.getNumber("Base Drive kI", 0.0), SmartDashboard.getNumber("Base Drive kD", 0.0));
     // This method will be called once per scheduler run
   }
 

@@ -58,11 +58,11 @@ public final class Constants {
     public static final double kDesiredYOffset = 1;
     public static final double kDesiredXOffset = 1;
     public static final double kYOffsetDeadzone = 10;
-    public static final double kXOffsetDeadzone = 10;
-
+    public static final double kXOffsetDeadzone = 0.05;
+    public static final double KLimelightRange = 29.8;
+    
 //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second
-    // public static final double kMaxMotorOutput = 1.0;
     public static final double kMaxMotorOutput = 0.4;
     public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
     public static final double kticksPerRevolution = 4096;
