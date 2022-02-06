@@ -37,21 +37,20 @@ public class DriveWithJoysticks extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // base.resetAllRelEncoders();  
-
+    base.resetAllRelEncoders();  
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // fbSpeed = xSpeedLimiter.calculate(Robot.robotContainer.getLogiLeftYAxis());
-    fbSpeed = (Robot.robotContainer.getLogiLeftYAxis());
+    fbSpeed = (-Robot.robotContainer.getLogiLeftYAxis());
     
     // lrSpeed = ySpeedLimiter.calculate(Robot.robotContainer.getLogiLeftXAxis());
     lrSpeed = (Robot.robotContainer.getLogiLeftXAxis());
     
     // rot = rotLimiter.calculate(Robot.robotContainer.getLogiRightXAxis());
-    rot = (Robot.robotContainer.getLogiRightXAxis());
+    rot = (-Robot.robotContainer.getLogiRightXAxis());
     
     base.drive(fbSpeed, lrSpeed, rot, false);
     
