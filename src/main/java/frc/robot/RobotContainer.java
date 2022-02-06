@@ -20,7 +20,9 @@ import frc.robot.subsystems.Camera;
 
 // Commands
 import frc.robot.commands.Base.DriveWithJoysticks;
+import frc.robot.commands.Base.DriveWithLimelight;
 import frc.robot.commands.Base.AimWithLimelight;
+import frc.robot.commands.Base.DriveWithLimelight;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
@@ -54,6 +56,7 @@ public class RobotContainer {
   private final HangStop hangStop = new HangStop(hang);
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
+  private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -141,10 +144,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    
     xboxBtnLB.whenHeld(shoot);
     xboxBtnX.whenHeld(intakeIn);
     xboxBtnY.whenHeld(intakeOut);
+
     logitechBtnA.whenHeld(aimWithLimelight);
+    logitechBtnRT.whileHeld(driveWithLimelight);
   }
 
   /**
