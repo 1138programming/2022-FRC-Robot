@@ -22,7 +22,8 @@ import frc.robot.subsystems.Camera;
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
 import frc.robot.commands.Base.AimWithLimelight;
-import frc.robot.commands.Base.DriveWithLimelight;
+import frc.robot.commands.Base.BaseDriveLow;
+import frc.robot.commands.Base.BaseDriveHigh;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
@@ -48,6 +49,9 @@ public class RobotContainer {
   private final Camera camera = new Camera();
 
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
+  private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
+  private final BaseDriveLow baseDriveLow = new BaseDriveLow(base);
+  private final BaseDriveHigh baseDriveHigh = new BaseDriveHigh(base);
   private final IntakeIn intakeIn = new IntakeIn(intake);
   private final IntakeOut intakeOut = new IntakeOut(intake);
   private final IntakeStop intakeStop = new IntakeStop(intake);
@@ -56,7 +60,6 @@ public class RobotContainer {
   private final HangStop hangStop = new HangStop(hang);
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
-  private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -151,6 +154,8 @@ public class RobotContainer {
 
     logitechBtnA.whenHeld(aimWithLimelight);
     logitechBtnRT.whileHeld(driveWithLimelight);
+    logitechBtnLT.whenPressed(baseDriveLow);
+    logitechBtnLT.whenReleased(baseDriveHigh);
   }
 
   /**
