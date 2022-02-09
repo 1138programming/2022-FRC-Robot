@@ -39,6 +39,7 @@ public final class Constants {
 
     //Intake
     public static final int KIntakeMotor = 10;
+    public static final int KFlywheelMotor = 10;
 
     //Hang
     public static final int KLeftHangMotor = 15;

@@ -15,7 +15,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Storage;
 import frc.robot.subsystems.Camera;
 
@@ -28,8 +28,8 @@ import frc.robot.commands.Base.BaseDriveHigh;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
-import frc.robot.commands.Shooter.Shoot;
-import frc.robot.commands.Shooter.ShooterStop;
+import frc.robot.commands.Flywheel.Shoot;
+import frc.robot.commands.Flywheel.ShooterStop;
 import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Hang.HangStop;
 
@@ -46,7 +46,7 @@ public class RobotContainer {
   private final Hang hang = new Hang();
   private final Camera camera = new Camera();
   private final Intake intake = new Intake();
-  private final Shooter shooter = new Shooter();
+  private final Flywheel shooter = new Flywheel();
   private final Storage storage = new Storage();
   
   // Each subsystems' commands
