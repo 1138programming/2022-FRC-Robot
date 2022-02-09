@@ -12,16 +12,24 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Camera extends SubsystemBase {
-   NetworkTable table = NetworkTableInstance.getDefault().getTable("key");
-  double targetFound = 0;
-  double x = 0;
-  double y = 0;
-  double area = 0;
+  NetworkTable table;
+  double targetFound;
+  double x;
+  double y;
+  double area;
   
-  public Camera() {}
+  public Camera() {
+    //setting up networktable
+    table = NetworkTableInstance.getDefault().getTable("key");
+    targetFound = 0;
+    x = 0;
+    y = 0;
+    area = 0;
+  }
 
   @Override
   public void periodic() {
+    //getting networktable values
     targetFound = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     x = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     y = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
@@ -34,7 +42,6 @@ public class Camera extends SubsystemBase {
   }
 
   public double getTargetFound() {
-    // return tv.getDouble(0.0);
     return targetFound;
   }
 
