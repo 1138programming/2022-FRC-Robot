@@ -17,9 +17,14 @@ import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Storage;
+import frc.robot.subsystems.Camera;
 
 // Commands
 import frc.robot.commands.Base.DriveWithJoysticks;
+import frc.robot.commands.Base.DriveWithLimelight;
+import frc.robot.commands.Base.AimWithLimelight;
+import frc.robot.commands.Base.BaseDriveLow;
+import frc.robot.commands.Base.BaseDriveHigh;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
@@ -27,6 +32,7 @@ import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Hang.HangStop;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -42,8 +48,12 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
   private final Storage storage = new Storage();
+  private final Camera camera = new Camera();
 
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
+  private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
+  private final BaseDriveLow baseDriveLow = new BaseDriveLow(base);
+  private final BaseDriveHigh baseDriveHigh = new BaseDriveHigh(base);
   private final IntakeIn intakeIn = new IntakeIn(intake);
   private final IntakeOut intakeOut = new IntakeOut(intake);
   private final IntakeStop intakeStop = new IntakeStop(intake);
@@ -51,6 +61,7 @@ public class RobotContainer {
   private final ShooterStop shooterStop = new ShooterStop(shooter);
   private final HangStop hangStop = new HangStop(hang);
   private final StorageStop storageStop= new StorageStop(storage);
+  private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -138,9 +149,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    
     xboxBtnLB.whenHeld(shoot);
     xboxBtnX.whenHeld(intakeIn);
     xboxBtnY.whenHeld(intakeOut);
+
+    logitechBtnA.whenHeld(aimWithLimelight);
+    logitechBtnRT.whileHeld(driveWithLimelight);
+    logitechBtnLT.whenPressed(baseDriveLow);
+    logitechBtnLT.whenReleased(baseDriveHigh);
   }
 
   /**
