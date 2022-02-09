@@ -51,26 +51,19 @@ public final class Constants {
 
 // Default PWM Values
 
+    //Base
+    public static final double kBaseDriveLowSpeed = 0.6;
+    public static final double kBaseDriveMediumSpeed = 0.8;
+    public static final double kBaseDriveHighSpeed = 1.0;
+
     //Intake
     public static final double KIntakePWM = 1.0;
 
     // Limelight 
+    public static final double KLimelightRange = 29.8;
     public static final double kDesiredYOffset = 1;
     public static final double kDesiredXOffset = 1;
-    public static final double kYOffsetDeadzone = 10;
     public static final double kXOffsetDeadzone = 0.05;
-    public static final double KLimelightRange = 29.8;
-    
-//Base Constants
-    public static final double kMaxSpeed = 6.09; // 20 feet per second
-    public static final double kMaxMotorOutput = 0.4;
-    public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
-    public static final double kticksPerRevolution = 4096;
-    public static double feildCalibration = 0;
-    public static double frontLeftOffset = 0;
-    public static double frontRightOffset = 0;
-    public static double backLeftOffset = 0;
-    public static double backRightOffset = 0;
+    // public static final double kYOffsetDeadzone = 10; //not implemented yet
 
-    public static final int KLinearActuator = 5;
 }
