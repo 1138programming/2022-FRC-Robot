@@ -52,7 +52,7 @@ public final class Constants {
 // Default PWM Values
 
     //Base
-    public static final double kBaseDriveLowSpeed = 0.6;
+    public static final double kBaseDriveLowSpeed = 0.5;
     public static final double kBaseDriveMediumSpeed = 0.8;
     public static final double kBaseDriveHighSpeed = 1.0;
 

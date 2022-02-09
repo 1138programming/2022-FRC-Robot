@@ -47,7 +47,7 @@ public class DriveWithJoysticks extends CommandBase {
     fbSpeed = (-Robot.robotContainer.getLogiLeftYAxis());
     
     // lrSpeed = ySpeedLimiter.calculate(Robot.robotContainer.getLogiLeftXAxis());
-    lrSpeed = (-Robot.robotContainer.getLogiLeftXAxis());
+    lrSpeed = (Robot.robotContainer.getLogiLeftXAxis());
     
     // rot = rotLimiter.calculate(Robot.robotContainer.getLogiRightXAxis());
     rot = (-Robot.robotContainer.getLogiRightXAxis());

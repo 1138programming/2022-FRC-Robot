@@ -33,7 +33,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class NeoBase extends SubsystemBase {
    
-  public static AHRS gyro = new AHRS(SPI.Port.kMXP); //not on the bot yet
+  public static AHRS gyro;
 
   private SwerveDriveKinematics kinematics;
 
@@ -65,6 +65,9 @@ public class NeoBase extends SubsystemBase {
   //distance in inches of a module from the center of mass (we use a square base so only 1 number is needed)
   private double kSwerveModuleLocationFromCoM = 14.5; 
   public NeoBase() {
+
+    //setting up navx gyro
+    gyro = new AHRS(SPI.Port.kMXP); 
 
     //defining the physical position of the swerve modules
     kinematics = new SwerveDriveKinematics(
@@ -98,7 +101,7 @@ public class NeoBase extends SubsystemBase {
       new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), false) 
     };
 
-  //Resets the Gyro sensor
+  //Reset the gyro's heading
   gyro.reset();
   }
 
@@ -139,6 +142,8 @@ public class NeoBase extends SubsystemBase {
     SmartDashboard.putNumber("Right Front abs Angle", modules[1].getAngleDeg());
     SmartDashboard.putNumber("Left Back abs Angle", modules[2].getAngleDeg());
     SmartDashboard.putNumber("Right Back abs Angle", modules[3].getAngleDeg());
+
+    SmartDashboard.putNumber("gyro", gyro.getAngle());
     // This method will be called once per scheduler run
   }
 
@@ -251,14 +256,15 @@ public class NeoBase extends SubsystemBase {
      */
     public void setDesiredState(SwerveModuleState desiredState) {
 
-    Rotation2d currentAngleR2D = getAngleR2D();
+      //If there is no controller input, sets angle and drive motor to 0.
+      if (Math.abs(desiredState.speedMetersPerSecond) < 0.001) {
+        angleMotor.set(0);
+        driveMotor.set(0);
+        return;
+      }
 
-    //If there is no controller input, sets angle and drive motor to 0.
-    if (Math.abs(desiredState.speedMetersPerSecond) < 0.001) {
-      angleMotor.set(0);
-      driveMotor.set(0);
-      return;
-    }
+    Rotation2d currentAngleR2D = getAngleR2D();
+    desiredState = SwerveModuleState.optimize(desiredState, currentAngleR2D);
     
     //Find the difference between our current rotational position and our new rotational position
     Rotation2d rotationDelta = desiredState.angle.minus(currentAngleR2D);
