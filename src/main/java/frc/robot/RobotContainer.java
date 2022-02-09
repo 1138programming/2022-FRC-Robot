@@ -41,15 +41,15 @@ import frc.robot.commands.Hang.HangStop;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  //The robot's subsystems
   private final NeoBase base  = new NeoBase();
   private final Hang hang = new Hang();
   private final Camera camera = new Camera();
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
   private final Storage storage = new Storage();
-  private final Camera camera = new Camera();
-
+  
+  // Each subsystems' commands
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
   private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
   private final BaseDriveLow baseDriveLow = new BaseDriveLow(base);
@@ -97,6 +97,7 @@ public class RobotContainer {
   public static final int KXboxLeftTrigger = 9; 
   public static final int KXboxRightTrigger = 10; 
 
+  //Game Controllers
   public static Joystick logitech;
   public static XboxController xbox; 
   public JoystickButton logitechBtnX, logitechBtnA, logitechBtnB, logitechBtnY, logitechBtnLB, logitechBtnRB, logitechBtnLT, logitechBtnRT; //Logitech Button
