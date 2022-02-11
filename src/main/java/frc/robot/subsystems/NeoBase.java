@@ -74,6 +74,8 @@ public class NeoBase extends SubsystemBase {
 
   //distance in inches of a module from the center of mass (we use a square base so only 1 number is needed)
   private double kSwerveModuleLocationFromCoM = 14.5; 
+  private Pose2d pose;
+
   public NeoBase() {
 
     //setting up navx gyro
@@ -110,6 +112,7 @@ public class NeoBase extends SubsystemBase {
       // Front Right
       new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), false) 
     };
+    odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d());
 
   //Reset the gyro's heading
   gyro.reset();
@@ -177,7 +180,6 @@ public class NeoBase extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  private Pose2d pose;
   public double getDriveEncoderPos(int module) {
     return modules[module].getDriveEncoderPos();
   }
