@@ -17,7 +17,7 @@ import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Storage;
-
+import frc.robot.commands.Auton.TestTrajectory;
 // Commands
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Intake.IntakeStop;
@@ -149,8 +149,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
+    return new TestTrajectory(base);
+    // return null;
   }
 
   public double getLogiRightYAxis() {

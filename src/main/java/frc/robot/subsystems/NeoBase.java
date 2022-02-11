@@ -12,8 +12,11 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,6 +24,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -32,7 +36,11 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.MathUtil;
 
 public class NeoBase extends SubsystemBase {
@@ -40,6 +48,7 @@ public class NeoBase extends SubsystemBase {
   public static AHRS gyro = new AHRS(SPI.Port.kMXP); //not on the bot yet
 
   private SwerveDriveKinematics kinematics;
+  private SwerveDriveOdometry odometry;
 
   private SwerveX[] modules;
 
@@ -74,6 +83,8 @@ public class NeoBase extends SubsystemBase {
       )
     );
 
+    odometry = new SwerveDriveOdometry(kinematics, getHeading());
+
     //swerve module instances init (in an array)
   modules = new SwerveX[] {
     new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), false), // Front Right
@@ -83,6 +94,7 @@ public class NeoBase extends SubsystemBase {
   };
 
   // gyro.reset(); 
+    pose = new Pose2d();
   }
 
   /**
@@ -121,6 +133,9 @@ public class NeoBase extends SubsystemBase {
     SmartDashboard.putNumber("Right Front abs Angle", modules[1].getAngleDeg());
     SmartDashboard.putNumber("Left Back abs Angle", modules[2].getAngleDeg());
     SmartDashboard.putNumber("Right Back abs Angle", modules[3].getAngleDeg());
+
+    pose = odometry.update(getHeading(), getSpeeds());
+
     // This method will be called once per scheduler run
   }
 
@@ -138,6 +153,75 @@ public class NeoBase extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
+  private Pose2d pose;
+  public double getDriveEncoderPos(int module) {
+    return modules[module].getDriveEncoderPos();
+  }
+  public double getAngleEncoderDeg(int module) {
+    return modules[module].getAngleEncoderDeg();
+  }
+  
+  public Rotation2d getHeading() {
+    return Rotation2d.fromDegrees(-gyro.getAngle());
+  }
+
+  public SwerveModuleState[] getSpeeds() {
+    SwerveModuleState[] states = new SwerveModuleState[4];
+    states[0] = new SwerveModuleState(modules[0].getDriveEncoderVel() * modules[0].kDriveEncoderRot2Meter / 60, Rotation2d.fromDegrees(getAngleEncoderDeg(0)));
+    states[1] = new SwerveModuleState(modules[1].getDriveEncoderVel() * modules[0].kDriveEncoderRot2Meter / 60, Rotation2d.fromDegrees(getAngleEncoderDeg(1)));
+    states[2] = new SwerveModuleState(modules[2].getDriveEncoderVel() * modules[0].kDriveEncoderRot2Meter / 60, Rotation2d.fromDegrees(getAngleEncoderDeg(2)));
+    states[3] = new SwerveModuleState(modules[0].getDriveEncoderVel() * modules[0].kDriveEncoderRot2Meter / 60, Rotation2d.fromDegrees(getAngleEncoderDeg(3)));
+    return states;
+  }
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 1);
+    modules[0].setDesiredState(desiredStates[0]);
+    modules[1].setDesiredState(desiredStates[1]);
+    modules[2].setDesiredState(desiredStates[2]);
+    modules[3].setDesiredState(desiredStates[3]);
+  }
+
+  private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ks, kv, ka);
+  public SimpleMotorFeedforward getFeedforward() {
+    return feedforward;
+  }
+
+  PIDController xTrajectoryController = new PIDController(0.047116, 0, 0);
+  PIDController yTrajectoryController = new PIDController(0.047116, 0, 0);
+  ProfiledPIDController rotTrajectoryController = new ProfiledPIDController(0.69, 0, 0, 
+    new TrapezoidProfile.Constraints(1, 1)
+  );
+
+  private HolonomicDriveController holonomicDriveController = new HolonomicDriveController(
+    xTrajectoryController,
+    yTrajectoryController,
+    rotTrajectoryController
+  );
+
+  public HolonomicDriveController getHolonomicDriveController() {
+    return holonomicDriveController;
+  }
+  
+  public SwerveDriveKinematics getKinematics() {
+    return kinematics;
+  }
+  public SwerveDriveOdometry getOdometry() {
+    return odometry;
+  }
+
+  public Pose2d getPose() {
+    return pose;
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    odometry.resetPosition(pose, gyro.getRotation2d());
+  }
+
+
+  // ks: volts
+  // kV: volts * seconds / meter
+  // ka: volts * seconds^2 / meter
 
   class SwerveX {
 

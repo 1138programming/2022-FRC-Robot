@@ -17,19 +17,23 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     // Motors IDs
     //Base
-    public static final int frontLeftDriveId = 3; 
-    public static final int frontLeftMagEncoderId = 1; 
-    public static final int frontLeftSteerId = 4;
     public static final int frontRightDriveId = 1; 
-    public static final int frontRightMagEncoderId = 0; 
     public static final int frontRightSteerId = 2; 
+    public static final int frontLeftDriveId = 3; 
+    public static final int frontLeftSteerId = 4;
     public static final int backLeftDriveId = 5; 
-    public static final int backLeftMagEncoderId = 2; 
     public static final int backLeftSteerId = 6;
     public static final int backRightDriveId = 7; 
-    public static final int backRightMagEncoderId = 3; 
     public static final int backRightSteerId = 8;
+    public static final int frontRightMagEncoderId = 0;
+    public static final int frontLeftMagEncoderId = 1;
+    public static final int backLeftMagEncoderId = 2;
+    public static final int backRightMagEncoderId = 3;
 
+    public static final double ks = 0.2245;
+    public static final double kv = 0.060548;
+    public static final double ka = 0.007612;
+    
     //Storage
     public static final int KStorageSpark = 9;
 
