@@ -4,40 +4,47 @@
 
 package frc.robot.commands.Base;
 
+import static frc.robot.Constants.*;
+
 import frc.robot.Robot;
+import frc.robot.Gains;
+import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.NeoBase;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.math.controller.PIDController;
 
-public class DriveWithJoysticks extends CommandBase {
-
-  private final NeoBase base;
+public class DriveWithLimelight extends CommandBase {
 
   private double fbSpeed; //Speed of the robot in the x direction (forward).
   private double lrSpeed; //Speed of the robot in the Y direction (sideways).
   private double rot;
+  private Camera camera;
+  private NeoBase base;
+  private PIDController rotationController;
+  private Gains pidGains;
 
-  private SlewRateLimiter xSpeedLimiter;
-  private SlewRateLimiter ySpeedLimiter;
-  private SlewRateLimiter rotLimiter;
-
-  /** Creates a new DriveWithJoysticks. */
-  public DriveWithJoysticks(NeoBase base) {
+  /** Creates a new DriveWithLimelight. */
+  public DriveWithLimelight(NeoBase base, Camera camera) {
 
     this.base = base;
-  
-    xSpeedLimiter = new SlewRateLimiter(4);
-    ySpeedLimiter = new SlewRateLimiter(4);
-    rotLimiter = new SlewRateLimiter(4);
+    this.camera = camera;
+
+    pidGains = new Gains(0.8, 0, 0, 0);
+    rotationController = new PIDController(pidGains.kP, pidGains.kI, pidGains.kD);
 
     addRequirements(base);
+    addRequirements(camera);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    base.resetAllRelEncoders();  
+    base.resetAllRelEncoders(); 
+    if (camera.getTargetFound() == 0) {
+      SmartDashboard.putBoolean("Target Found", false);
+    } 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,6 +58,8 @@ public class DriveWithJoysticks extends CommandBase {
     
     // rot = rotLimiter.calculate(Robot.robotContainer.getLogiRightXAxis());
     rot = (-Robot.robotContainer.getLogiRightXAxis());
+
+    rot -= rotationController.calculate(camera.getXOffset()/KLimelightRange, 0);
     
     base.drive(fbSpeed, lrSpeed, rot, false);
     
