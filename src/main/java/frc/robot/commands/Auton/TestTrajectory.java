@@ -35,6 +35,7 @@ public class TestTrajectory extends CommandBase {
     this.base = base;
     config = new TrajectoryConfig(1, 1);
     config.setKinematics(base.getKinematics());
+    // trajectory = TrajectoryGenerator.generateTrajectory
     trajectory = TrajectoryGenerator.generateTrajectory(
       Arrays.asList(new Pose2d(), new Pose2d(1, 0, new Rotation2d())),
       config
@@ -46,23 +47,26 @@ public class TestTrajectory extends CommandBase {
       base.getKinematics(), 
       new PIDController(0.047116, 0, 0),
       new PIDController(0.047116, 0, 0),
-      new ProfiledPIDController (0.69, 0, 0, new TrapezoidProfile.Constraints(1, 1)),
+      new ProfiledPIDController (0.69, 0, 0, new TrapezoidProfile.Constraints(Math.PI, Math.PI)),
       base::setModuleStates,
       base
     );
-    
+    base.resetOdometry(trajectory.getInitialPose());
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    // base.resetWheels();
+    // base.resetAllRelEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    command.execute();
+    base.resetWheels();
+    // command.andThen(() -> base.drive(0, 0, 0, false));
+    // command.execute();
   }
   
   // Called once the command ends or is interrupted.
@@ -74,9 +78,9 @@ public class TestTrajectory extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (command.isFinished()) {
-      return true;
-    }
+    // if (command.isFinished()) {
+    //   return true;
+    // }
     return false;
   }
 }

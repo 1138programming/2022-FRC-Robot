@@ -49,6 +49,8 @@ public class NeoBase extends SubsystemBase {
 
   private SwerveX[] modules;
 
+  private PIDController wheelController;
+
   //Base Constants
   private final double kEncoderTicksPerRotation = 4096;
   private final double kWheelDiameterMeters = Units.inchesToMeters(4);
@@ -113,6 +115,7 @@ public class NeoBase extends SubsystemBase {
       new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), false) 
     };
     odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d());
+    wheelController = new PIDController(1, 0, 0);
 
   //Reset the gyro's heading
   gyro.reset();
@@ -145,6 +148,8 @@ public class NeoBase extends SubsystemBase {
   }
 }
 
+  
+
   public void resetGyro() {
     gyro.reset(); //recalibrates gyro offset
   }
@@ -160,6 +165,13 @@ public class NeoBase extends SubsystemBase {
 
     SmartDashboard.putNumber("gyro", gyro.getAngle());
     // This method will be called once per scheduler run
+  }
+
+  public void resetWheels() {
+    modules[0].resetWheelAngle();
+    modules[1].resetWheelAngle();
+    modules[2].resetWheelAngle();
+    modules[3].resetWheelAngle();
   }
 
   //setting all relative encoders to the values of the absolute encoder on the modules
@@ -331,6 +343,12 @@ public class NeoBase extends SubsystemBase {
       return magEncoderAbsValue;
     }
 
+    public void resetWheelAngle() {
+      double output;
+      output = angleController.calculate(getAngleEncoderDeg(), 0);
+      angleMotor.set(output);
+      SmartDashboard.putNumber("reset Angle Output", output);
+    }
 
     //:)
     /**

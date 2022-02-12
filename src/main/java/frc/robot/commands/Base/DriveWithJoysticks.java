@@ -53,6 +53,7 @@ public class DriveWithJoysticks extends CommandBase {
     rot = (-Robot.robotContainer.getLogiRightXAxis());
     
     base.drive(fbSpeed, lrSpeed, rot, false);
+    base.resetWheels();
     
     SmartDashboard.putNumber("fbspeed", fbSpeed);
   }
