@@ -22,16 +22,18 @@ import frc.robot.subsystems.Camera;
 // Commands
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
+import frc.robot.commands.Flywheel.FlywheelSpin;
+import frc.robot.commands.Flywheel.FlywheelStop; 
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
-import frc.robot.commands.Flywheel.Shoot;
-import frc.robot.commands.Flywheel.ShooterStop;
 import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Hang.HangStop;
+
+
 
 
 /**
@@ -57,11 +59,11 @@ public class RobotContainer {
   private final IntakeIn intakeIn = new IntakeIn(intake);
   private final IntakeOut intakeOut = new IntakeOut(intake);
   private final IntakeStop intakeStop = new IntakeStop(intake);
-  private final Shoot shoot = new Shoot(shooter);
-  private final ShooterStop shooterStop = new ShooterStop(shooter);
   private final HangStop hangStop = new HangStop(hang);
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
+  private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
+  private final FlywheelStop flywheelStop = new FlywheelStop(shooter);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -110,7 +112,7 @@ public class RobotContainer {
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
     intake.setDefaultCommand(intakeStop);
-    shooter.setDefaultCommand(shooterStop);
+    shooter.setDefaultCommand(flywheelStop);
     storage.setDefaultCommand(storageStop);
 
     //Game controllers
@@ -151,14 +153,16 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    xboxBtnLB.whenHeld(shoot);
+    // xboxBtnLB.whenHeld(shoot);
     xboxBtnX.whenHeld(intakeIn);
     xboxBtnY.whenHeld(intakeOut);
+    xboxBtnB.whenHeld(flywheelSpin);
 
     logitechBtnA.whenHeld(aimWithLimelight);
     logitechBtnRT.whileHeld(driveWithLimelight);
     logitechBtnLT.whenPressed(baseDriveLow);
     logitechBtnLT.whenReleased(baseDriveHigh);
+
   }
 
   /**

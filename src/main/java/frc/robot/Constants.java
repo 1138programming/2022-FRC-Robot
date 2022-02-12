@@ -36,35 +36,37 @@ public final class Constants {
     //Shooter
     public static final int KLeftShooterMotor = 11;
     public static final int KRightShooterMotor = 12;
-
+    
     //Intake
     public static final int KIntakeMotor = 10;
     public static final int KFlywheelMotor = 10;
-
+    
     //Hang
     public static final int KLeftHangMotor = 15;
     public static final int KRightHangMotor = 17;
     public static final int KMiddleHangMotor = 19;
-
+    
     public static final int KLeftLinearServo = 1;
     public static final int KMiddleLinearServo = 2;
     public static final int KRightLinearServo = 3;
-
-// Default PWM Values
-
+    
+    // Default PWM Values
+    
     //Base
     public static final double kBaseDriveLowSpeed = 0.6;
     public static final double kBaseDriveMediumSpeed = 0.8;
     public static final double kBaseDriveHighSpeed = 1.0;
-
+    
     //Intake
     public static final double KIntakePWM = 1.0;
-
+    
     // Limelight 
     public static final double KLimelightRange = 29.8;
     public static final double kDesiredYOffset = 1;
     public static final double kDesiredXOffset = 1;
     public static final double kXOffsetDeadzone = 0.05;
     // public static final double kYOffsetDeadzone = 10; //not implemented yet
-
+    
+    //FlyWheel
+    public static final double KFlywheelSpeed = 1.0;
 }
