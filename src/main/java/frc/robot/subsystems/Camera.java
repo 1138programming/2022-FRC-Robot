@@ -11,6 +11,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
+import static frc.robot.Constants.*;
+
 public class Camera extends SubsystemBase {
   NetworkTable table;
   double targetFound;
@@ -39,6 +41,7 @@ public class Camera extends SubsystemBase {
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
+    SmartDashboard.putNumber("Distance to Hub", getDistance());
   }
 
   public double getTargetFound() {
@@ -51,5 +54,11 @@ public class Camera extends SubsystemBase {
 
   public double getXOffset() {
     return x;
+  }
+
+  public double getDistance() {
+    double distance = KHeightDifference / Math.tan(Math.toRadians(KLimelightAngle + y));
+    SmartDashboard.putNumber("currentY", y);
+    return distance;
   }
 }

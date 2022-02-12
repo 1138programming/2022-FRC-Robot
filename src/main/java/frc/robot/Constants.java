@@ -66,4 +66,13 @@ public final class Constants {
     public static final double kXOffsetDeadzone = 0.05;
     public static final double KLimelightRange = 29.8;
     
+
+    public static final double KLimelightHeight = 18.75; // inches
+    public static final double KHubHeight = 104; // inches
+    public static final double KHeightDifference = KHubHeight - KLimelightHeight; // inches
+    public static final double KLimelightAngle = 45;
+
+    // public static final 
+    // public static final double kYOffsetDeadzone = 10; //not implemented yet
+
 }
