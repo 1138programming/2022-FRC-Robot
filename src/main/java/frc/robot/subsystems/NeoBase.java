@@ -51,6 +51,8 @@ public class NeoBase extends SubsystemBase {
 
   private PIDController wheelController;
 
+  private SwerveModuleState[] autonStates;
+
   //Base Constants
   private final double kEncoderTicksPerRotation = 4096;
   private final double kWheelDiameterMeters = Units.inchesToMeters(4);
@@ -119,6 +121,8 @@ public class NeoBase extends SubsystemBase {
 
   //Reset the gyro's heading
   gyro.reset();
+
+  autonStates = new SwerveModuleState[4];
   }
 
   /**
@@ -220,10 +224,27 @@ public class NeoBase extends SubsystemBase {
   }
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 1);
-    modules[0].setDesiredState(desiredStates[0]);
-    modules[1].setDesiredState(desiredStates[1]);
-    modules[2].setDesiredState(desiredStates[2]);
-    modules[3].setDesiredState(desiredStates[3]);
+    // modules[0].setDesiredState(desiredStates[0]);
+    // modules[1].setDesiredState(desiredStates[1]);
+    // modules[2].setDesiredState(desiredStates[2]);
+    // modules[3].setDesiredState(desiredStates[3]);
+    autonStates = desiredStates;
+  }
+
+  private double velocityToDriveVolts(double speedMetersPerSecond){
+    double ff = feedforward.calculate(speedMetersPerSecond);
+    return MathUtil.clamp(ff, -12, 12);
+  }
+
+  public void applyModuleStates(SwerveModuleState[] desiredStates) {
+    desiredStates[0].speedMetersPerSecond = velocityToDriveVolts(desiredStates[0].speedMetersPerSecond);
+      modules[0].setDesiredState(desiredStates[0]);
+    desiredStates[1].speedMetersPerSecond = velocityToDriveVolts(desiredStates[1].speedMetersPerSecond);
+      modules[1].setDesiredState(desiredStates[1]);
+    desiredStates[2].speedMetersPerSecond = velocityToDriveVolts(desiredStates[2].speedMetersPerSecond);
+      modules[2].setDesiredState(desiredStates[2]);
+    desiredStates[3].speedMetersPerSecond = velocityToDriveVolts(desiredStates[3].speedMetersPerSecond);
+      modules[3].setDesiredState(desiredStates[3]);
   }
 
   private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ks, kv, ka);
