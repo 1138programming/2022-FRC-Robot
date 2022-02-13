@@ -39,7 +39,11 @@ public final class Constants {
 
     //Intake
     public static final int KSwivelIntakeMotor = 10;
-    public static final int KSpinIntakeMotor = 10;
+    public static final int KBeltIntakeMotor = 10;
+    public static final int KHingeIntakeMotor = 10;
+
+    public static final int KSwivelIntakeEncoder = 1; 
+    public static final int KHingeIntakeEncoder = 1; 
 
     //Hang
     public static final int KLeftHangMotor = 15;
@@ -53,7 +57,7 @@ public final class Constants {
 // Default PWM Values
 
     //Intake
-    public static final double KIntakeSpinPWM = 1.0;
+    public static final double KIntakeBeltPWM = 1.0;
     public static final double KIntakeSwivelPWM = 1.0;
 
     // Limelight 
