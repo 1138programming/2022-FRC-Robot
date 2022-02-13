@@ -181,6 +181,13 @@ public class NeoBase extends SubsystemBase {
     modules[2].resetRelEncoders();
     modules[3].resetRelEncoders();
   }
+  
+  public boolean getWheelsHavereset() {
+    return modules[0].getWheelHasReset() && 
+      modules[1].getWheelHasReset() &&
+      modules[2].getWheelHasReset() &&
+      modules[3].getWheelHasReset();
+  }
 
   //setting max drive speed of all base drive motors
   public void setMaxDriveSpeed(double speed) {
@@ -348,6 +355,10 @@ public class NeoBase extends SubsystemBase {
       output = angleController.calculate(getAngleEncoderDeg(), 0);
       angleMotor.set(output);
       SmartDashboard.putNumber("reset Angle Output", output);
+    }
+
+    public boolean getWheelHasReset() {
+      return getAngleEncoderDeg() < .1;
     }
 
     //:)

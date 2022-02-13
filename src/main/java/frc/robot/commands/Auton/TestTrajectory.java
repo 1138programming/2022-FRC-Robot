@@ -21,6 +21,9 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 import frc.robot.subsystems.NeoBase;
 
@@ -29,28 +32,32 @@ public class TestTrajectory extends CommandBase {
   Trajectory trajectory;
   NeoBase base;
   SwerveControllerCommand command;
+  int stage;
   
 
   public TestTrajectory(NeoBase base) {
     this.base = base;
-    config = new TrajectoryConfig(1, 1);
+    config = new TrajectoryConfig(0.2, 0.2);
     config.setKinematics(base.getKinematics());
     // trajectory = TrajectoryGenerator.generateTrajectory
     trajectory = TrajectoryGenerator.generateTrajectory(
       Arrays.asList(new Pose2d(), new Pose2d(1, 0, new Rotation2d())),
       config
     ); 
+    Trajectory test1 = PathPlanner.loadPath("Test1", 0.1, 0.1);
+    stage = 1;
     // command = new SwerveControllerCommand(trajectory, pose, kinematics, xController, yController, thetaController, desiredRotation, outputModuleStates, requirements)
     command = new SwerveControllerCommand(
       trajectory, 
       base::getPose, 
       base.getKinematics(), 
-      new PIDController(0.047116, 0, 0),
-      new PIDController(0.047116, 0, 0),
-      new ProfiledPIDController (0.69, 0, 0, new TrapezoidProfile.Constraints(Math.PI, Math.PI)),
+      new PIDController(0.04, 0, 0),
+      new PIDController(0.04, 0, 0),
+      new ProfiledPIDController (0.04, 0, 0, new TrapezoidProfile.Constraints(Math.PI, Math.PI)),
       base::setModuleStates,
       base
     );
+    addRequirements(base);
     base.resetOdometry(trajectory.getInitialPose());
   }
 
@@ -58,29 +65,34 @@ public class TestTrajectory extends CommandBase {
   @Override
   public void initialize() {
     // base.resetWheels();
-    // base.resetAllRelEncoders();
+    base.resetAllRelEncoders();
+    base.resetGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    base.resetWheels();
-    // command.andThen(() -> base.drive(0, 0, 0, false));
-    // command.execute();
+    if (!base.getWheelsHavereset() && stage == 1) {
+      base.resetWheels();
+    }
+    else if(stage == 1) {
+      base.resetGyro();
+      stage = 2;
+    }
+    else {
+      command.execute();
+    }
   }
   
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    base.drive(0, 0, 0, false);
+    // base.drive(0, 0, 0, false);
   }
   
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // if (command.isFinished()) {
-    //   return true;
-    // }
     return false;
   }
 }

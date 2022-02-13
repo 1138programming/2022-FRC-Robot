@@ -64,6 +64,8 @@ public class RobotContainer {
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
 
+  private final TestTrajectory testTrajectory = new TestTrajectory(base);
+
   //Controller Ports
   private static final int KLogitechPort = 0;
   private static final int KXboxPort = 1;  
@@ -168,7 +170,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new TestTrajectory(base);
+    return testTrajectory;
     // return null;
   }
 

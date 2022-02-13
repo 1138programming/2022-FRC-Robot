@@ -38,6 +38,7 @@ public class DriveWithJoysticks extends CommandBase {
   @Override
   public void initialize() {
     base.resetAllRelEncoders();  
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -53,7 +54,6 @@ public class DriveWithJoysticks extends CommandBase {
     rot = (-Robot.robotContainer.getLogiRightXAxis());
     
     base.drive(fbSpeed, lrSpeed, rot, false);
-    base.resetWheels();
     
     SmartDashboard.putNumber("fbspeed", fbSpeed);
   }
