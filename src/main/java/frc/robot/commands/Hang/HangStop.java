@@ -7,6 +7,7 @@ package frc.robot.commands.Hang;
 import frc.robot.Robot;
 import frc.robot.subsystems.Hang;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import static frc.robot.Constants.*;
 
 public class HangStop extends CommandBase {
   /** Creates a new HangStop. */

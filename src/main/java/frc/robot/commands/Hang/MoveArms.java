@@ -7,8 +7,9 @@ package frc.robot.commands.Hang;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hang;
+import static frc.robot.Constants.*;
 
-public class MoveArmsTo extends CommandBase {
+public class MoveArms extends CommandBase {
   private Hang hang;
   private double armSetPoint;
   private double currentEncoderValue;
@@ -17,14 +18,10 @@ public class MoveArmsTo extends CommandBase {
   private double output;
 
   /** Creates a new MoveArmsTo. */
-  public MoveArmsTo(Hang hang, double armSetPoint) {
+  public MoveArms(Hang hang) {
     this.hang = hang;
-    this.armSetPoint = armSetPoint;
-
-    kP = 0.06;
-    kI = 0;
-    kD = 0;
     armPosController = new PIDController(kP, kI, kD);
+    addRequirements(hang);
   }
 
   // Called when the command is initially scheduled.
@@ -40,13 +37,13 @@ public class MoveArmsTo extends CommandBase {
   public void execute() {
     currentEncoderValue = hang.getLeftArmEncoder();
     output = armPosController.calculate(currentEncoderValue, armSetPoint);
-    hang.moveArms(output);
+    hang.moveToPosition(KLevelPosition, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    hang.moveArms(0);
+    hang.move(KArmSpeed, 0);
   }
 
   // Returns true when the command should end.

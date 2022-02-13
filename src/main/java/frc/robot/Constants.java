@@ -47,15 +47,6 @@ public final class Constants {
     public static final int KClawLinearServo = 1;
     public static final int KRatchetLinearServo = 2;
 
-    public static final int KLiftTopLimit = 1;
-    public static final int KLiftBottomLimit = 2;
-    public static final int KArmsLimit = 3;
-
-    public static final double KArmSpeed = 0.4;
-    public static final double KLiftSpeed = 0.4;
-
-    public static final double KClawOutPos = 1;
-    public static final double KClawInPos = 0.75;
    
 
 // Default PWM Values
@@ -69,6 +60,18 @@ public final class Constants {
     public static final double kYOffsetDeadzone = 10;
     public static final double kXOffsetDeadzone = 10;
 
+    //Hang Constants
+    public static final double KArmSpeed = 1.0;
+    public static final double KArmPosition = 1.0;
+    public static final double KLevelSpeed = 1.0;
+    public static final double KLevelPosition = 1.0;
+    public static final int KLiftBottomLimit = 1;
+    public static final int KLiftTopLimit = 1;
+    public static final int KArmsLimit = 1; 
+    
+
+
+
 //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second
     public static final double kMaxMotorOutput = 1.0;
@@ -81,4 +84,7 @@ public final class Constants {
     public static double backRightOffset = 0;
 
     public static final int KLinearActuator = 5;
+
+
+
 }

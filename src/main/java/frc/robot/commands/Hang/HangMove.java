@@ -3,6 +3,7 @@ package frc.robot.commands.Hang;
 import frc.robot.Robot;
 import frc.robot.subsystems.Hang;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import static frc.robot.Constants.*;
 
 public class HangMove extends CommandBase {
 
@@ -20,7 +21,7 @@ public class HangMove extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.move(1, 1); // may have to change values
+    hang.move(KArmSpeed, KLevelSpeed); // may have to change values
   }
 
   // Called once the command ends or is interrupted.

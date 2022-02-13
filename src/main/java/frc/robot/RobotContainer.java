@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Storage;
 
 // Commands
@@ -22,13 +21,17 @@ import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
-import frc.robot.commands.Shooter.Shoot;
-import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Storage.StorageStop;
-import frc.robot.commands.Hang.HangStop;
 import frc.robot.commands.Hang.HangMove;
-import frc.robot.commands.Hang.HangServoStop;
 import frc.robot.commands.Hang.HangServoMove;
+import frc.robot.commands.Hang.HangStop;
+import frc.robot.commands.Hang.HangServoStop;
+import frc.robot.commands.Hang.MoveArms;
+import frc.robot.commands.Hang.MoveArmsToLimit;
+import frc.robot.commands.Hang.MoveClaw;
+import frc.robot.commands.Hang.MoveLift;
+import frc.robot.commands.Hang.MoveLiftToBottomLimit;
+import frc.robot.commands.Hang.MoveLiftToTopLimit;
 
 
 /**
@@ -42,19 +45,21 @@ public class RobotContainer {
   private final NeoBase base  = new NeoBase();
   private final Hang hang = new Hang();
   private final Intake intake = new Intake();
-  private final Shooter shooter = new Shooter();
   private final Storage storage = new Storage();
 
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
   private final IntakeIn intakeIn = new IntakeIn(intake);
   private final IntakeOut intakeOut = new IntakeOut(intake);
   private final IntakeStop intakeStop = new IntakeStop(intake);
-  private final Shoot shoot = new Shoot(shooter);
-  private final ShooterStop shooterStop = new ShooterStop(shooter);
-  private final HangStop hangStop = new HangStop(hang);
   private final HangMove hangMove = new HangMove(hang);
-  private final HangServoStop hangServoStop = new HangServoStop(hang);
+  private final HangStop hangStop = new HangStop(hang);
   private final HangServoMove hangServoMove = new HangServoMove(hang);
+  private final HangServoStop hangServoStop = new HangServoStop(hang);
+  private final MoveArms moveArms = new MoveArms(hang);
+  private final MoveArmsToLimit moveArmsToLimit = new MoveArmsToLimit(hang);
+  private final MoveClaw moveClaw = new MoveClaw(hang);
+  private final MoveLiftToBottomLimit moveLiftToBottomLimit = new MoveLiftToBottomLimit(hang);
+  private final MoveLiftToTopLimit moveLiftToTopLimit = new MoveLiftToTopLimit(hang);
   private final StorageStop storageStop= new StorageStop(storage);
 
   //Controller Ports
@@ -102,11 +107,8 @@ public class RobotContainer {
     //Default commands for each subsystem
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
-    hang.setDefaultCommand(hangMove);
-    hang.setDefaultCommand(hangServoMove);
     hang.setDefaultCommand(hangServoStop);
     intake.setDefaultCommand(intakeStop);
-    shooter.setDefaultCommand(shooterStop);
     storage.setDefaultCommand(storageStop);
 
     //Game controllers
@@ -146,7 +148,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    xboxBtnLB.whenHeld(shoot);
     xboxBtnX.whenHeld(intakeIn);
     xboxBtnY.whenHeld(intakeOut);
   }

@@ -7,21 +7,22 @@ package frc.robot.commands.Hang;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hang;
+import static frc.robot.Constants.*;
 
-public class MoveClawTo extends CommandBase {
+public class MoveClaw extends CommandBase {
   private Hang hang;
   private double pos;
 
   /** Creates a new ClawOut. */
-  public MoveClawTo(Hang hang, double pos) {
+  public MoveClaw(Hang hang) {
     this.hang = hang;
-    this.pos = pos;
+    addRequirements(hang);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hang.moveServo(pos, pos);
+    hang.moveClaw(pos, pos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
