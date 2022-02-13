@@ -24,9 +24,11 @@ import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Shooter.Shoot;
-import frc.robot.commands.Storage.StorageIn;
-import frc.robot.commands.Storage.StorageOut;
-import frc.robot.commands.Storage.StorageStop;
+import frc.robot.commands.Storage.BottomStorageIn;
+import frc.robot.commands.Storage.TopStorageOut;
+import frc.robot.commands.Storage.TopStorageIn;
+import frc.robot.commands.Storage.TopStorageStop;
+import frc.robot.commands.Storage.BottomStorageStop;
 import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Hang.HangStop;
 
@@ -52,9 +54,11 @@ public class RobotContainer {
   private final Shoot shoot = new Shoot(shooter);
   private final ShooterStop shooterStop = new ShooterStop(shooter);
   private final HangStop hangStop = new HangStop(hang);
-  private final StorageStop storageStop= new StorageStop(storage);
-  private final StorageIn storageIn = new StorageIn(storage);
-  private final StorageOut storageOut = new StorageOut(storage);
+  private final BottomStorageStop bottomStorageStop = new BottomStorageStop(storage);
+  private final TopStorageStop topStorageStop = new TopStorageStop(storage);
+  private final BottomStorageIn bottomStorageIn = new BottomStorageIn(storage);
+  private final TopStorageOut topStorageOut = new TopStorageOut(storage);
+  private final TopStorageIn topStorageIn = new TopStorageIn(storage);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -103,7 +107,8 @@ public class RobotContainer {
     hang.setDefaultCommand(hangStop);
     intake.setDefaultCommand(intakeStop);
     shooter.setDefaultCommand(shooterStop);
-    storage.setDefaultCommand(storageStop);
+    storage.setDefaultCommand(topStorageStop);
+    storage.setDefaultCommand(bottomStorageStop);
 
     //Game controllers
     logitech = new Joystick(KLogitechPort); //Logitech Dual Action
@@ -145,8 +150,9 @@ public class RobotContainer {
     xboxBtnLB.whenHeld(shoot);
     xboxBtnX.whenHeld(intakeIn);
     xboxBtnY.whenHeld(intakeOut);
-    xboxBtnRB.whenActive(storageIn);
-    xboxBtnRT.whenActive(storageOut);
+    xboxBtnRB.whenActive(bottomStorageIn);
+    xboxBtnLT.whenActive(topStorageIn);
+    xboxBtnRT.whenActive(topStorageOut);
   }
 
   /**

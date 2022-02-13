@@ -32,8 +32,10 @@ public final class Constants {
     public static final int backRightSteerId = 8;
 
     //Storage
-    public static final int KLeftStorageSpark = 9;
-    public static final int KRightStorageSpark = 10;
+    public static final int KLeftStorageTalon = 9;
+    public static final int KRightStorageTalon = 10;
+    public static final int KBallSensor = 20;
+
 
     //Shooter
     public static final int KLeftShooterMotor = 11;

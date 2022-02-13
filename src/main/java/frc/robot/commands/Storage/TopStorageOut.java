@@ -5,18 +5,18 @@ import frc.robot.subsystems.Storage;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import static frc.robot.Constants.*;
 
-public class StorageIn extends CommandBase {
+public class TopStorageOut extends CommandBase {
     private Storage storage;
 
-    public StorageIn(Storage storage){
+    public TopStorageOut(Storage storage){
         this.storage = storage;
         addRequirements(storage);
     }
 
     public void intialize(){}
-
+    
     public void excute(){
-        storage.move(kStorage);
+        storage.move(-kStorage,0);
     }
 
     public void end(boolean interrupted){}

@@ -4,14 +4,17 @@
 
 package frc.robot.commands.Storage;
 
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Storage;
+import static frc.robot.Constants.*;
 
-public class StorageStop extends CommandBase {
+
+public class BottomStorageStop extends CommandBase {
   private Storage storage;
 
   /** Creates a new StorageStop. */
-  public StorageStop(Storage storage) {
+  public BottomStorageStop(Storage storage) {
     this.storage = storage;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(storage);
@@ -25,7 +28,7 @@ public class StorageStop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    storage.move(0);
+    storage.move(kStorage,0);
   }
 
   // Called once the command ends or is interrupted.
