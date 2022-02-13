@@ -16,6 +16,7 @@ public class TopStorageIn extends CommandBase {
     public void intialize(){}
 
     public void excute(){
+        //First number is the top motor, second number is the bottom motor
         storage.move(kStorage,0);
     }
 

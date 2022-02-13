@@ -34,8 +34,8 @@ public final class Constants {
     //Storage
     public static final int KLeftStorageTalon = 9;
     public static final int KRightStorageTalon = 10;
-    public static final int KBallSensor = 20;
-
+    public static final int KBallSensorTop = 6;
+    public static final int KBallSensorBottom = 7;
 
     //Shooter
     public static final int KLeftShooterMotor = 11;

@@ -27,6 +27,7 @@ public class TopStorageStop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //First number is the top motor, second number is the bottom motor
     storage.move(0,kStorage);
   }
 
