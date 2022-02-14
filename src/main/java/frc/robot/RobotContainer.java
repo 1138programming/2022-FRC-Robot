@@ -4,12 +4,27 @@
 
 package frc.robot;
 
+import java.lang.reflect.Array;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.cfg.MapperConfigBase;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 // Subsystems:
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Camera;
@@ -17,15 +32,18 @@ import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Storage;
+import frc.robot.commands.Auton.ResetThenTestTrajectory;
 import frc.robot.commands.Auton.TestTrajectory;
 import frc.robot.subsystems.Camera;
 
 // Commands
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
+import frc.robot.commands.Base.MoveBase;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
+import frc.robot.commands.Base.BaseStop;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
@@ -65,7 +83,7 @@ public class RobotContainer {
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
 
   private final TestTrajectory testTrajectory = new TestTrajectory(base);
-
+  private final ResetThenTestTrajectory resetThenTestTrajectory = new ResetThenTestTrajectory(base);
   //Controller Ports
   private static final int KLogitechPort = 0;
   private static final int KXboxPort = 1;  
@@ -170,9 +188,38 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return testTrajectory;
-    // return null;
-  }
+    TrajectoryConfig config;
+    Trajectory trajectory;
+    SwerveControllerCommand command;
+
+    config = new TrajectoryConfig(0.3, 0.3);
+    config.setKinematics(base.getKinematics());
+    SmartDashboard.putString("Kinematics", base.getKinematics().toString());
+    // trajectory = TrajectoryGenerator.generateTrajectorPy
+    trajectory = TrajectoryGenerator.generateTrajectory(
+      List.of(new Pose2d(0, 0, new Rotation2d(0)),
+      new Pose2d(0, 1, new Rotation2d(0))),
+      config
+    ); 
+    base.resetOdometry(trajectory.getInitialPose());
+    command = new SwerveControllerCommand(
+      trajectory, 
+      base::getPose, 
+      base.getKinematics(), 
+      new PIDController(1, 0, 0),
+      new PIDController(1, 0, 0),
+      new ProfiledPIDController (1, 0, 0, new TrapezoidProfile.Constraints(Math.PI, Math.PI)),
+      base::setModuleStates,
+      base
+    );
+    
+
+    // return testTrajectory;
+  
+    return command.andThen(new BaseStop(base));
+      
+    }
+  
 
   public double getLogiRightYAxis() {
     final double Y = logitech.getRawAxis(KRightYAxis);
