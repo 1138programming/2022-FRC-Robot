@@ -2,20 +2,24 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Hang;
+package frc.robot.commands.Storage;
 
-import frc.robot.subsystems.Hang;
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Storage;
+import static frc.robot.Constants.*;
 
-public class HangStop extends CommandBase {
-  /** Creates a new HangStop. */
 
-  private final Hang hang;
+public class BottomStorageStop extends CommandBase {
+  private Storage storage;
 
-  public HangStop(Hang hang) {
-    this.hang = hang;
-    addRequirements(hang);
+  /** Creates a new StorageStop. */
+  public BottomStorageStop(Storage storage) {
+    this.storage = storage;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(storage);
   }
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -24,7 +28,8 @@ public class HangStop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.move(0, 0, 0);
+    //First number is the top motor, second number is the bottom motor
+    storage.move(kStorage,0);
   }
 
   // Called once the command ends or is interrupted.

@@ -31,6 +31,10 @@ import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Storage.StorageStop;
+import frc.robot.commands.Storage.BottomStorageIn;
+import frc.robot.commands.Storage.TopStorageOut;
+import frc.robot.commands.Storage.TopStorageIn;
+import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Hang.HangStop;
 
 
@@ -64,6 +68,9 @@ public class RobotContainer {
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
   private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
   private final FlywheelStop flywheelStop = new FlywheelStop(shooter);
+  private final BottomStorageIn bottomStorageIn = new BottomStorageIn(storage);
+  private final TopStorageOut topStorageOut = new TopStorageOut(storage);
+  private final TopStorageIn topStorageIn = new TopStorageIn(storage);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
