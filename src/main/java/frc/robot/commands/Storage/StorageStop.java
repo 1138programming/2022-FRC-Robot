@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Storage;
 import static frc.robot.Constants.*;
 
-public class TopStorageStop extends CommandBase {
+public class StorageStop extends CommandBase {
   private Storage storage;
 
   /** Creates a new StorageStop. */
-  public TopStorageStop(Storage storage) {
+  public StorageStop(Storage storage) {
     this.storage = storage;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(storage);
@@ -28,7 +28,7 @@ public class TopStorageStop extends CommandBase {
   @Override
   public void execute() {
     //First number is the top motor, second number is the bottom motor
-    storage.move(0,kStorage);
+    storage.move(0,0);
   }
 
   // Called once the command ends or is interrupted.
