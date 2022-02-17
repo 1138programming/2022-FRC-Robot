@@ -18,8 +18,10 @@ public class Storage extends SubsystemBase {
 
   //Constructor is constructing
   public Storage(){
+    //set the motor
     bottomStorageMotor = new TalonSRX(KLeftStorageTalon);
     topStorageMotor = new TalonSRX(KRightStorageTalon);
+    //set the sensor to detect the motor
     ballSensorBottom = new DigitalInput(KBallSensorBottom);
     ballSensorTop = new DigitalInput(KBallSensorTop);
   }
