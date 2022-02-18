@@ -17,6 +17,13 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
+import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
+import io.github.pseudoresonance.pixy2api.links.SPILink;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC;
+
 public class Intake extends SubsystemBase {
   private TalonSRX swivelIntakeMotor;
   private VictorSPX spinIntakeMotor;
@@ -24,10 +31,13 @@ public class Intake extends SubsystemBase {
   private DigitalInput topLimitSwitch;
   private DutyCycleEncoder swivelMagEncoder;
 
+  private static Pixy2 pixy;
+
   public Intake() {
     swivelIntakeMotor = new TalonSRX(KSwivelIntakeMotor);
     spinIntakeMotor = new VictorSPX(KSpinIntakeMotor);
     swivelMagEncoder = new DutyCycleEncoder(KSwivelIntakeEncoder);
+    pixy = Pixy2.createInstance(new SPILink());
   }
 
   public void moveSwivel(double speed) {
@@ -42,5 +52,18 @@ public class Intake extends SubsystemBase {
   }
   public boolean getTopLimitSwitch() {
     return topLimitSwitch.get();
+  }
+
+  public int getPixyColorRed() {
+    return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 1);
+  }
+
+  public int getPixyColorBlue() {
+    return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG2, 1);
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
   }
 }
