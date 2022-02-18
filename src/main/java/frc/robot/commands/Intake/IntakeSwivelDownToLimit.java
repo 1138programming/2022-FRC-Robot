@@ -4,18 +4,16 @@
 
 package frc.robot.commands.Intake;
 
-import frc.robot.Robot;
-import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Intake;
 import static frc.robot.Constants.*;
 
-public class IntakeSwivelForward extends CommandBase {
-  private final Intake swivelintake;
-
-  /** Creates a new IntakeUp. */
-  public IntakeSwivelForward(Intake swivelintake) {
-    this.swivelintake = swivelintake;
-    addRequirements(swivelintake);
+public class IntakeSwivelDownToLimit extends CommandBase {
+  private Intake intake;
+  /** Creates a new IntakeSwivelDownToLimit. */
+  public IntakeSwivelDownToLimit(Intake intake) {
+    this.intake = intake;
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
@@ -25,16 +23,21 @@ public class IntakeSwivelForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    swivelintake.moveSwivel(KIntakeSwivelPWM);
+    intake.moveSwivel(KIntakeSwivelPWM);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    intake.moveSwivel(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (intake.getBottomLimitSwitch()) {
+      return true;
+    }
     return false;
   }
 }

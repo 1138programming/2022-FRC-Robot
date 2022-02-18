@@ -23,8 +23,8 @@ import frc.robot.commands.Intake.IntakeStopSpin;
 import frc.robot.commands.Intake.IntakeStopSwivel;
 import frc.robot.commands.Intake.IntakeSpinBackward;
 import frc.robot.commands.Intake.IntakeSpinForward;
-import frc.robot.commands.Intake.IntakeSwivelBackward;
-import frc.robot.commands.Intake.IntakeSwivelForward;
+import frc.robot.commands.Intake.IntakeSwivelDownToLimit;
+import frc.robot.commands.Intake.IntakeSwivelUpToLimit;
 import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Storage.StorageStop;
@@ -47,8 +47,8 @@ public class RobotContainer {
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
   private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);
   private final IntakeSpinForward intakeSpinForward = new IntakeSpinForward(intake);
-  private final IntakeSwivelBackward intakeSwivelBackward = new IntakeSwivelBackward(intake);
-  private final IntakeSwivelForward intakeSwivelForward = new IntakeSwivelForward(intake);
+  private final IntakeSwivelDownToLimit intakeSwivelDownToLimit = new IntakeSwivelDownToLimit(intake);
+  private final IntakeSwivelUpToLimit intakeSwivelUpToLimit = new IntakeSwivelUpToLimit(intake);
   private final IntakeStopSpin intakeStopSpin = new IntakeStopSpin(intake);
   private final IntakeStopSwivel intakeStopSwivel = new IntakeStopSwivel(intake);
   private final Shoot shoot = new Shoot(shooter);
@@ -146,8 +146,8 @@ public class RobotContainer {
     xboxBtnLB.whenHeld(shoot);
     xboxBtnX.whenHeld(intakeSpinForward);
     xboxBtnY.whenHeld(intakeSpinBackward);
-    xboxBtnA.whenHeld(intakeSwivelForward);
-    xboxBtnB.whenHeld(intakeSwivelBackward);
+    xboxBtnA.whenPressed(intakeSwivelUpToLimit);
+    xboxBtnB.whenPressed(intakeSwivelDownToLimit);
   }
 
   /**

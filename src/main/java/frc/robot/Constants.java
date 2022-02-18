@@ -37,10 +37,11 @@ public final class Constants {
     public static final int KLeftShooterMotor = 11;
     public static final int KRightShooterMotor = 12;
 
+    public static final double KShooterSpeed = 0.5;
+
     //Intake
     public static final int KSwivelIntakeMotor = 10;
-    public static final int KBeltIntakeMotor = 10;
-    public static final int KHingeIntakeMotor = 10;
+    public static final int KSpinIntakeMotor = 10;
 
     public static final int KSwivelIntakeEncoder = 1; 
     public static final int KHingeIntakeEncoder = 1; 
@@ -57,7 +58,7 @@ public final class Constants {
 // Default PWM Values
 
     //Intake
-    public static final double KIntakeBeltPWM = 1.0;
+    public static final double KIntakeSpinPWM = 1.0;
     public static final double KIntakeSwivelPWM = 1.0;
 
     // Limelight 
