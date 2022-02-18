@@ -13,13 +13,15 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 public class Flywheel extends SubsystemBase {
   private TalonFX flywheelMotor;
-  // private final  flywheelEncoder;
   private PIDController flywheelController;
-  private double kp, ki, kd;
+  private double flywheelControllerKP = 1;
+  private double flywheelControllerKI = 1;
+  private double flywheelControllerKD = 1;
+
 
   public Flywheel() {
     flywheelMotor = new TalonFX(KFlywheelMotor);
-    flywheelController = new PIDController(kp, ki, kd);
+    flywheelController = new PIDController(flywheelControllerKP, flywheelControllerKI, flywheelControllerKD);
     flywheelMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
     SmartDashboard.putNumber("Flywheel kP", 0.0);
@@ -35,7 +37,7 @@ public class Flywheel extends SubsystemBase {
     return flywheelMotor.getSelectedSensorVelocity();
   }
   public void setFlywheelGains(double kP, double kI, double kD){
-    flywheelController.setPID(kp, ki, kd);
+    flywheelController.setPID(kP, kI, kD);
   }
   @Override
   public void periodic() {

@@ -7,16 +7,10 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.*;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-
-import edu.wpi.first.math.controller.PIDController;
-
-import edu.wpi.first.wpilibj.DigitalGlitchFilter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,13 +20,10 @@ public class Hang extends SubsystemBase {
   
   private TalonFX leftSwingMotor;
   private TalonFX rightSwingMotor;
-  private TalonFX levelHangMotor;
+  private TalonSRX levelHangMotor;
   private Servo rightClawServo;
   private Servo leftClawServo;
-  private RelativeEncoder leftArmEncoder;
-  private RelativeEncoder rightArmEncoder;
-  private RelativeEncoder levelEncoder;
-  // private PIDController hangController;
+  private Servo ratchetServo;
 
   private DigitalInput bottomLiftLimitSwitch;
   private DigitalInput topLiftLimitSwitch;
@@ -44,7 +35,7 @@ public class Hang extends SubsystemBase {
     // hangController = new PIDController(kp, ki, kd);
     leftSwingMotor = new TalonFX(KSwingHangMotor);
     rightSwingMotor = new TalonFX(KSwingHangMotor);
-    levelHangMotor = new TalonFX(KLevelHangMotor);
+    levelHangMotor = new TalonSRX(KLevelHangMotor);
 
     leftSwingMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     rightSwingMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
@@ -85,6 +76,9 @@ public class Hang extends SubsystemBase {
     leftClawServo.set(pos);
     rightClawServo.set(pos);
   }
+  public void moveRachet(double pos) {
+    ratchetServo.set(pos);
+  }
 
   public boolean getBottomLiftLimitSwitch() {
     return bottomLiftLimitSwitch.get();
@@ -97,24 +91,24 @@ public class Hang extends SubsystemBase {
   }
 
   public double getLeftArmEncoder() {
-    return leftArmEncoder.getPosition();
+    return leftSwingMotor.getSelectedSensorPosition();
   }
   public double getRightArmEncoder() {
-    return rightArmEncoder.getPosition();
+    return rightSwingMotor.getSelectedSensorPosition();
   }
   public double getLevelEncoder() {
-    return levelEncoder.getPosition();
+    return levelHangMotor.getSelectedSensorPosition();
   }
   // public void setFlywheelGains(double kP, double kI, double kD){
   //   hangController.setPID(kp, ki, kd);
   // }
 
   public void resetArmEncders() {
-    leftArmEncoder.setPosition(0);
-    rightArmEncoder.setPosition(0);
+    leftSwingMotor.setSelectedSensorPosition(0);
+    rightSwingMotor.setSelectedSensorPosition(0);
   }
   public void resetLevelEncoder() {
-    levelEncoder.setPosition(0);
+    levelHangMotor.setSelectedSensorPosition(0);
   }
 
   @Override
