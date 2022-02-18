@@ -60,7 +60,7 @@ public class RobotContainer {
   private final Hang hang = new Hang();
   private final Camera camera = new Camera();
   private final Intake intake = new Intake();
-  private final Flywheel shooter = new Flywheel();
+  private final Flywheel flywheel = new Flywheel();
   private final Storage storage = new Storage();
   
   // Each subsystems' commands
@@ -82,8 +82,8 @@ public class RobotContainer {
   private final MoveLiftToTopLimit moveLiftToTopLimit = new MoveLiftToTopLimit(hang);
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
-  private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
-  private final FlywheelStop flywheelStop = new FlywheelStop(shooter);
+  private final FlywheelSpin flywheelSpin = new FlywheelSpin(flywheel);
+  private final FlywheelStop flywheelStop = new FlywheelStop(flywheel);
   private final BottomStorageIn bottomStorageIn = new BottomStorageIn(storage);
   private final TopStorageOut topStorageOut = new TopStorageOut(storage);
   private final TopStorageIn topStorageIn = new TopStorageIn(storage);
@@ -136,7 +136,7 @@ public class RobotContainer {
     hang.setDefaultCommand(hangStop);
     hang.setDefaultCommand(hangServoStop);
     intake.setDefaultCommand(intakeStop);
-    shooter.setDefaultCommand(flywheelStop);
+    flywheel.setDefaultCommand(flywheelStop);
     storage.setDefaultCommand(storageStop);
 
     //Game controllers

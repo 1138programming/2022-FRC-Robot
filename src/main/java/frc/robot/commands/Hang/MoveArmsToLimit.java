@@ -25,7 +25,7 @@ public class MoveArmsToLimit extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.moveToPosition(KArmsLimit, 0);
+    hang.moveArmsToPosition(1); //position not determined
   }
 
   // Called once the command ends or is interrupted.

@@ -27,8 +27,8 @@ public class Hang extends SubsystemBase {
   private TalonFX leftSwingMotor;
   private TalonFX rightSwingMotor;
   private TalonFX levelHangMotor;
-  private Servo clawLinearServo;
-  private Servo ratchetLinearServo;
+  private Servo rightClawServo;
+  private Servo leftClawServo;
   private RelativeEncoder leftArmEncoder;
   private RelativeEncoder rightArmEncoder;
   private RelativeEncoder levelEncoder;
@@ -50,8 +50,8 @@ public class Hang extends SubsystemBase {
     rightSwingMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     levelHangMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
-    clawLinearServo = new Servo(KClawLinearServo);
-    ratchetLinearServo = new Servo(KRatchetLinearServo);
+    rightClawServo = new Servo(KRightClawServo);
+    leftClawServo = new Servo(KLeftClawServo);
 
     bottomLiftLimitSwitch = new DigitalInput(KLiftBottomLimit);
     topLiftLimitSwitch = new DigitalInput(KLiftTopLimit);
@@ -67,6 +67,13 @@ public class Hang extends SubsystemBase {
     rightSwingMotor.set(ControlMode.Position, armPosition);
     levelHangMotor.set(ControlMode.Position, levelPosition);
   }
+  public void moveArmsToPosition(double position) {
+    leftSwingMotor.set(ControlMode.Position, position);
+    rightSwingMotor.set(ControlMode.Position, position);
+  }
+  public void moveLevelToPosition(double position) {
+    levelHangMotor.set(ControlMode.PercentOutput, position);
+  }
   // public void moveArms(double swingMotorSpeed) {
   //   leftSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
   //   rightSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
@@ -74,9 +81,9 @@ public class Hang extends SubsystemBase {
   // public void moveLift(double levelMotorSpeed) {
   //   levelHangMotor.set(ControlMode.PercentOutput, levelMotorSpeed);
   // }
-  public void moveClaw(double clawServoPos, double ratchetServoPos) {
-    clawLinearServo.set(clawServoPos);
-    ratchetLinearServo.set(ratchetServoPos);
+  public void moveClaw(double pos) {
+    leftClawServo.set(pos);
+    rightClawServo.set(pos);
   }
 
   public boolean getBottomLiftLimitSwitch() {
