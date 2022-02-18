@@ -27,8 +27,12 @@ import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
 import frc.robot.commands.Intake.IntakeStop;
-import frc.robot.commands.Intake.IntakeIn;
-import frc.robot.commands.Intake.IntakeOut;
+import frc.robot.commands.Intake.IntakeStopSpin;
+import frc.robot.commands.Intake.IntakeStopSwivel;
+import frc.robot.commands.Intake.IntakeSpinBackward;
+import frc.robot.commands.Intake.IntakeSpinForward;
+import frc.robot.commands.Intake.IntakeSwivelDownToLimit;
+import frc.robot.commands.Intake.IntakeSwivelUpToLimit;
 import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Storage.BottomStorageIn;
 import frc.robot.commands.Storage.TopStorageOut;
@@ -68,10 +72,14 @@ public class RobotContainer {
   private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
   private final BaseDriveLow baseDriveLow = new BaseDriveLow(base);
   private final BaseDriveHigh baseDriveHigh = new BaseDriveHigh(base);
-  private final IntakeIn intakeIn = new IntakeIn(intake);
-  private final IntakeOut intakeOut = new IntakeOut(intake);
-  private final IntakeStop intakeStop = new IntakeStop(intake);
   private final HangMove hangMove = new HangMove(hang);
+  private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);
+  private final IntakeSpinForward intakeSpinForward = new IntakeSpinForward(intake);
+  private final IntakeSwivelDownToLimit intakeSwivelDownToLimit = new IntakeSwivelDownToLimit(intake);
+  private final IntakeSwivelUpToLimit intakeSwivelUpToLimit = new IntakeSwivelUpToLimit(intake);
+  private final IntakeStopSpin intakeStopSpin = new IntakeStopSpin(intake);
+  private final IntakeStopSwivel intakeStopSwivel = new IntakeStopSwivel(intake);
+  private final IntakeStop intakeStop = new IntakeStop(intake);
   private final HangStop hangStop = new HangStop(hang);
   private final HangServoMove hangServoMove = new HangServoMove(hang);
   private final HangServoStop hangServoStop = new HangServoStop(hang);
@@ -176,8 +184,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    xboxBtnX.whenHeld(intakeIn);
-    xboxBtnY.whenHeld(intakeOut);
+
     xboxBtnB.whenHeld(flywheelSpin);
 
     logitechBtnA.whenHeld(aimWithLimelight);
@@ -185,6 +192,10 @@ public class RobotContainer {
     logitechBtnLT.whenPressed(baseDriveLow);
     logitechBtnLT.whenReleased(baseDriveHigh);
 
+    xboxBtnX.whenHeld(intakeSpinForward);
+    xboxBtnY.whenHeld(intakeSpinBackward);
+    xboxBtnA.whenPressed(intakeSwivelUpToLimit);
+    xboxBtnB.whenPressed(intakeSwivelDownToLimit);
   }
 
   /**

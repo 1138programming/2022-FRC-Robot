@@ -37,14 +37,18 @@ public final class Constants {
     public static final int KBallSensorTop = 6;
     public static final int KBallSensorBottom = 7;
 
-    //Shooter
-    public static final int KLeftShooterMotor = 11;
-    public static final int KRightShooterMotor = 12;
-    
+    //Flywheel
+    public static final int KFlywheelMotor = 11;
+
+    public static final double KShooterSpeed = 0.5;
+
     //Intake
-    public static final int KIntakeMotor = 10;
-    public static final int KFlywheelMotor = 10;
-    
+    public static final int KSwivelIntakeMotor = 10;
+    public static final int KSpinIntakeMotor = 10;
+
+    public static final int KSwivelIntakeEncoder = 1; 
+    public static final int KHingeIntakeEncoder = 1; 
+
     //Hang
     public static final int KLeftHangMotor = 15;
     public static final int KRightHangMotor = 17;
@@ -53,9 +57,7 @@ public final class Constants {
     public static final int KLeftLinearServo = 1;
     public static final int KMiddleLinearServo = 2;
     public static final int KRightLinearServo = 3;
-    
-    // Default PWM Values
-    
+        
     //Base
     public static final double kBaseDriveLowSpeed = 0.6;
     public static final double kBaseDriveMediumSpeed = 0.8;
@@ -72,8 +74,9 @@ public final class Constants {
 // Default PWM Values
 
     //Intake
-    public static final double KIntakePWM = 1.0;
-    
+    public static final double KIntakeSpinPWM = 1.0;
+    public static final double KIntakeSwivelPWM = 1.0;
+
     // Limelight 
     public static final double KLimelightRange = 29.8;
     public static final double kDesiredYOffset = 1;
@@ -88,7 +91,7 @@ public final class Constants {
 
     //storage
     public static final double kStorage = 1.0;
-    //Hang Constants
+    //Hang 
     public static final double KArmSpeed = 1.0;
     public static final double KArmPosition = 1.0;
     public static final double KLevelSpeed = 1.0;
@@ -97,8 +100,6 @@ public final class Constants {
     public static final int KLiftTopLimit = 1;
     public static final int KArmsLimit = 1; 
     
-
-
 
 //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second
@@ -110,9 +111,5 @@ public final class Constants {
     public static double frontRightOffset = 0;
     public static double backLeftOffset = 0;
     public static double backRightOffset = 0;
-
-    public static final int KLinearActuator = 5;
-
-
 
 }

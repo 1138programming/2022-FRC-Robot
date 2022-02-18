@@ -8,13 +8,13 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class IntakeStop extends CommandBase {
+public class IntakeStopSpin extends CommandBase {
   /** Creates a new IntakeStop. */
-  private final Intake intake;
+  private final Intake spinintake;
 
-  public IntakeStop(Intake intake) {
-    this.intake = intake;
-    addRequirements(intake);
+  public IntakeStopSpin(Intake spinintake) {
+    this.spinintake = spinintake;
+    addRequirements(spinintake);
   }
 
   // Called when the command is initially scheduled.
@@ -24,7 +24,7 @@ public class IntakeStop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.move(0);
+    spinintake.moveSpin(0);
   }
 
   // Called once the command ends or is interrupted.
