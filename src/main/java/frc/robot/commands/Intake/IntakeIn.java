@@ -4,6 +4,21 @@
 
 package frc.robot.commands.Intake;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC;
+import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
+import io.github.pseudoresonance.pixy2api.links.SPILink;
 import frc.robot.Robot;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -25,7 +40,16 @@ public class IntakeIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.move(KIntakePWM);
+    if (intake.getPixyColorRed() == 1)
+    {
+    intake.move(1);
+    SmartDashboard.putNumber("Red Ball", intake.getPixyColorRed());
+    }
+    else
+    {
+      intake.move(0);
+    }
+
   }
 
   // Called once the command ends or is interrupted.
