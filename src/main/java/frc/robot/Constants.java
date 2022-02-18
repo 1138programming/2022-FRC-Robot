@@ -74,8 +74,8 @@ public final class Constants {
 // Default PWM Values
 
     //Intake
-    public static final double KIntakeSpinPWM = 1.0;
-    public static final double KIntakeSwivelPWM = 1.0;
+    public static final double KIntakeSpinPWM = 0.4;
+    public static final double KIntakeSwivelPWM = 0.4;
 
     // Limelight 
     public static final double KLimelightRange = 29.8;
