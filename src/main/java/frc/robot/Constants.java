@@ -61,6 +61,16 @@ public final class Constants {
     public static final double kBaseDriveMediumSpeed = 0.8;
     public static final double kBaseDriveHighSpeed = 1.0;
     
+    public static final int KSwingHangMotor = 15;
+    public static final int KLevelHangMotor = 17;
+
+    public static final int KLeftClawServo = 1;
+    public static final int KRightClawServo = 2;
+
+   
+
+// Default PWM Values
+
     //Intake
     public static final double KIntakePWM = 1.0;
     
@@ -78,6 +88,17 @@ public final class Constants {
 
     //storage
     public static final double kStorage = 1.0;
+    //Hang Constants
+    public static final double KArmSpeed = 1.0;
+    public static final double KArmPosition = 1.0;
+    public static final double KLevelSpeed = 1.0;
+    public static final double KLevelPosition = 1.0;
+    public static final int KLiftBottomLimit = 1;
+    public static final int KLiftTopLimit = 1;
+    public static final int KArmsLimit = 1; 
+    
+
+
 
 //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second
@@ -91,4 +112,7 @@ public final class Constants {
     public static double backRightOffset = 0;
 
     public static final int KLinearActuator = 5;
+
+
+
 }

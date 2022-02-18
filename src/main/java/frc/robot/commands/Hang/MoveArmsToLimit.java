@@ -4,16 +4,16 @@
 
 package frc.robot.commands.Hang;
 
-import frc.robot.subsystems.Hang;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Hang;
 import static frc.robot.Constants.*;
 
-public class HangStop extends CommandBase {
-  /** Creates a new HangStop. */
+public class MoveArmsToLimit extends CommandBase {
+  private Hang hang;
+  private double speed;
 
-  private final Hang hang;
-
-  public HangStop(Hang hang) {
+  /** Creates a new MoveArmsToLimit. */
+  public MoveArmsToLimit(Hang hang) {
     this.hang = hang;
     addRequirements(hang);
   }
@@ -25,16 +25,21 @@ public class HangStop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.move(0, 0);
+    hang.moveToPosition(KArmsLimit, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(hang.getArmsLimitSwitch()) {
+      return true;
+    }
     return false;
   }
 }

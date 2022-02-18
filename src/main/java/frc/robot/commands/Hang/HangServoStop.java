@@ -4,16 +4,18 @@
 
 package frc.robot.commands.Hang;
 
+import frc.robot.Robot;
 import frc.robot.subsystems.Hang;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import static frc.robot.Constants.*;
 
-public class HangStop extends CommandBase {
+
+public class HangServoStop extends CommandBase {
   /** Creates a new HangStop. */
 
   private final Hang hang;
 
-  public HangStop(Hang hang) {
+  public HangServoStop(Hang hang) {
     this.hang = hang;
     addRequirements(hang);
   }

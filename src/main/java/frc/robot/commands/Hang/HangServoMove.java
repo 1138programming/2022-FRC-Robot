@@ -4,16 +4,17 @@
 
 package frc.robot.commands.Hang;
 
+import frc.robot.Robot;
 import frc.robot.subsystems.Hang;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import static frc.robot.Constants.*;
 
-public class HangStop extends CommandBase {
+public class HangServoMove extends CommandBase {
   /** Creates a new HangStop. */
 
   private final Hang hang;
 
-  public HangStop(Hang hang) {
+  public HangServoMove(Hang hang) {
     this.hang = hang;
     addRequirements(hang);
   }
@@ -25,7 +26,7 @@ public class HangStop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.move(0, 0);
+    hang.move(1, 1); // might have to change values
   }
 
   // Called once the command ends or is interrupted.

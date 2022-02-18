@@ -17,7 +17,6 @@ import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Storage;
-import frc.robot.subsystems.Camera;
 
 // Commands
 import frc.robot.commands.Base.DriveWithJoysticks;
@@ -34,8 +33,17 @@ import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Storage.BottomStorageIn;
 import frc.robot.commands.Storage.TopStorageOut;
 import frc.robot.commands.Storage.TopStorageIn;
-import frc.robot.commands.Storage.StorageStop;
+import frc.robot.commands.Hang.HangMove;
+import frc.robot.commands.Hang.HangServoMove;
 import frc.robot.commands.Hang.HangStop;
+import frc.robot.commands.Hang.HangServoStop;
+import frc.robot.commands.Hang.MoveArms;
+import frc.robot.commands.Hang.MoveArmsToLimit;
+import frc.robot.commands.Hang.MoveClaw;
+import frc.robot.commands.Hang.MoveLift;
+import frc.robot.commands.Hang.MoveLiftToBottomLimit;
+import frc.robot.commands.Hang.MoveLiftToTopLimit;
+
 
 
 
@@ -63,7 +71,15 @@ public class RobotContainer {
   private final IntakeIn intakeIn = new IntakeIn(intake);
   private final IntakeOut intakeOut = new IntakeOut(intake);
   private final IntakeStop intakeStop = new IntakeStop(intake);
+  private final HangMove hangMove = new HangMove(hang);
   private final HangStop hangStop = new HangStop(hang);
+  private final HangServoMove hangServoMove = new HangServoMove(hang);
+  private final HangServoStop hangServoStop = new HangServoStop(hang);
+  private final MoveArms moveArms = new MoveArms(hang);
+  private final MoveArmsToLimit moveArmsToLimit = new MoveArmsToLimit(hang);
+  private final MoveClaw moveClaw = new MoveClaw(hang);
+  private final MoveLiftToBottomLimit moveLiftToBottomLimit = new MoveLiftToBottomLimit(hang);
+  private final MoveLiftToTopLimit moveLiftToTopLimit = new MoveLiftToTopLimit(hang);
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
   private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
@@ -118,6 +134,7 @@ public class RobotContainer {
     //Default commands for each subsystem
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
+    hang.setDefaultCommand(hangServoStop);
     intake.setDefaultCommand(intakeStop);
     shooter.setDefaultCommand(flywheelStop);
     storage.setDefaultCommand(storageStop);
@@ -159,8 +176,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
-    // xboxBtnLB.whenHeld(shoot);
     xboxBtnX.whenHeld(intakeIn);
     xboxBtnY.whenHeld(intakeOut);
     xboxBtnB.whenHeld(flywheelSpin);
