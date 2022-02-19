@@ -19,12 +19,13 @@ import frc.robot.subsystems.Storage;
 
 // Commands
 import frc.robot.commands.Base.DriveWithJoysticks;
-import frc.robot.commands.Intake.IntakeStopSpin;
-import frc.robot.commands.Intake.IntakeStopSwivel;
+import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeSpinBackward;
 import frc.robot.commands.Intake.IntakeSpinForward;
-import frc.robot.commands.Intake.IntakeSwivelDownToLimit;
-import frc.robot.commands.Intake.IntakeSwivelUpToLimit;
+import frc.robot.commands.Intake.HuntMode;
+import frc.robot.commands.Intake.StowedMode;
+import frc.robot.commands.Intake.CollectionMode;
+import frc.robot.commands.Intake.StowedMode;
 import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Storage.StorageStop;
@@ -47,10 +48,11 @@ public class RobotContainer {
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
   private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);
   private final IntakeSpinForward intakeSpinForward = new IntakeSpinForward(intake);
-  private final IntakeSwivelDownToLimit intakeSwivelDownToLimit = new IntakeSwivelDownToLimit(intake);
-  private final IntakeSwivelUpToLimit intakeSwivelUpToLimit = new IntakeSwivelUpToLimit(intake);
-  private final IntakeStopSpin intakeStopSpin = new IntakeStopSpin(intake);
-  private final IntakeStopSwivel intakeStopSwivel = new IntakeStopSwivel(intake);
+  private final CollectionMode intakeSwivelDownToLimit = new CollectionMode(intake);
+  private final StowedMode intakeSwivelUpToLimit = new StowedMode(intake);
+  private final IntakeStop intakeStop = new IntakeStop(intake);
+  private final HuntMode huntMode = new HuntMode(intake);
+  private final StowedMode stowedMode = new StowedMode(intake);
   private final Shoot shoot = new Shoot(shooter);
   private final ShooterStop shooterStop = new ShooterStop(shooter);
   private final HangStop hangStop = new HangStop(hang);
@@ -101,8 +103,7 @@ public class RobotContainer {
     //Default commands for each subsystem
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
-    intake.setDefaultCommand(intakeStopSpin);
-    intake.setDefaultCommand(intakeStopSwivel);
+    intake.setDefaultCommand(intakeStop);
     shooter.setDefaultCommand(shooterStop);
     storage.setDefaultCommand(storageStop);
 

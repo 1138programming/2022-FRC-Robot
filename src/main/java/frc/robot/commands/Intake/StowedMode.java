@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import static frc.robot.Constants.*;
 
-public class IntakeSwivelUpToLimit extends CommandBase {
+public class StowedMode extends CommandBase {
   private Intake intake;
   /** Creates a new IntakeSwivelDownToLimit. */
-  public IntakeSwivelUpToLimit(Intake intake) {
+  public StowedMode(Intake intake) {
     this.intake = intake;
     addRequirements(intake);
   }
@@ -22,10 +22,14 @@ public class IntakeSwivelUpToLimit extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute() 
+  {
     intake.moveSwivel(-KIntakeSwivelPWM);
+    if (intake.getTopLimitSwitch()) {
+      intake.moveSwivel(0);
+      intake.resetEncoder();
+    }
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -36,7 +40,7 @@ public class IntakeSwivelUpToLimit extends CommandBase {
   @Override
   public boolean isFinished() {
     if (intake.getTopLimitSwitch()) {
-      return true;
+      return false;
     }
     return false;
   }
