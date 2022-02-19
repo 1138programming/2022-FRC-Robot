@@ -16,7 +16,7 @@ public class StorageCollect extends CommandBase {
 
     public void intialize(){}
 
-    public void excute(){
+    public void execute(){
         boolean ballInTop = storage.getBallSensorTop();
         boolean ballInBottom = storage.getBallSensorBottom();
         //start by moving the bottom motor

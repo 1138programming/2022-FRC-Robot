@@ -44,12 +44,12 @@ public class Storage extends SubsystemBase {
   public void moveTop(double speed) {
     topStorageMotor.set(VictorSPXControlMode.PercentOutput, speed);
     isMoving = true;
-    SmartDashboard.putNumber("aoisjdoaisjd", speed);
+    SmartDashboard.putNumber("rising speed", speed);
   }
   public void moveBottom(double speed) {
     bottomStorageMotor.set(VictorSPXControlMode.PercentOutput, 0.5);
     isMoving = true;
-    SmartDashboard.putNumber("aoisjdoaisjd", speed);
+    SmartDashboard.putNumber("descending speed", speed);
   }
 
   public boolean getBallSensorTop(){
