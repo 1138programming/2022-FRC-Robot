@@ -7,6 +7,8 @@ package frc.robot.commands.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import static frc.robot.Constants.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class IntakeSwivelDownToLimit extends CommandBase {
   private Intake intake;
@@ -23,7 +25,16 @@ public class IntakeSwivelDownToLimit extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (intake.getPixyColorRed() == 1)
+    {
+      // intake.move(1);
     intake.moveSwivel(KIntakeSwivelPWM);
+    }
+    else
+    {
+      // intake.move(0);
+    }
+
   }
 
   // Called once the command ends or is interrupted.

@@ -39,25 +39,25 @@ public class Intake extends SubsystemBase {
     swivelMagEncoder = new DutyCycleEncoder(KSwivelIntakeEncoder);
     pixy = Pixy2.createInstance(new SPILink());
   }
-
+  //Talon
   public void moveSwivel(double speed) {
     swivelIntakeMotor.set(ControlMode.PercentOutput, speed);
   }
+  //Encoder
   public void moveSpin(double speed) {
     spinIntakeMotor.set(VictorSPXControlMode.PercentOutput, speed);
   }
-
+  // Getters
   public boolean getBottomLimitSwitch() {
     return bottomLimitSwitch.get();
   }
   public boolean getTopLimitSwitch() {
     return topLimitSwitch.get();
   }
-
+  //Pixy2 functions
   public int getPixyColorRed() {
     return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 1);
   }
-
   public int getPixyColorBlue() {
     return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG2, 1);
   }
