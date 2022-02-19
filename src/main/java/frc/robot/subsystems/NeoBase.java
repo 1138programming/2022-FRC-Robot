@@ -244,7 +244,7 @@ public class NeoBase extends SubsystemBase {
     MathUtil.clamp(ff, -12, 12);
     return ff;
   }
-
+  //straightfoward commands and definitions, just look at the names and it will be obvious
   public void applyModuleStates(SwerveModuleState[] desiredStates) {
     desiredStates[0].speedMetersPerSecond = velocityToDriveVolts(desiredStates[0].speedMetersPerSecond);
       modules[0].setDesiredState(desiredStates[0]);
