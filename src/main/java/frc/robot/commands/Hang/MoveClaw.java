@@ -14,7 +14,8 @@ public class MoveClaw extends CommandBase {
   private double pos;
 
   /** Creates a new ClawOut. */
-  public MoveClaw(Hang hang) {
+  public MoveClaw(Hang hang, double pos) {
+    this.pos = pos;
     this.hang = hang;
     addRequirements(hang);
   }
@@ -22,13 +23,12 @@ public class MoveClaw extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hang.moveClaw(pos);
   }
-
+  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    hang.moveClaw(pos);    
   }
 
   // Called once the command ends or is interrupted.

@@ -18,65 +18,67 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public final class Constants {
     // Motors IDs
     //Base
-    public static final int frontLeftDriveId = 3; 
-    public static final int frontLeftMagEncoderId = 1; 
-    public static final int frontLeftSteerId = 4;
-    public static final int frontRightDriveId = 1; 
-    public static final int frontRightMagEncoderId = 0; 
-    public static final int frontRightSteerId = 2; 
+    public static final int frontLeftDriveId = 1; 
+    public static final int frontLeftSteerId = 2;
+    public static final int frontRightDriveId = 3; 
+    public static final int frontRightSteerId = 4; 
     public static final int backLeftDriveId = 5; 
-    public static final int backLeftMagEncoderId = 2; 
     public static final int backLeftSteerId = 6;
     public static final int backRightDriveId = 7; 
-    public static final int backRightMagEncoderId = 3; 
     public static final int backRightSteerId = 8;
-
+    
     //Storage
-    public static final int KLeftStorageTalon = 9;
-    public static final int KRightStorageTalon = 10;
-    public static final int KBallSensorTop = 6;
-    public static final int KBallSensorBottom = 7;
-
+    public static final int KBottomStorageVictor = 9;
+    public static final int KTopStorageVictor = 10;
+    
     //Flywheel
-    public static final int KFlywheelMotor = 11;
-
-    public static final double KShooterSpeed = 0.5;
-
+    public static final int KFlywheelMotorTalon = 11;
+    
     //Intake
-    public static final int KSwivelIntakeMotor = 10;
-    public static final int KSpinIntakeMotor = 10;
-
-    public static final int KSwivelIntakeEncoder = 1; 
-    public static final int KHingeIntakeEncoder = 1; 
+    public static final int KSwivelIntakeMotorTalon = 12;
+    public static final int KSpinIntakeVictor = 13;
+    
+    //Hang
+    public static final int KLeftHangMotor = 14;
+    public static final int KRightHangMotor = 15;
+    public static final int KLevelHangMotor = 16;
+    
+    
+    //Digital IO Ports
+    //Base
+    public static final int frontLeftMagEncoderId = 0; 
+    public static final int frontRightMagEncoderId = 1; 
+    public static final int backLeftMagEncoderId = 2; 
+    public static final int backRightMagEncoderId = 3; 
+    
+    //Intake
+    public static final int KBallSensorTop = 4;
+    public static final int KBallSensorBottom = 5;
+    public static final int KSwivelIntakeEncoder = 6;  
 
     //Hang
-    public static final int KLeftHangMotor = 15;
-    public static final int KRightHangMotor = 17;
-    public static final int KMiddleHangMotor = 19;
+    public static final int KLiftBottomLimit = 7;
+    public static final int KLiftTopLimit = 8;
+    public static final int KArmsLimit = 9; 
+
+    //Storage
     
-    public static final int KLeftLinearServo = 1;
+    //PWM Ports
+    //Hang
+    public static final int KLeftClawServo = 9;
     public static final int KMiddleLinearServo = 2;
-    public static final int KRightLinearServo = 3;
-        
+    public static final int KRightClawServo = 3;
+    
+    // Default PWM Values
     //Base
     public static final double kBaseDriveLowSpeed = 0.6;
     public static final double kBaseDriveMediumSpeed = 0.8;
     public static final double kBaseDriveHighSpeed = 1.0;
     
-    public static final int KSwingHangMotor = 15;
-    public static final int KLevelHangMotor = 17;
-
-    public static final int KLeftClawServo = 1;
-    public static final int KRightClawServo = 2;
-
-   
-
-// Default PWM Values
-
     //Intake
     public static final double KIntakeSpinPWM = 0.4;
     public static final double KIntakeSwivelPWM = 0.4;
-
+    
     // Limelight 
     public static final double KLimelightRange = 29.8;
     public static final double kDesiredYOffset = 1;
@@ -90,18 +92,15 @@ public final class Constants {
     public static final double kXOffsetDeadzone = 10;
 
     //storage
-    public static final double kStorage = 1.0;
+    public static final double kStoragePWM = 0.5;
     //Hang 
-    public static final double KArmSpeed = 1.0;
+    public static final double KArmSpeed = 0.3;
     public static final double KArmPosition = 1.0;
     public static final double KLevelSpeed = 1.0;
     public static final double KLevelPosition = 1.0;
-    public static final int KLiftBottomLimit = 1;
-    public static final int KLiftTopLimit = 1;
-    public static final int KArmsLimit = 1; 
     
-
-//Base Constants
+    
+    //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second
     public static final double kMaxMotorOutput = 1.0;
     public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
@@ -111,5 +110,5 @@ public final class Constants {
     public static double frontRightOffset = 0;
     public static double backLeftOffset = 0;
     public static double backRightOffset = 0;
-
+    
 }

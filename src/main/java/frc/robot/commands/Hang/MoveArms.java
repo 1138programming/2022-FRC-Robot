@@ -35,9 +35,10 @@ public class MoveArms extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    currentEncoderValue = hang.getLeftArmEncoder();
-    output = armPosController.calculate(currentEncoderValue, armSetPoint);
-    hang.moveToPosition(KLevelPosition, 0);
+    // currentEncoderValue = hang.getLeftArmEncoder();
+    // output = armPosController.calculate(currentEncoderValue, armSetPoint);
+    // hang.moveToPosition(KLevelPosition, 0);
+    hang.moveArms(KArmSpeed);
   }
 
   // Called once the command ends or is interrupted.

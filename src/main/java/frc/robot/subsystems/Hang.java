@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Hang extends SubsystemBase {
@@ -33,16 +34,19 @@ public class Hang extends SubsystemBase {
 
   public Hang() {
     // hangController = new PIDController(kp, ki, kd);
-    leftSwingMotor = new TalonFX(KSwingHangMotor);
-    rightSwingMotor = new TalonFX(KSwingHangMotor);
+    leftSwingMotor = new TalonFX(KLeftHangMotor);
+    rightSwingMotor = new TalonFX(KRightHangMotor);
     levelHangMotor = new TalonSRX(KLevelHangMotor);
 
     leftSwingMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     rightSwingMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-    levelHangMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    // levelHangMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
-    rightClawServo = new Servo(KRightClawServo);
     leftClawServo = new Servo(KLeftClawServo);
+    rightClawServo = new Servo(KRightClawServo);
+
+    leftClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
+    rightClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
 
     bottomLiftLimitSwitch = new DigitalInput(KLiftBottomLimit);
     topLiftLimitSwitch = new DigitalInput(KLiftTopLimit);
@@ -52,6 +56,13 @@ public class Hang extends SubsystemBase {
     leftSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
     rightSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
     levelHangMotor.set(ControlMode.PercentOutput, levelMotorSpeed);
+  }
+  public void moveArms(double speed) {
+    leftSwingMotor.set(ControlMode.PercentOutput, speed);
+    rightSwingMotor.set(ControlMode.PercentOutput, speed);
+  }
+  public void moveLevel(double speed) {
+    levelHangMotor.set(ControlMode.PercentOutput, speed);
   }
   public void moveToPosition(double armPosition, double levelPosition){
     leftSwingMotor.set(ControlMode.Position, armPosition);
@@ -63,7 +74,7 @@ public class Hang extends SubsystemBase {
     rightSwingMotor.set(ControlMode.Position, position);
   }
   public void moveLevelToPosition(double position) {
-    levelHangMotor.set(ControlMode.PercentOutput, position);
+    levelHangMotor.set(ControlMode.Position, position);
   }
   // public void moveArms(double swingMotorSpeed) {
   //   leftSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
@@ -75,6 +86,8 @@ public class Hang extends SubsystemBase {
   public void moveClaw(double pos) {
     leftClawServo.set(pos);
     rightClawServo.set(pos);
+    SmartDashboard.putString("Claw", "ClawMoving");
+
   }
   public void moveRachet(double pos) {
     ratchetServo.set(pos);

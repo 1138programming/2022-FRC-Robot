@@ -44,7 +44,7 @@ import frc.robot.commands.Hang.HangServoStop;
 import frc.robot.commands.Hang.MoveArms;
 import frc.robot.commands.Hang.MoveArmsToLimit;
 import frc.robot.commands.Hang.MoveClaw;
-import frc.robot.commands.Hang.MoveLift;
+import frc.robot.commands.Hang.MoveLiftToPosition;
 import frc.robot.commands.Hang.MoveLiftToBottomLimit;
 import frc.robot.commands.Hang.MoveLiftToTopLimit;
 
@@ -85,7 +85,8 @@ public class RobotContainer {
   private final HangServoStop hangServoStop = new HangServoStop(hang);
   private final MoveArms moveArms = new MoveArms(hang);
   private final MoveArmsToLimit moveArmsToLimit = new MoveArmsToLimit(hang);
-  private final MoveClaw moveClaw = new MoveClaw(hang);
+  private final MoveClaw moveClawOut = new MoveClaw(hang, 1);
+  private final MoveClaw moveClawIn = new MoveClaw(hang, 0);
   private final MoveLiftToBottomLimit moveLiftToBottomLimit = new MoveLiftToBottomLimit(hang);
   private final MoveLiftToTopLimit moveLiftToTopLimit = new MoveLiftToTopLimit(hang);
   private final StorageStop storageStop= new StorageStop(storage);
@@ -97,8 +98,8 @@ public class RobotContainer {
   private final TopStorageIn topStorageIn = new TopStorageIn(storage);
 
   //Controller Ports
-  private static final int KLogitechPort = 0;
-  private static final int KXboxPort = 1;  
+  private static final int KLogitechPort = 1;
+  private static final int KXboxPort = 0;  
 
   //Deadzone
   private static final double KDeadZone = 0.05;
@@ -185,17 +186,17 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    xboxBtnB.whenHeld(flywheelSpin);
-
     logitechBtnA.whenHeld(aimWithLimelight);
     logitechBtnRT.whileHeld(driveWithLimelight);
     logitechBtnLT.whenPressed(baseDriveLow);
     logitechBtnLT.whenReleased(baseDriveHigh);
 
     xboxBtnX.whenHeld(intakeSpinForward);
-    xboxBtnY.whenHeld(intakeSpinBackward);
-    xboxBtnA.whenPressed(intakeSwivelUpToLimit);
-    xboxBtnB.whenPressed(intakeSwivelDownToLimit);
+    xboxBtnY.whenHeld(bottomStorageIn);
+    // xboxBtnLB.whenHeld(flywheelSpin);
+    xboxBtnRB.whenHeld(bottomStorageIn);
+    xboxBtnB.whenHeld(intakeSwivelUpToLimit);
+    xboxBtnA.whenPressed(intakeSwivelDownToLimit);
   }
 
   /**

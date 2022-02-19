@@ -17,7 +17,7 @@ public class TopStorageOut extends CommandBase {
     
     public void excute(){
         //First number is the top motor, second number is the bottom motor
-        storage.move(-kStorage,0);
+        storage.move(-kStoragePWM,0);
     }
 
     public void end(boolean interrupted){}

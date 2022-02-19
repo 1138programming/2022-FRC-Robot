@@ -2,6 +2,7 @@ package frc.robot.commands.Storage;
 
 import frc.robot.Robot;
 import frc.robot.subsystems.Storage;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import static frc.robot.Constants.*;
 
@@ -10,14 +11,18 @@ public class TopStorageIn extends CommandBase {
 
     public TopStorageIn(Storage storage){
         this.storage = storage;
+        
         addRequirements(storage);
     }
 
-    public void intialize(){}
+    public void intialize(){
+        SmartDashboard.putBoolean("why", true);
+    }
 
     public void excute(){
         //First number is the top motor, second number is the bottom motor
-        storage.move(kStorage,0);
+        storage.moveTop(kStoragePWM);
+        SmartDashboard.putBoolean("topStorageIn", true);
     }
 
     public void end(boolean interrupted){}
