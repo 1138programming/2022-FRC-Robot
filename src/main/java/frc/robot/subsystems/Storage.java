@@ -47,7 +47,7 @@ public class Storage extends SubsystemBase {
     SmartDashboard.putNumber("rising speed", speed);
   }
   public void moveBottom(double speed) {
-    bottomStorageMotor.set(VictorSPXControlMode.PercentOutput, 0.5);
+    bottomStorageMotor.set(VictorSPXControlMode.PercentOutput, speed);
     isMoving = true;
     SmartDashboard.putNumber("descending speed", speed);
   }

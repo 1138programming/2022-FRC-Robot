@@ -188,15 +188,15 @@ public class RobotContainer {
 
     logitechBtnA.whenHeld(aimWithLimelight);
     logitechBtnRT.whileHeld(driveWithLimelight);
-    logitechBtnLT.whenPressed(baseDriveLow);
-    logitechBtnLT.whenReleased(baseDriveHigh);
+    logitechBtnLT.whenPressed(baseDriveHigh);
+    logitechBtnLT.whenReleased(baseDriveLow);
 
     xboxBtnX.whenHeld(intakeSpinForward);
-    xboxBtnY.whenHeld(bottomStorageIn);
+    xboxBtnY.whenHeld(topStorageIn);
     // xboxBtnLB.whenHeld(flywheelSpin);
     xboxBtnRB.whenHeld(bottomStorageIn);
     xboxBtnB.whenHeld(intakeSwivelUpToLimit);
-    xboxBtnA.whenPressed(intakeSwivelDownToLimit);
+    xboxBtnA.whenHeld(moveLiftToTopLimit);
   }
 
   /**

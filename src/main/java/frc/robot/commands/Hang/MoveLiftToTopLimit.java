@@ -36,9 +36,9 @@ public class MoveLiftToTopLimit extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(hang.getTopLiftLimitSwitch()) {
-      return true;
-    }
+    // if(hang.getTopLiftLimitSwitch()) {
+    //   return true;
+    // }
     return false;
   }
 }

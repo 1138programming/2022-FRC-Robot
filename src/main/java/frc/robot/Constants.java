@@ -51,17 +51,19 @@ public final class Constants {
     public static final int backLeftMagEncoderId = 2; 
     public static final int backRightMagEncoderId = 3; 
     
-    //Intake
+    //Storage
     public static final int KBallSensorTop = 4;
     public static final int KBallSensorBottom = 5;
-    public static final int KSwivelIntakeEncoder = 6;  
-
+    
+    //Intake
+    public static final int kIntakeBottomLimit = 6;  
+    public static final int kIntakeTopLimit = 7;  
+    
     //Hang
-    public static final int KLiftBottomLimit = 7;
-    public static final int KLiftTopLimit = 8;
-    public static final int KArmsLimit = 9; 
-
-    //Storage
+    public static final int KLiftBottomLimit = 8;
+    public static final int KLiftTopLimit = 9;
+    public static final int KArmsLimit = 10; 
+    
     
     //PWM Ports
     //Hang

@@ -25,13 +25,14 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     swivelIntakeMotor = new TalonSRX(KSwivelIntakeMotorTalon);
-    spinIntakeMotor = new VictorSPX(KSpinIntakeVictor);
     swivelIntakeMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-    bottomLimitSwitch = new DigitalInput(10);
+    spinIntakeMotor = new VictorSPX(KSpinIntakeVictor);
+    topLimitSwitch = new DigitalInput(kIntakeTopLimit);
+    bottomLimitSwitch = new DigitalInput(kIntakeBottomLimit);
   }
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Epic", swivelIntakeMotor.getSelectedSensorPosition());
+    SmartDashboard.putBoolean("bottomLimitSwitch", bottomLimitSwitch.get());
   }
 
   public void moveSwivel(double speed) {
@@ -48,6 +49,5 @@ public class Intake extends SubsystemBase {
   public boolean getTopLimitSwitch() {
     return topLimitSwitch.get();
   }
-
 
 }

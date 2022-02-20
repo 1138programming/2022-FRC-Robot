@@ -12,13 +12,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 public class Flywheel extends SubsystemBase {
+
   private TalonFX flywheelMotor;
   private PIDController flywheelController;
   private double flywheelControllerKP = 1;
   private double flywheelControllerKI = 0;
   private double flywheelControllerKD = 0;
   private boolean isMoving = false;
-
 
   public Flywheel() {
     flywheelMotor = new TalonFX(KFlywheelMotorTalon);

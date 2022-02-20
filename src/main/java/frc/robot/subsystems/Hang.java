@@ -30,17 +30,14 @@ public class Hang extends SubsystemBase {
   private DigitalInput topLiftLimitSwitch;
   private DigitalInput armLimitSwitch;
 
-  // private double ki, kp, kd;
-
   public Hang() {
-    // hangController = new PIDController(kp, ki, kd);
     leftSwingMotor = new TalonFX(KLeftHangMotor);
     rightSwingMotor = new TalonFX(KRightHangMotor);
     levelHangMotor = new TalonSRX(KLevelHangMotor);
 
     leftSwingMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     rightSwingMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-    // levelHangMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    levelHangMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
     leftClawServo = new Servo(KLeftClawServo);
     rightClawServo = new Servo(KRightClawServo);
@@ -52,29 +49,36 @@ public class Hang extends SubsystemBase {
     topLiftLimitSwitch = new DigitalInput(KLiftTopLimit);
     armLimitSwitch = new DigitalInput(KArmsLimit);
   }
+
   public void move(double swingMotorSpeed, double levelMotorSpeed){
     leftSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
     rightSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
     levelHangMotor.set(ControlMode.PercentOutput, levelMotorSpeed);
   }
+
   public void moveArms(double speed) {
     leftSwingMotor.set(ControlMode.PercentOutput, speed);
     rightSwingMotor.set(ControlMode.PercentOutput, speed);
   }
+
   public void moveLevel(double speed) {
     levelHangMotor.set(ControlMode.PercentOutput, speed);
   }
+
   public void moveToPosition(double armPosition, double levelPosition){
     leftSwingMotor.set(ControlMode.Position, armPosition);
     rightSwingMotor.set(ControlMode.Position, armPosition);
     levelHangMotor.set(ControlMode.Position, levelPosition);
   }
+
   public void moveArmsToPosition(double position) {
     leftSwingMotor.set(ControlMode.Position, position);
     rightSwingMotor.set(ControlMode.Position, position);
   }
+
   public void moveLevelToPosition(double position) {
-    levelHangMotor.set(ControlMode.Position, position);
+    levelHangMotor.set(ControlMode.PercentOutput, position);
+    // levelHangMotor.set(ControlMode.Position, position);
   }
   // public void moveArms(double swingMotorSpeed) {
   //   leftSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
@@ -83,6 +87,7 @@ public class Hang extends SubsystemBase {
   // public void moveLift(double levelMotorSpeed) {
   //   levelHangMotor.set(ControlMode.PercentOutput, levelMotorSpeed);
   // }
+
   public void moveClaw(double pos) {
     leftClawServo.set(pos);
     rightClawServo.set(pos);
@@ -112,9 +117,6 @@ public class Hang extends SubsystemBase {
   public double getLevelEncoder() {
     return levelHangMotor.getSelectedSensorPosition();
   }
-  // public void setFlywheelGains(double kP, double kI, double kD){
-  //   hangController.setPID(kp, ki, kd);
-  // }
 
   public void resetArmEncders() {
     leftSwingMotor.setSelectedSensorPosition(0);
@@ -127,5 +129,6 @@ public class Hang extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("hangBottom", getBottomLiftLimitSwitch());
   }
 }
