@@ -30,9 +30,9 @@ public final class Constants {
     public static final int backLeftMagEncoderId = 2;
     public static final int backRightMagEncoderId = 3;
 
-    public static final double ks = 0.2245;
-    public static final double kv = 0.060548;
-    public static final double ka = 0.007612;
+    public static final double ks = 0.56097;
+    public static final double kv = 1.8624;
+    public static final double ka = 2.208;
     
     //Storage
     public static final int KStorageSpark = 9;
@@ -56,9 +56,10 @@ public final class Constants {
 // Default PWM Values
 
     //Base
-    public static final double kBaseDriveLowSpeed = 0.5;
+    public static final double kBaseDriveLowSpeed = 0.4;
     public static final double kBaseDriveMediumSpeed = 0.8;
-    public static final double kBaseDriveHighSpeed = 1.0;
+    public static final double kBaseDriveHighSpeed = 1.0; //about 5700 RPM
+    
 
     //Intake
     public static final double KIntakePWM = 1.0;

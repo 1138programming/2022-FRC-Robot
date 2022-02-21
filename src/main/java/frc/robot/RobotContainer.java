@@ -40,10 +40,12 @@ import frc.robot.subsystems.Camera;
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
 import frc.robot.commands.Base.MoveBase;
+import frc.robot.commands.Base.ResetWheels;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
 import frc.robot.commands.Base.BaseStop;
+import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
@@ -73,6 +75,7 @@ public class RobotContainer {
   private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
   private final BaseDriveLow baseDriveLow = new BaseDriveLow(base);
   private final BaseDriveHigh baseDriveHigh = new BaseDriveHigh(base);
+  private final ResetGyro resetGyro = new ResetGyro(base);
   private final IntakeIn intakeIn = new IntakeIn(intake);
   private final IntakeOut intakeOut = new IntakeOut(intake);
   private final IntakeStop intakeStop = new IntakeStop(intake);
@@ -162,6 +165,10 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+
+    //reset base gyro for field relative drive.
+    //RobotContrainer Constructor is run in Robot init, so we put resetgyro in here
+    base.resetGyro();
   }
 
   /**
@@ -178,8 +185,10 @@ public class RobotContainer {
 
     logitechBtnA.whenHeld(aimWithLimelight);
     logitechBtnRT.whileHeld(driveWithLimelight);
-    logitechBtnLT.whenPressed(baseDriveLow);
-    logitechBtnLT.whenReleased(baseDriveHigh);
+    logitechBtnLT.whenPressed(baseDriveHigh);
+    logitechBtnLT.whenReleased(baseDriveLow);
+    logitechBtnY.whenPressed(resetGyro);
+    logitechBtnB.whenHeld(new ResetWheels(base));
   }
 
   /**
@@ -192,31 +201,35 @@ public class RobotContainer {
     Trajectory trajectory;
     SwerveControllerCommand command;
 
-    config = new TrajectoryConfig(0.3, 0.3);
+    config = new TrajectoryConfig(0.5, 0.5);
     config.setKinematics(base.getKinematics());
-    SmartDashboard.putString("Kinematics", base.getKinematics().toString());
-    // trajectory = TrajectoryGenerator.generateTrajectorPy
+
     trajectory = TrajectoryGenerator.generateTrajectory(
-      List.of(new Pose2d(0, 0, new Rotation2d(0)),
-      new Pose2d(0, 1, new Rotation2d(0))),
+      new Pose2d(0, 0, new Rotation2d(0)),
+      List.of(
+        new Translation2d(1, 0)),
+        // new Translation2d(0.1, 0)),
+      new Pose2d(1, 0, new Rotation2d()),
       config
     ); 
+    base.resetGyro();
     base.resetOdometry(trajectory.getInitialPose());
     command = new SwerveControllerCommand(
       trajectory, 
       base::getPose, 
       base.getKinematics(), 
-      new PIDController(1, 0, 0),
-      new PIDController(1, 0, 0),
-      new ProfiledPIDController (1, 0, 0, new TrapezoidProfile.Constraints(Math.PI, Math.PI)),
+      new PIDController(0.1, 0, 0),
+      new PIDController(0.75, 0, 0),
+      new ProfiledPIDController (0.1, 0, 0, new TrapezoidProfile.Constraints(Math.PI, Math.PI)),
       base::setModuleStates,
       base
     );
     
 
     // return testTrajectory;
-  
+    // return new ResetWheels(base);
     return command.andThen(new BaseStop(base));
+    // return command.andThen(new BaseStop(base));
       
     }
   

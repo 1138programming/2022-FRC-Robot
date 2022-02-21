@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
+import java.util.function.DoublePredicate;
+
 import frc.robot.Gains;
 
 //All First FRC imports
@@ -48,6 +50,7 @@ public class NeoBase extends SubsystemBase {
   private SwerveDriveOdometry odometry;
 
   private SwerveX[] modules;
+  private SwerveX[] poseModules;
 
   private PIDController wheelController;
 
@@ -66,15 +69,22 @@ public class NeoBase extends SubsystemBase {
   private final double kMaxMotorOutput = 0.4;
   private final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
   private final double kticksPerRevolution = 4096;
+  private final double kNeoMaxRPM = 5700; //4.62 MPS
 
   //offset of each module, in degrees
-  private double frontLeftOffset = -1.0;
-  private double frontRightOffset = -152.5;
-  private double backLeftOffset = -103.5; 
-  private double backRightOffset = -14.5;
+  private double frontLeftOffset = -3.5;
+  private double frontRightOffset = -155;
+  private double backLeftOffset = -102.9; 
+  private double backRightOffset = -14.9;
 
-  //Max Speed of Drive Motors, default is 0.8
-  private static double maxDriveSpeed = 0.8;
+  // MoPro angle offset for odometry
+  private double odometryOffset = 45;
+
+  //Max Speed of Drive Motors, default is set to Low for testing, CHANGE BACK 
+  private double maxDriveSpeedPercent = kBaseDriveLowSpeed;
+  private double kPhysicalMaxDriveSpeedMPS = kDriveEncoderRPM2MeterPerSec * kNeoMaxRPM;
+  private double maxDriveSpeedMPS = maxDriveSpeedPercent * kPhysicalMaxDriveSpeedMPS;
+  private double kRotationMultiplier = 1.5;
 
   //distance in inches of a module from the center of mass (we use a square base so only 1 number is needed)
   private double kSwerveModuleLocationFromCoM = 14.5; 
@@ -84,6 +94,10 @@ public class NeoBase extends SubsystemBase {
 
     //setting up navx gyro
     gyro = new AHRS(SPI.Port.kMXP); 
+
+    SmartDashboard.putNumber("kp", 0);
+    SmartDashboard.putNumber("ki", 0);
+    SmartDashboard.putNumber("kd", 0);
 
     //defining the physical position of the swerve modules
 
@@ -117,14 +131,15 @@ public class NeoBase extends SubsystemBase {
       // Front Right
       new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), false) 
     };
-    Rotation2d gyroR2D = Rotation2d.fromDegrees(-gyro.getAngle());
-    odometry = new SwerveDriveOdometry(kinematics, gyroR2D);
+
+    odometry = new SwerveDriveOdometry(kinematics, new Rotation2d());
+
     wheelController = new PIDController(1, 0, 0);
 
-  //Reset the gyro's heading
-  gyro.reset();
+    //Reset the gyro's heading
+    gyro.reset();
 
-  autonStates = new SwerveModuleState[4];
+    autonStates = new SwerveModuleState[4];
   }
 
   /**
@@ -137,20 +152,26 @@ public class NeoBase extends SubsystemBase {
    * @param maxSpeed Max speed for the drive motors (from 0 to 1.0).
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-  //feeding parameter speeds into toSwerveModuleStates to get an array of SwerveModuleState objects
-  SwerveModuleState[] states =
-    kinematics.toSwerveModuleStates(
-      fieldRelative
-        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-gyro.getAngle()))
-        : new ChassisSpeeds(xSpeed, ySpeed, rot));
-  SwerveDriveKinematics.desaturateWheelSpeeds(states, maxDriveSpeed);
-  
-  //setting module states, aka moving the motors
-  for (int i = 0; i < states.length; i++) {
-    SwerveX module = modules[i];
-    SwerveModuleState state = states[i];
-    module.setDesiredState(state);
-  }
+    xSpeed *= maxDriveSpeedMPS;
+    ySpeed *= maxDriveSpeedMPS;
+    rot *= maxDriveSpeedMPS;
+    //feeding parameter speeds into toSwerveModuleStates to get an array of SwerveModuleState objects
+    SwerveModuleState[] states =
+      kinematics.toSwerveModuleStates(
+        fieldRelative
+          ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-gyro.getAngle()))
+          : new ChassisSpeeds(xSpeed, ySpeed, rot));
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, kPhysicalMaxDriveSpeedMPS);
+    
+    //setting module states, aka moving the motors
+    for (int i = 0; i < states.length; i++) {
+      SwerveX module = modules[i];
+      SwerveModuleState state = states[i];
+      module.setDesiredState(state);
+    }
+      // SwerveX module = modules[2];
+      // SwerveModuleState state = states[2];
+      // module.setDesiredState(state);
 }
 
   
@@ -161,18 +182,22 @@ public class NeoBase extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Front Left Absolute Angle", modules[0].getAngleDeg());
-    SmartDashboard.putNumber("Right Front abs Angle", modules[1].getAngleDeg());
-    SmartDashboard.putNumber("Left Back abs Angle", modules[2].getAngleDeg());
-    SmartDashboard.putNumber("Right Back abs Angle", modules[3].getAngleDeg());
+    SmartDashboard.putNumber("Back Left Absolute Angle", modules[0].getAngleDegRaw());
+    SmartDashboard.putNumber("Back Right abs Angle", modules[1].getAngleDegRaw());
+    SmartDashboard.putNumber("Front Left abs Angle", modules[2].getAngleDegRaw());
+    SmartDashboard.putNumber("Front Right abs Angle", modules[3].getAngleDegRaw());
 
-    SmartDashboard.putNumber("mod0speed", modules[0].getDriveEncoderVel());
-    SmartDashboard.putNumber("mod1speed", modules[1].getDriveEncoderVel());
-    SmartDashboard.putNumber("mod2speed", modules[2].getDriveEncoderVel());
-    SmartDashboard.putNumber("mod3speed", modules[3].getDriveEncoderVel());
+    //used for testing pid
+    // setAllModuleGains();
 
+    // SwerveModuleState frontLeftState = new SwerveModuleState(modules[2].getDriveEncoderVel(), frontModuleState.getAbsoluteAngleEncoder());
+   /* Do the same for the other 3 modules */
+  //  odometry.update(getHeading(), frontLeftState, new SwerfrontRightState, backLeftState, backRightState);
+    // odometry.update(getHeading(), getSpeeds());
     pose = odometry.update(getHeading(), getSpeeds());
+    // SmartDashboard.putNu
     SmartDashboard.putString("Pose", pose.toString());
+    SmartDashboard.putNumber("xxxxx", pose.getX());
 
     SmartDashboard.putNumber("gyro", gyro.getAngle());
     // This method will be called once per scheduler run
@@ -183,6 +208,13 @@ public class NeoBase extends SubsystemBase {
     modules[1].resetWheelAngle();
     modules[2].resetWheelAngle();
     modules[3].resetWheelAngle();
+  }
+
+  public void setAllModuleGains() {
+    modules[0].setDriveGains();
+    modules[1].setDriveGains();
+    modules[2].setDriveGains();
+    modules[3].setDriveGains();
   }
 
   //setting all relative encoders to the values of the absolute encoder on the modules
@@ -201,8 +233,10 @@ public class NeoBase extends SubsystemBase {
   }
 
   //setting max drive speed of all base drive motors
-  public void setMaxDriveSpeed(double speed) {
-    maxDriveSpeed = speed;
+  public void setMaxDriveSpeedPercent(double speed) {
+    maxDriveSpeedPercent = speed;
+    maxDriveSpeedMPS = maxDriveSpeedPercent * kPhysicalMaxDriveSpeedMPS;
+
   }
 
   @Override
@@ -216,33 +250,50 @@ public class NeoBase extends SubsystemBase {
   public double getAngleEncoderDeg(int module) {
     return modules[module].getAngleEncoderDeg();
   }
+
+  public double getAngleEncoderDegWithOdometryOffset(int module, double offset) {
+    return (modules[module].getAngleEncoderDeg() + offset) % 360;
+  }
   
   public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(gyro.getAngle());
+    return Rotation2d.fromDegrees(-gyro.getAngle());
   }
 
   public SwerveModuleState[] getSpeeds() {
     SwerveModuleState[] states = new SwerveModuleState[4];
-    states[0] = new SwerveModuleState(modules[0].getDriveEncoderVel() * kDriveEncoderRot2Meter, Rotation2d.fromDegrees(getAngleEncoderDeg(0)));
-    states[1] = new SwerveModuleState(modules[1].getDriveEncoderVel() * kDriveEncoderRot2Meter, Rotation2d.fromDegrees(getAngleEncoderDeg(1)));
-    states[2] = new SwerveModuleState(modules[2].getDriveEncoderVel() * kDriveEncoderRot2Meter, Rotation2d.fromDegrees(getAngleEncoderDeg(2)));
-    states[3] = new SwerveModuleState(modules[3].getDriveEncoderVel() * kDriveEncoderRot2Meter, Rotation2d.fromDegrees(getAngleEncoderDeg(3)));
+    // SwerveModuleState[] fakes = new SwerveModuleState[4];
+
+    states[2] = new SwerveModuleState(modules[0].getDriveEncoderVel(), modules[0].getAngleR2D());
+    states[3] = new SwerveModuleState(modules[1].getDriveEncoderVel(), modules[1].getAngleR2D());
+    states[0] = new SwerveModuleState(-modules[2].getDriveEncoderVel(), modules[2].getAngleR2D());
+    states[1] = new SwerveModuleState(-modules[3].getDriveEncoderVel(), modules[3].getAngleR2D());
+    
+    // states[2] = new SwerveModuleState(modules[0].getDriveEncoderVel(), new Rotation2d());
+    // states[3] = new SwerveModuleState(modules[1].getDriveEncoderVel(), new Rotation2d());
+    // states[0] = new SwerveModuleState(-modules[2].getDriveEncoderVel(), new Rotation2d());
+    // states[1] = new SwerveModuleState(-modules[3].getDriveEncoderVel(), new Rotation2d());
+
+    SmartDashboard.putNumber("module0 velocity", modules[0].getDriveEncoderVel());
+    SmartDashboard.putNumber("module1 velocity", modules[1].getDriveEncoderVel());
+    SmartDashboard.putNumber("module2 velocity", modules[2].getDriveEncoderVel());
+    SmartDashboard.putNumber("module3 velocity", modules[3].getDriveEncoderVel());
+    // SmartDashboard.putNumber("states2 speedMetersPerSecond", states[2].speedMetersPerSecond);
+    // SmartDashboard.putNumber("states3 speedMetersPerSecond", states[3].speedMetersPerSecond);
+    SmartDashboard.putString("states[0] Rot2dFromDegrees:", states[0].angle.toString());
+    SmartDashboard.putString("states[1] Rot2dFromDegrees:", states[1].angle.toString());
+    SmartDashboard.putString("states[2] Rot2dFromDegrees:", states[2].angle.toString());
+    SmartDashboard.putString("states[3] Rot2dFromDegrees:", states[3].angle.toString());
     return states;
   }
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     // SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 1);
-    // modules[0].setDesiredState(desiredStates[0]);
-    // modules[1].setDesiredState(desiredStates[1]);
-    // modules[2].setDesiredState(desiredStates[2]);
-    // modules[3].setDesiredState(desiredStates[3]);
-    autonStates = desiredStates;
-    applyModuleStates(autonStates);
+    applyModuleStates(desiredStates);
   }
 
   private double velocityToDriveVolts(double speedMetersPerSecond){
     double ff = feedforward.calculate(speedMetersPerSecond);
     MathUtil.clamp(ff, -12, 12);
-    return ff;
+    return -ff;
   }
 
   public void applyModuleStates(SwerveModuleState[] desiredStates) {
@@ -292,6 +343,10 @@ public class NeoBase extends SubsystemBase {
     return pose;
   }
 
+  // public void resetPose() {
+    // pose
+  // }
+
   public void resetOdometry(Pose2d pose) {
     Rotation2d gyroR2D = Rotation2d.fromDegrees(-gyro.getAngle());
     odometry.resetPosition(pose, gyroR2D);
@@ -303,18 +358,27 @@ public class NeoBase extends SubsystemBase {
   // ka: volts * seconds^2 / meter
 
   class SwerveX {
+    private final double KAngleP = 0.006;
+    private final double KAngleI = 0;
+    private final double KAngleD = 0;
+
+    private final double KDriveP = 0.2;
+    private final double KDriveI = 0.75;
+    private final double KDriveD = 0.005;
     
-    private final Gains kAngleGains = new Gains(0.006, 0.0, 0.0, 0.0); 
     private CANSparkMax driveMotor;
     private CANSparkMax angleMotor;
     private DutyCycleEncoder magEncoder;
     private RelativeEncoder driveEncoder;
     private RelativeEncoder angleEncoder;
     private PIDController angleController;
+    private PIDController driveController;
     private Rotation2d offset;
     private boolean isInverted;
     private double[] pulseWidthAndPeriod = new double[]{1, 1/244}; //pulse width found in mag encoder manual pdf, period is 1/frequency (also found in pdf)
     private double angleMotorOutput;
+    private double driveMotorOutput;
+    ;
     
     SwerveX(CANSparkMax driveMotor, CANSparkMax angleMotor, DutyCycleEncoder magEncoder, Rotation2d offset, boolean isInverted) {
       this.driveMotor = driveMotor;
@@ -324,7 +388,8 @@ public class NeoBase extends SubsystemBase {
       this.isInverted = isInverted;
       
       //PIDControllers
-      angleController = new PIDController(kAngleGains.kP, kAngleGains.kI, kAngleGains.kD);
+      angleController = new PIDController(KAngleP, KAngleI, KAngleD);
+      driveController = new PIDController(KDriveP, KDriveI, KDriveD);
       
       //Telling the PIDcontroller that 360 degrees in one direction is the same as 360 degrees in the other direction.
       angleController.enableContinuousInput(-180, 180);
@@ -338,7 +403,14 @@ public class NeoBase extends SubsystemBase {
       
       //Set relative encoders' conversion factors so they return readings in meters and degrees.
       driveEncoder.setPositionConversionFactor(kDriveEncoderRot2Meter);
+      driveEncoder.setVelocityConversionFactor(kDriveEncoderRPM2MeterPerSec);
       angleEncoder.setPositionConversionFactor(kAngleEncoderRot2Deg);
+    }
+
+    public void setDriveGains() {
+      driveController.setP(SmartDashboard.getNumber("kp", 0));
+      driveController.setI(SmartDashboard.getNumber("ki", 0));
+      driveController.setD(SmartDashboard.getNumber("kd", 0));
     }
     
     //Resets all relative encoders to match absolute encoder value, used in DriveWithJoysticks Command.
@@ -347,12 +419,16 @@ public class NeoBase extends SubsystemBase {
       angleEncoder.setPosition(getAngleDeg() - offset.getDegrees());
     }
 
-    //Encoder get functions
+    //Encoder get functions ()
     public double getDriveEncoderPos() {
       return driveEncoder.getPosition();
     }
-    //Gets Drive Encoder Velocity
+    //Gets Drive Encoder Velocity (in meters per second)
     public double getDriveEncoderVel() {
+      return driveEncoder.getVelocity();
+    }
+    //Gets Drive Encoder Velocity
+    public double getDriveVelPercent() {
       return driveEncoder.getVelocity();
     }
     //Gets Angle encoder in Degrees
@@ -368,6 +444,17 @@ public class NeoBase extends SubsystemBase {
       double angle = -(getAbsoluteTicks() / kticksPerRevolution) * 360;
       return angle;
     }
+    public double getAngleDegRaw() {
+      double angle = -getRawAbsoluteTicks() * 360;
+      return angle;
+    }
+    public double getAngleDegWithOdometryOffset(double offset) {
+      double angle = -(getAbsoluteTicksWithOdometryOffset(offset) / kticksPerRevolution) * 360;
+      return angle;
+    }
+    public double getAngleDegFromGyro() {
+      return gyro.getAngle() - getAngleDeg() % 360;
+    }
     //Gets Absolute Ticks
     public double getRawAbsoluteTicks(){
       return magEncoder.get();
@@ -381,6 +468,17 @@ public class NeoBase extends SubsystemBase {
       }
       else {
         magEncoderAbsValue = (magEncoder.get() % 1) * kticksPerRevolution;
+      }
+      return magEncoderAbsValue;
+    }
+    public double getAbsoluteTicksWithOdometryOffset(double offset){
+      double magEncoderAbsValue = magEncoder.get();
+      if (magEncoderAbsValue < 0)
+      {
+        magEncoderAbsValue = kticksPerRevolution + ((magEncoder.get() + offset/360) % 1 ) * kticksPerRevolution;  //convert from revoltions (unit) to ticks(unit)
+      }
+      else {
+        magEncoderAbsValue = ((magEncoder.get() + offset/360) % 1) * kticksPerRevolution;
       }
       return magEncoderAbsValue;
     }
@@ -429,12 +527,25 @@ public class NeoBase extends SubsystemBase {
     //comment out when testing so fingies dont get chopped off
     angleMotor.set(angleMotorOutput);
 
-    double driveOutput = desiredState.speedMetersPerSecond;
     if (isInverted) {
-      driveOutput = -driveOutput;
+      // driveMotorOutput = driveController.calculate(getDriveEncoderVel(), -(desiredState.speedMetersPerSecond));
+      driveMotorOutput = -desiredState.speedMetersPerSecond / kPhysicalMaxDriveSpeedMPS;
+      // driveMotorOutput = MathUtil.clamp(driveMotorOutput, -1.0, 1.0);
     }
+    else {
+      // driveMotorOutput = driveController.calculate(getDriveEncoderVel(), (desiredState.speedMetersPerSecond));
+      driveMotorOutput = desiredState.speedMetersPerSecond / kPhysicalMaxDriveSpeedMPS;
+      // driveMotorOutput = MathUtil.clamp(driveMotorOutput, -1.0, 1.0);
+    }
+
     //comment out when testing so fingies dont get chopped off
-    driveMotor.set(driveOutput); 
+    driveMotor.set(driveMotorOutput); 
+    // driveMotor.set(desiredState.speedMetersPerSecond / kPhysicalMaxDriveSpeedMPS); 
+    SmartDashboard.putNumber("driveouput", driveMotorOutput);
+    SmartDashboard.putNumber("driveVel", getDriveEncoderVel());
+    SmartDashboard.putNumber("destate speed", desiredState.speedMetersPerSecond);
+    SmartDashboard.putNumber("kDriveEncoderRPM2MeterPerSec", kDriveEncoderRPM2MeterPerSec);
+    SmartDashboard.putNumber("kMaxDriveSpeedMPS", maxDriveSpeedMPS);
     }
   }
 }

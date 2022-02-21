@@ -9,12 +9,12 @@ import frc.robot.subsystems.NeoBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class BaseDriveLow extends CommandBase {
+public class ResetGyro extends CommandBase {
 
   private final NeoBase base;
 
-  /** Creates a new BaseDriveLow. */
-  public BaseDriveLow(NeoBase base) {
+  /** Creates a new ResetGyro. */
+  public ResetGyro(NeoBase base) {
     this.base = base;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -22,7 +22,7 @@ public class BaseDriveLow extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    base.setMaxDriveSpeedPercent(kBaseDriveLowSpeed);
+    base.resetGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
