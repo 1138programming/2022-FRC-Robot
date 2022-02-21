@@ -188,6 +188,8 @@ public class RobotContainer {
     xboxBtnRB.whenHeld(bottomStorageIn);
     xboxBtnX.whenHeld(huntMode);
     xboxBtnB.whenHeld(intakeSpinBackward);
+    xboxBtnA.whenHeld(moveClawIn);
+    xboxBtnY.whenHeld(moveClawOut);
   }
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous

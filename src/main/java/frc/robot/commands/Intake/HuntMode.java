@@ -29,7 +29,7 @@ public class HuntMode extends CommandBase {
   @Override
   public void execute() {
     boolean pixySees = SmartDashboard.getBoolean("Pixy", false);
-    if (intake.getPixyColorRed() == 3 || intake.getPixyColorBlue() == 3 || pixySees == true)
+    if (intake.getPixyColorRed() == 3 || intake.getPixyColorBlue() == 3 )
     {
       intake.moveSwivel(KIntakeSwivelPWM);
       intake.moveSpin(KIntakeSpinPWM);

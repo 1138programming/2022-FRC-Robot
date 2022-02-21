@@ -74,7 +74,7 @@ public final class Constants {
     
     //PWM Ports
     //Hang
-    public static final int KLeftClawServo = 9;
+    public static final int KLeftClawServo = 1;
     public static final int KMiddleLinearServo = 2;
     public static final int KRightClawServo = 3;
     

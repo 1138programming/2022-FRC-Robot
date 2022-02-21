@@ -44,6 +44,8 @@ public class Intake extends SubsystemBase {
     swivelIntakeMotor.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
     pixy = Pixy2.createInstance(new SPILink());
     swivelController = new PIDController(intakeControllerkP, intakeControllerkI, intakeControllerkD);
+    topLimitSwitch = new DigitalInput(kIntakeTopLimit);
+    bottomLimitSwitch = new DigitalInput(kIntakeBottomLimit);
   }
   //Talon
   public void moveSwivel(double speed) {
