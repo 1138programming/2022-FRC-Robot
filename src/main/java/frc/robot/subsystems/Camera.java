@@ -11,6 +11,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
+import static frc.robot.Constants.*;
+
 public class Camera extends SubsystemBase {
   NetworkTable table;
   double targetFound;
@@ -25,8 +27,10 @@ public class Camera extends SubsystemBase {
     x = 0;
     y = 0;
     area = 0;
-  }
 
+    
+  }
+  
   @Override
   public void periodic() {
     //getting networktable values
@@ -34,13 +38,24 @@ public class Camera extends SubsystemBase {
     x = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     y = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
     area = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-
+    
     SmartDashboard.putNumber("Target Found", targetFound);
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
+    SmartDashboard.putNumber("Distance to Hub", getDistance());
   }
-
+  public void LEDOn() {
+    //Eye Protection
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3); //(turns limelight off) For Testing only
+  }
+  public void LEDOff() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1); //(turns limelight on) For Testing only
+  }
+  public void LEDBlink() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(2); //(blinks limelight ) For Testing only
+  }
+  
   public double getTargetFound() {
     return targetFound;
   }
@@ -51,5 +66,11 @@ public class Camera extends SubsystemBase {
 
   public double getXOffset() {
     return x;
+  }
+
+  public double getDistance() {
+    double distance = KHeightDifference / Math.tan(Math.toRadians(KLimelightAngle + y));
+    SmartDashboard.putNumber("currentY", y);
+    return distance;
   }
 }

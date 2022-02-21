@@ -30,7 +30,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Storage;
 import frc.robot.commands.Auton.ResetThenTestTrajectory;
 import frc.robot.commands.Auton.TestTrajectory;
@@ -41,6 +40,8 @@ import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
 import frc.robot.commands.Base.MoveBase;
 import frc.robot.commands.Base.ResetWheels;
+import frc.robot.commands.Camera.LEDOff;
+import frc.robot.commands.Camera.LEDOn;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
@@ -49,8 +50,6 @@ import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
-import frc.robot.commands.Shooter.Shoot;
-import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Hang.HangStop;
 
@@ -67,7 +66,6 @@ public class RobotContainer {
   private final Hang hang = new Hang();
   private final Camera camera = new Camera();
   private final Intake intake = new Intake();
-  private final Shooter shooter = new Shooter();
   private final Storage storage = new Storage();
   
   // Each subsystems' commands
@@ -79,11 +77,11 @@ public class RobotContainer {
   private final IntakeIn intakeIn = new IntakeIn(intake);
   private final IntakeOut intakeOut = new IntakeOut(intake);
   private final IntakeStop intakeStop = new IntakeStop(intake);
-  private final Shoot shoot = new Shoot(shooter);
-  private final ShooterStop shooterStop = new ShooterStop(shooter);
   private final HangStop hangStop = new HangStop(hang);
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
+  private final LEDOff ledOff = new LEDOff(camera);
+  private final LEDOn ledOn = new LEDOn(camera);
 
   private final TestTrajectory testTrajectory = new TestTrajectory(base);
   private final ResetThenTestTrajectory resetThenTestTrajectory = new ResetThenTestTrajectory(base);
@@ -134,8 +132,8 @@ public class RobotContainer {
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
     intake.setDefaultCommand(intakeStop);
-    shooter.setDefaultCommand(shooterStop);
     storage.setDefaultCommand(storageStop);
+    camera.setDefaultCommand(ledOff);
 
     //Game controllers
     logitech = new Joystick(KLogitechPort); //Logitech Dual Action
@@ -179,7 +177,6 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    xboxBtnLB.whenHeld(shoot);
     xboxBtnX.whenHeld(intakeIn);
     xboxBtnY.whenHeld(intakeOut);
 
@@ -189,6 +186,8 @@ public class RobotContainer {
     logitechBtnLT.whenReleased(baseDriveLow);
     logitechBtnY.whenPressed(resetGyro);
     logitechBtnB.whenHeld(new ResetWheels(base));
+    logitechBtnX.whenHeld(ledOn);
+
   }
 
   /**

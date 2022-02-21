@@ -38,6 +38,7 @@ public class AimWithLimelight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    camera.LEDOn();
     rot = rotationController.calculate(camera.getXOffset()/KLimelightRange, 0);
     base.drive(0, 0, -rot, false);
     SmartDashboard.putNumber("Rotation", rot);
