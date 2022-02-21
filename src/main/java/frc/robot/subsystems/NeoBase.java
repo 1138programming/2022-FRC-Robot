@@ -297,13 +297,21 @@ public class NeoBase extends SubsystemBase {
   }
   //straightfoward commands and definitions, just look at the names and it will be obvious
   public void applyModuleStates(SwerveModuleState[] desiredStates) {
-    desiredStates[0].speedMetersPerSecond = velocityToDriveVolts(desiredStates[0].speedMetersPerSecond);
+    // // desiredStates[0].speedMetersPerSecond = velocityToDriveVolts(desiredStates[0].speedMetersPerSecond);
+    //   modules[0].setDesiredState(desiredStates[0]);
+    // // desiredStates[1].speedMetersPerSecond = velocityToDriveVolts(desiredStates[1].speedMetersPerSecond);
+    //   modules[1].setDesiredState(desiredStates[1]);
+    // // desiredStates[2].speedMetersPerSecond = velocityToDriveVolts(desiredStates[2].speedMetersPerSecond);
+    //   modules[2].setDesiredState(desiredStates[2]);
+    // // desiredStates[3].speedMetersPerSecond = velocityToDriveVolts(desiredStates[3].speedMetersPerSecond);
+    //   modules[3].setDesiredState(desiredStates[3]);
+      desiredStates[0].speedMetersPerSecond = -desiredStates[0].speedMetersPerSecond;
       modules[0].setDesiredState(desiredStates[0]);
-    desiredStates[1].speedMetersPerSecond = velocityToDriveVolts(desiredStates[1].speedMetersPerSecond);
+    desiredStates[1].speedMetersPerSecond = -desiredStates[1].speedMetersPerSecond;
       modules[1].setDesiredState(desiredStates[1]);
-    desiredStates[2].speedMetersPerSecond = velocityToDriveVolts(desiredStates[2].speedMetersPerSecond);
+    desiredStates[2].speedMetersPerSecond = -desiredStates[2].speedMetersPerSecond;
       modules[2].setDesiredState(desiredStates[2]);
-    desiredStates[3].speedMetersPerSecond = velocityToDriveVolts(desiredStates[3].speedMetersPerSecond);
+    desiredStates[3].speedMetersPerSecond = -desiredStates[3].speedMetersPerSecond;
       modules[3].setDesiredState(desiredStates[3]);
     SmartDashboard.putNumber("module0 Speed", desiredStates[0].speedMetersPerSecond);
     SmartDashboard.putNumber("module1 Speed", desiredStates[1].speedMetersPerSecond);

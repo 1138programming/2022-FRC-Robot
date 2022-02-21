@@ -198,29 +198,48 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     TrajectoryConfig config;
-    Trajectory trajectory;
+    Trajectory trajectory1;
+    Trajectory trajectory2;
+
     SwerveControllerCommand command;
 
-    config = new TrajectoryConfig(0.5, 0.5);
+    config = new TrajectoryConfig(1.25, 1.25);
     config.setKinematics(base.getKinematics());
 
-    trajectory = TrajectoryGenerator.generateTrajectory(
+    
+    trajectory1 = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new Rotation2d(0)),
       List.of(
-        new Translation2d(1, 0)),
-        // new Translation2d(0.1, 0)),
-      new Pose2d(1, 0, new Rotation2d()),
+        new Translation2d(1, 0),
+        new Translation2d(1, 0.5),
+        new Translation2d(2, 0.5)),
+      new Pose2d(4, 1, Rotation2d.fromDegrees(180)),
       config
     ); 
+    trajectory2 = TrajectoryGenerator.generateTrajectory(
+      List.of(
+        new Pose2d(0, 0, new Rotation2d()),
+        new Pose2d(1, 0, Rotation2d.fromDegrees(1)),
+        new Pose2d(1, 1, Rotation2d.fromDegrees(1)),
+        new Pose2d(2, 0, Rotation2d.fromDegrees(1))
+      ),
+      config
+    );
+
     base.resetGyro();
-    base.resetOdometry(trajectory.getInitialPose());
+    base.resetOdometry(trajectory2.getInitialPose());
+
+    ProfiledPIDController thetaController = new ProfiledPIDController(
+      0.4, 0, 0, new TrapezoidProfile.Constraints(0.46, Math.PI / 4));
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
     command = new SwerveControllerCommand(
-      trajectory, 
+      trajectory1, 
       base::getPose, 
       base.getKinematics(), 
-      new PIDController(0.1, 0, 0),
-      new PIDController(0.75, 0, 0),
-      new ProfiledPIDController (0.1, 0, 0, new TrapezoidProfile.Constraints(Math.PI, Math.PI)),
+      new PIDController(1, 0, 0.01),
+      new PIDController(1, 0, 0.001),
+      thetaController,
       base::setModuleStates,
       base
     );
