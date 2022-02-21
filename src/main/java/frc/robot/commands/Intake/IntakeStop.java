@@ -24,8 +24,8 @@ public class IntakeStop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.moveSwivel(0);
     intake.moveSpin(0);
+    intake.moveSwivel(0);
   }
 
   // Called once the command ends or is interrupted.

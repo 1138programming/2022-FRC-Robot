@@ -4,17 +4,16 @@
 
 package frc.robot.commands.Intake;
 
-import frc.robot.Robot;
-import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Intake;
+import static frc.robot.Constants.*;
 
-public class IntakeStopSpin extends CommandBase {
-  /** Creates a new IntakeStop. */
-  private final Intake spinintake;
-
-  public IntakeStopSpin(Intake spinintake) {
-    this.spinintake = spinintake;
-    addRequirements(spinintake);
+public class StowedMode extends CommandBase {
+  private Intake intake;
+  /** Creates a new IntakeSwivelDownToLimit. */
+  public StowedMode(Intake intake) {
+    this.intake = intake;
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
@@ -23,13 +22,23 @@ public class IntakeStopSpin extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    spinintake.moveSpin(0);
+  public void execute() 
+  {
+    if (intake.getTopLimitSwitch()) {
+      intake.moveSwivel(0);
+      intake.resetEncoder();
+    }
+    else
+    {
+      intake.moveSwivel(-KIntakeSwivelPWM);
+    }
   }
-
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    intake.moveSwivel(0);
+    intake.moveSpin(0);
+  }
 
   // Returns true when the command should end.
   @Override

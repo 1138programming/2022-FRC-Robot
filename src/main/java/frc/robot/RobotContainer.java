@@ -27,12 +27,12 @@ import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
 import frc.robot.commands.Intake.IntakeStop;
-import frc.robot.commands.Intake.IntakeStopSpin;
-import frc.robot.commands.Intake.IntakeStopSwivel;
 import frc.robot.commands.Intake.IntakeSpinBackward;
-import frc.robot.commands.Intake.IntakeSpinForward;
-import frc.robot.commands.Intake.IntakeSwivelDownToLimit;
-import frc.robot.commands.Intake.IntakeSwivelUpToLimit;
+import frc.robot.commands.Intake.IntakeStop;
+import frc.robot.commands.Intake.IntakeSpinBackward;
+import frc.robot.commands.Intake.HuntMode;
+import frc.robot.commands.Intake.StowedMode;
+import frc.robot.commands.Intake.StowedMode;
 import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Storage.BottomStorageIn;
 import frc.robot.commands.Storage.TopStorageOut;
@@ -47,10 +47,6 @@ import frc.robot.commands.Hang.MoveClaw;
 import frc.robot.commands.Hang.MoveLiftToPosition;
 import frc.robot.commands.Hang.MoveLiftToBottomLimit;
 import frc.robot.commands.Hang.MoveLiftToTopLimit;
-
-
-
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -73,13 +69,10 @@ public class RobotContainer {
   private final BaseDriveLow baseDriveLow = new BaseDriveLow(base);
   private final BaseDriveHigh baseDriveHigh = new BaseDriveHigh(base);
   private final HangMove hangMove = new HangMove(hang);
-  private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);
-  private final IntakeSpinForward intakeSpinForward = new IntakeSpinForward(intake);
-  private final IntakeSwivelDownToLimit intakeSwivelDownToLimit = new IntakeSwivelDownToLimit(intake);
-  private final IntakeSwivelUpToLimit intakeSwivelUpToLimit = new IntakeSwivelUpToLimit(intake);
-  private final IntakeStopSpin intakeStopSpin = new IntakeStopSpin(intake);
-  private final IntakeStopSwivel intakeStopSwivel = new IntakeStopSwivel(intake);
+  private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);  
   private final IntakeStop intakeStop = new IntakeStop(intake);
+  private final HuntMode huntMode = new HuntMode(intake);
+  private final StowedMode stowedMode = new StowedMode(intake);
   private final HangStop hangStop = new HangStop(hang);
   private final HangServoMove hangServoMove = new HangServoMove(hang);
   private final HangServoStop hangServoStop = new HangServoStop(hang);
@@ -143,9 +136,9 @@ public class RobotContainer {
     //Default commands for each subsystem
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
-    hang.setDefaultCommand(hangServoStop);
     intake.setDefaultCommand(intakeStop);
     flywheel.setDefaultCommand(flywheelStop);
+    intake.setDefaultCommand(stowedMode);
     storage.setDefaultCommand(storageStop);
 
     //Game controllers
@@ -191,19 +184,11 @@ public class RobotContainer {
     logitechBtnLT.whenPressed(baseDriveHigh);
     logitechBtnLT.whenReleased(baseDriveLow);
 
-    xboxBtnX.whenHeld(intakeSpinForward);
-    xboxBtnY.whenHeld(topStorageIn);
     // xboxBtnLB.whenHeld(flywheelSpin);
     xboxBtnRB.whenHeld(bottomStorageIn);
-    xboxBtnB.whenHeld(intakeSwivelUpToLimit);
-    xboxBtnA.whenHeld(moveLiftToTopLimit);
+    xboxBtnX.whenHeld(huntMode);
+    xboxBtnB.whenHeld(intakeSpinBackward);
   }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return null;
