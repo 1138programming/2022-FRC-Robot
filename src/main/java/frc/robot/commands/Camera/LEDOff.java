@@ -2,31 +2,30 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Shooter;
+package frc.robot.commands.Camera;
 
-import frc.robot.Robot;
-import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import static frc.robot.Constants.*;
+import frc.robot.subsystems.Camera;
 
-public class Shoot extends CommandBase {
-  private final Shooter shooter;
+public class LEDOff extends CommandBase {
+  /** Creates a new LEDOff. */
+  private final Camera camera;
 
-  /** Creates a new IntakeUp. */
-  public Shoot(Shooter shooter) {
-    this.shooter = shooter;
-    addRequirements(shooter);
+  public LEDOff(Camera camera) {
+    this.camera = camera;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(camera);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    camera.LEDOff();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    shooter.move(-KIntakePWM);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override

@@ -50,6 +50,7 @@ public class DriveWithLimelight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    camera.LEDOn();
     // fbSpeed = xSpeedLimiter.calculate(Robot.robotContainer.getLogiLeftYAxis());
     fbSpeed = (-Robot.robotContainer.getLogiLeftYAxis());
     
