@@ -6,6 +6,7 @@ package frc.robot.commands.Base;
 
 import frc.robot.Robot;
 import frc.robot.subsystems.NeoBase;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -22,6 +23,13 @@ public class DriveWithJoysticks extends CommandBase {
   private SlewRateLimiter ySpeedLimiter;
   private SlewRateLimiter rotLimiter;
 
+  private PIDController rotationCorrectionPID;
+  private double initHeading;
+
+  private double kRotationP = 0.05;
+  private double kRotationI = 0;
+  private double kRotationD = 0;
+
   /** Creates a new DriveWithJoysticks. */
   public DriveWithJoysticks(NeoBase base) {
 
@@ -31,6 +39,8 @@ public class DriveWithJoysticks extends CommandBase {
     ySpeedLimiter = new SlewRateLimiter(4);
     rotLimiter = new SlewRateLimiter(4);
 
+    rotationCorrectionPID = new PIDController(kRotationP, kRotationI, kRotationD);
+
     addRequirements(base);
   }
 
@@ -38,7 +48,7 @@ public class DriveWithJoysticks extends CommandBase {
   @Override
   public void initialize() {
     base.resetAllRelEncoders();  
-
+    initHeading = base.getHeadingDeg();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -53,6 +63,12 @@ public class DriveWithJoysticks extends CommandBase {
     // rot = rotLimiter.calculate(Robot.robotContainer.getLogiRightXAxis());
     rot = (-Robot.robotContainer.getLogiRightXAxis());
     
+    if (Math.abs(rot) <= 0.01 && (Math.abs(fbSpeed) >= 0.01 || Math.abs(lrSpeed) >= 0.01)){
+      rot = rotationCorrectionPID.calculate(base.getHeadingDeg(), initHeading);
+    }
+    else {
+      initHeading = base.getHeadingDeg();
+    }
     base.drive(fbSpeed, lrSpeed, rot, true);
     
     SmartDashboard.putNumber("fbspeed", fbSpeed);

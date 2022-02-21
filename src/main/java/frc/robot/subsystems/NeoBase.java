@@ -255,6 +255,10 @@ public class NeoBase extends SubsystemBase {
     return (modules[module].getAngleEncoderDeg() + offset) % 360;
   }
   
+  public double getHeadingDeg() {
+    return (-gyro.getAngle());
+  }
+
   public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(-gyro.getAngle());
   }
