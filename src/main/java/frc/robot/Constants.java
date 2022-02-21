@@ -42,6 +42,7 @@ public final class Constants {
     //Intake
     public static final int KSwivelIntakeMotor = 10;
     public static final int KSpinIntakeMotor = 10;
+    public static final int KIntakeAngle = 45;
 
     public static final int KSwivelIntakeEncoder = 1; 
     public static final int KHingeIntakeEncoder = 1; 

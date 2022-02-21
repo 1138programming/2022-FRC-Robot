@@ -21,10 +21,8 @@ import frc.robot.subsystems.Storage;
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeSpinBackward;
-import frc.robot.commands.Intake.IntakeSpinForward;
 import frc.robot.commands.Intake.HuntMode;
 import frc.robot.commands.Intake.StowedMode;
-import frc.robot.commands.Intake.CollectionMode;
 import frc.robot.commands.Intake.StowedMode;
 import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Shooter.ShooterStop;
@@ -47,8 +45,6 @@ public class RobotContainer {
 
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
   private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);
-  private final IntakeSpinForward intakeSpinForward = new IntakeSpinForward(intake);
-  private final CollectionMode intakeSwivelDownToLimit = new CollectionMode(intake);
   private final StowedMode intakeSwivelUpToLimit = new StowedMode(intake);
   private final IntakeStop intakeStop = new IntakeStop(intake);
   private final HuntMode huntMode = new HuntMode(intake);
@@ -103,7 +99,7 @@ public class RobotContainer {
     //Default commands for each subsystem
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
-    intake.setDefaultCommand(intakeStop);
+    intake.setDefaultCommand(stowedMode);
     shooter.setDefaultCommand(shooterStop);
     storage.setDefaultCommand(storageStop);
 
@@ -145,10 +141,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     xboxBtnLB.whenHeld(shoot);
-    xboxBtnX.whenHeld(intakeSpinForward);
-    xboxBtnY.whenHeld(intakeSpinBackward);
-    xboxBtnA.whenPressed(intakeSwivelUpToLimit);
-    xboxBtnB.whenPressed(intakeSwivelDownToLimit);
+    xboxBtnX.whenHeld(huntMode);
+    xboxBtnB.whenHeld(intakeSpinBackward);
   }
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous

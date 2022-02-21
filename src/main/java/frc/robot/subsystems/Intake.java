@@ -41,7 +41,6 @@ public class Intake extends SubsystemBase {
   public Intake() {
     swivelIntakeMotor = new TalonSRX(KSwivelIntakeMotor);
     spinIntakeMotor = new VictorSPX(KSpinIntakeMotor);
-    // swivelMagEncoder = new DutyCycleEncoder(KSwivelIntakeEncoder);
     swivelIntakeMotor.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
     pixy = Pixy2.createInstance(new SPILink());
     swivelController = new PIDController(intakeControllerkP, intakeControllerkI, intakeControllerkD);

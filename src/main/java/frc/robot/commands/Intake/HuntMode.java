@@ -6,6 +6,8 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
+import static frc.robot.Constants.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class HuntMode extends CommandBase {
   /** Creates a new HuntMode. */
@@ -17,12 +19,30 @@ public class HuntMode extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    intake.swivelToPos(KIntakeAngle);
+    SmartDashboard.putBoolean("Pixy", false);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.swivelToPos(45);
+    boolean pixySees = SmartDashboard.getBoolean("Pixy", false);
+    if (intake.getPixyColorRed() == 3 || intake.getPixyColorBlue() == 3 || pixySees == true)
+    {
+      intake.moveSwivel(KIntakeSwivelPWM);
+      intake.moveSpin(KIntakeSpinPWM);
+    }
+    else
+    {
+      intake.swivelToPos(KIntakeAngle);
+      intake.moveSpin(0);
+    }
+    if (intake.getBottomLimitSwitch()) 
+    {
+      intake.moveSwivel(0);
+    }
+    
   }
 
   // Called once the command ends or is interrupted.
