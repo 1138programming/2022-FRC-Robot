@@ -25,14 +25,15 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 // Subsystems:
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Storage;
-import frc.robot.commands.Auton.ResetThenTestTrajectory;
-import frc.robot.commands.Auton.TestTrajectory;
 import frc.robot.subsystems.Camera;
 
 // Commands
@@ -83,8 +84,6 @@ public class RobotContainer {
   private final LEDOff ledOff = new LEDOff(camera);
   private final LEDOn ledOn = new LEDOn(camera);
 
-  private final TestTrajectory testTrajectory = new TestTrajectory(base);
-  private final ResetThenTestTrajectory resetThenTestTrajectory = new ResetThenTestTrajectory(base);
   //Controller Ports
   private static final int KLogitechPort = 0;
   private static final int KXboxPort = 1;  
@@ -200,44 +199,67 @@ public class RobotContainer {
     Trajectory trajectory1;
     Trajectory trajectory2;
 
-    SwerveControllerCommand command;
+    PathPlannerTrajectory test1 = PathPlanner.loadPath("Test1", 1.25, 1.25);
+
+    SwerveControllerCommand command1;
+    SwerveControllerCommand command2;
+    SwerveControllerCommand test1Command;
 
     config = new TrajectoryConfig(1.25, 1.25);
     config.setKinematics(base.getKinematics());
 
     
-    trajectory1 = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, new Rotation2d(0)),
-      List.of(
-        new Translation2d(1, 0),
-        new Translation2d(1, 0.5),
-        new Translation2d(2, 0.5)),
-      new Pose2d(4, 1, Rotation2d.fromDegrees(180)),
-      config
-    ); 
+    // trajectory1 = TrajectoryGenerator.generateTrajectory(
+    //   new Pose2d(0, 0, new Rotation2d()),
+    //   List.of(
+    //     new Translation2d(5, 0)
+    //   ),
+    //   new Pose2d(5, 0, new Rotation2d()),
+    //   config
+    // ); 
     trajectory2 = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(5, 0, new Rotation2d()),
       List.of(
-        new Pose2d(0, 0, new Rotation2d()),
-        new Pose2d(1, 0, Rotation2d.fromDegrees(1)),
-        new Pose2d(1, 1, Rotation2d.fromDegrees(1)),
-        new Pose2d(2, 0, Rotation2d.fromDegrees(1))
+        new Translation2d(-5, 0)
       ),
+      new Pose2d(0, 0, new Rotation2d()),
       config
     );
 
     base.resetGyro();
-    base.resetOdometry(trajectory2.getInitialPose());
+    base.resetOdometry(test1.getInitialPose());
 
     ProfiledPIDController thetaController = new ProfiledPIDController(
-      0.4, 0, 0, new TrapezoidProfile.Constraints(0.46, Math.PI / 4));
+      1, 0, 0, new TrapezoidProfile.Constraints(2, 1));
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    command = new SwerveControllerCommand(
-      trajectory1, 
+    // command1 = new SwerveControllerCommand(
+    //   trajectory1, 
+    //   base::getPose, 
+    //   base.getKinematics(), 
+    //   new PIDController(1, 0, 0),
+    //   new PIDController(1, 0, 0),
+    //   thetaController,
+    //   base::setModuleStates,
+    //   base
+    // );
+
+    command2 = new SwerveControllerCommand(
+      trajectory2, 
       base::getPose, 
       base.getKinematics(), 
-      new PIDController(1, 0, 0.01),
-      new PIDController(1, 0, 0.001),
+      new PIDController(1, 0, 0),
+      new PIDController(1, 0, 0),
+      thetaController,
+      base::setModuleStates,
+      base
+    ); 
+    test1Command = new SwerveControllerCommand(
+      test1, 
+      base::getPose, 
+      base.getKinematics(), 
+      new PIDController(1, 0, 0),
+      new PIDController(1, 0, 0),
       thetaController,
       base::setModuleStates,
       base
@@ -246,7 +268,8 @@ public class RobotContainer {
 
     // return testTrajectory;
     // return new ResetWheels(base);
-    return command.andThen(new BaseStop(base));
+    base.resetGyro();
+    return test1Command.andThen(() -> base.drive(0, 0, 0, false));
     // return command.andThen(new BaseStop(base));
       
     }

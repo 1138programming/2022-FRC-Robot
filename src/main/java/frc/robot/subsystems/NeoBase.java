@@ -267,10 +267,10 @@ public class NeoBase extends SubsystemBase {
     SwerveModuleState[] states = new SwerveModuleState[4];
     // SwerveModuleState[] fakes = new SwerveModuleState[4];
 
-    states[2] = new SwerveModuleState(modules[0].getDriveEncoderVel(), modules[0].getAngleR2D());
-    states[3] = new SwerveModuleState(modules[1].getDriveEncoderVel(), modules[1].getAngleR2D());
-    states[0] = new SwerveModuleState(-modules[2].getDriveEncoderVel(), modules[2].getAngleR2D());
-    states[1] = new SwerveModuleState(-modules[3].getDriveEncoderVel(), modules[3].getAngleR2D());
+    states[0] = new SwerveModuleState(modules[0].getDriveEncoderVel(), modules[0].getMoProAngleR2D());
+    states[1] = new SwerveModuleState(modules[1].getDriveEncoderVel(), modules[1].getMoProAngleR2D());
+    states[2] = new SwerveModuleState(-modules[2].getDriveEncoderVel(), modules[2].getMoProAngleR2D());
+    states[3] = new SwerveModuleState(-modules[3].getDriveEncoderVel(), modules[3].getMoProAngleR2D());
     
     // states[2] = new SwerveModuleState(modules[0].getDriveEncoderVel(), new Rotation2d());
     // states[3] = new SwerveModuleState(modules[1].getDriveEncoderVel(), new Rotation2d());
@@ -279,8 +279,8 @@ public class NeoBase extends SubsystemBase {
 
     SmartDashboard.putNumber("module0 velocity", modules[0].getDriveEncoderVel());
     SmartDashboard.putNumber("module1 velocity", modules[1].getDriveEncoderVel());
-    SmartDashboard.putNumber("module2 velocity", modules[2].getDriveEncoderVel());
-    SmartDashboard.putNumber("module3 velocity", modules[3].getDriveEncoderVel());
+    SmartDashboard.putNumber("module2 velocity", -modules[2].getDriveEncoderVel());
+    SmartDashboard.putNumber("module3 velocity", -modules[3].getDriveEncoderVel());
     // SmartDashboard.putNumber("states2 speedMetersPerSecond", states[2].speedMetersPerSecond);
     // SmartDashboard.putNumber("states3 speedMetersPerSecond", states[3].speedMetersPerSecond);
     SmartDashboard.putString("states[0] Rot2dFromDegrees:", states[0].angle.toString());
@@ -301,26 +301,23 @@ public class NeoBase extends SubsystemBase {
   }
   //straightfoward commands and definitions, just look at the names and it will be obvious
   public void applyModuleStates(SwerveModuleState[] desiredStates) {
-    // // desiredStates[0].speedMetersPerSecond = velocityToDriveVolts(desiredStates[0].speedMetersPerSecond);
-    //   modules[0].setDesiredState(desiredStates[0]);
-    // // desiredStates[1].speedMetersPerSecond = velocityToDriveVolts(desiredStates[1].speedMetersPerSecond);
-    //   modules[1].setDesiredState(desiredStates[1]);
-    // // desiredStates[2].speedMetersPerSecond = velocityToDriveVolts(desiredStates[2].speedMetersPerSecond);
-    //   modules[2].setDesiredState(desiredStates[2]);
-    // // desiredStates[3].speedMetersPerSecond = velocityToDriveVolts(desiredStates[3].speedMetersPerSecond);
-    //   modules[3].setDesiredState(desiredStates[3]);
-      desiredStates[0].speedMetersPerSecond = -desiredStates[0].speedMetersPerSecond;
-      modules[0].setDesiredState(desiredStates[0]);
-    desiredStates[1].speedMetersPerSecond = -desiredStates[1].speedMetersPerSecond;
-      modules[1].setDesiredState(desiredStates[1]);
+    desiredStates[0].speedMetersPerSecond = -desiredStates[0].speedMetersPerSecond;
+    desiredStates[0].angle = new Rotation2d(-desiredStates[0].angle.getRadians());
     desiredStates[2].speedMetersPerSecond = -desiredStates[2].speedMetersPerSecond;
-      modules[2].setDesiredState(desiredStates[2]);
+    desiredStates[2].angle = new Rotation2d(-desiredStates[2].angle.getRadians());
+    desiredStates[1].speedMetersPerSecond = -desiredStates[1].speedMetersPerSecond;
+    desiredStates[1].angle = new Rotation2d(-desiredStates[1].angle.getRadians());
     desiredStates[3].speedMetersPerSecond = -desiredStates[3].speedMetersPerSecond;
+    desiredStates[3].angle = new Rotation2d(-desiredStates[3].angle.getRadians());
+      modules[0].setDesiredState(desiredStates[0]);
+      modules[1].setDesiredState(desiredStates[1]);
+      modules[2].setDesiredState(desiredStates[2]);
       modules[3].setDesiredState(desiredStates[3]);
     SmartDashboard.putNumber("module0 Speed", desiredStates[0].speedMetersPerSecond);
     SmartDashboard.putNumber("module1 Speed", desiredStates[1].speedMetersPerSecond);
     SmartDashboard.putNumber("module2 Speed", desiredStates[2].speedMetersPerSecond);
     SmartDashboard.putNumber("module3 Speed", desiredStates[3].speedMetersPerSecond);
+
   }
 
   private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ks, kv, ka);
@@ -450,6 +447,9 @@ public class NeoBase extends SubsystemBase {
     //Gets Angle in R2D
     public Rotation2d getAngleR2D() {
       return Rotation2d.fromDegrees(getAngleEncoderDeg()); 
+    }
+    public Rotation2d getMoProAngleR2D() {
+      return Rotation2d.fromDegrees(-getAngleEncoderDeg()); 
     }
     //Gets Angle in Degrees
     public double getAngleDeg() {
