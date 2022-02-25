@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.util.Units;
@@ -90,6 +91,10 @@ public class NeoBase extends SubsystemBase {
   private double kSwerveModuleLocationFromCoM = 14.5; 
   private Pose2d pose;
 
+  private PIDController rotController;
+
+  private TrajectoryConfig config;
+
   public NeoBase() {
 
     //setting up navx gyro
@@ -140,6 +145,8 @@ public class NeoBase extends SubsystemBase {
     gyro.reset();
 
     autonStates = new SwerveModuleState[4];
+
+    rotController = new PIDController(10, 0, 0);
   }
 
   /**
@@ -203,11 +210,20 @@ public class NeoBase extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void resetWheels() {
+  public void resetWheelAngles() {
     modules[0].resetWheelAngle();
     modules[1].resetWheelAngle();
     modules[2].resetWheelAngle();
     modules[3].resetWheelAngle();
+  }
+
+  public void rotateToHeading(double angleDeg) {
+    if (Math.abs(angleDeg - getHeadingDeg()) < 180) {
+      drive(0, 0, rotController.calculate(getHeadingDeg() / 360, angleDeg / 360), false);
+    }
+    else {
+      drive(0, 0, -rotController.calculate(getHeadingDeg() / 360, angleDeg / 360), false);
+    }
   }
 
   public void setAllModuleGains() {
@@ -290,9 +306,9 @@ public class NeoBase extends SubsystemBase {
     return states;
   }
   public void setModuleStates(SwerveModuleState[] desiredStates) {
-    // SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 1);
     applyModuleStates(desiredStates);
   }
+  
 
   private double velocityToDriveVolts(double speedMetersPerSecond){
     double ff = feedforward.calculate(speedMetersPerSecond);
@@ -303,12 +319,13 @@ public class NeoBase extends SubsystemBase {
   public void applyModuleStates(SwerveModuleState[] desiredStates) {
     desiredStates[0].speedMetersPerSecond = -desiredStates[0].speedMetersPerSecond;
     desiredStates[0].angle = new Rotation2d(-desiredStates[0].angle.getRadians());
-    desiredStates[2].speedMetersPerSecond = -desiredStates[2].speedMetersPerSecond;
-    desiredStates[2].angle = new Rotation2d(-desiredStates[2].angle.getRadians());
     desiredStates[1].speedMetersPerSecond = -desiredStates[1].speedMetersPerSecond;
     desiredStates[1].angle = new Rotation2d(-desiredStates[1].angle.getRadians());
+    desiredStates[2].speedMetersPerSecond = -desiredStates[2].speedMetersPerSecond;
+    desiredStates[2].angle = new Rotation2d(desiredStates[2].angle.getRadians());
     desiredStates[3].speedMetersPerSecond = -desiredStates[3].speedMetersPerSecond;
-    desiredStates[3].angle = new Rotation2d(-desiredStates[3].angle.getRadians());
+    desiredStates[3].angle = new Rotation2d(desiredStates[3].angle.getRadians());
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, kPhysicalMaxDriveSpeedMPS);
       modules[0].setDesiredState(desiredStates[0]);
       modules[1].setDesiredState(desiredStates[1]);
       modules[2].setDesiredState(desiredStates[2]);
@@ -317,7 +334,10 @@ public class NeoBase extends SubsystemBase {
     SmartDashboard.putNumber("module1 Speed", desiredStates[1].speedMetersPerSecond);
     SmartDashboard.putNumber("module2 Speed", desiredStates[2].speedMetersPerSecond);
     SmartDashboard.putNumber("module3 Speed", desiredStates[3].speedMetersPerSecond);
-
+    SmartDashboard.putString("module0 angle", desiredStates[0].angle.toString());
+    SmartDashboard.putString("module1 angle", desiredStates[1].angle.toString());
+    SmartDashboard.putString("module2 angle", desiredStates[2].angle.toString());
+    SmartDashboard.putString("module3 angle", desiredStates[3].angle.toString());
   }
 
   private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ks, kv, ka);
@@ -496,8 +516,7 @@ public class NeoBase extends SubsystemBase {
     }
 
     public void resetWheelAngle() {
-      double output;
-      output = angleController.calculate(getAngleEncoderDeg(), 0);
+      double output = angleController.calculate(getAngleEncoderDeg(), 0);
       angleMotor.set(output);
       SmartDashboard.putNumber("reset Angle Output", output);
     }

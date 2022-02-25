@@ -28,6 +28,8 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
 // Subsystems:
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Camera;
@@ -41,8 +43,10 @@ import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
 import frc.robot.commands.Base.MoveBase;
 import frc.robot.commands.Base.ResetWheels;
+import frc.robot.commands.Base.RotateToHeading;
 import frc.robot.commands.Camera.LEDOff;
 import frc.robot.commands.Camera.LEDOn;
+import frc.robot.CommandGroups.Auton.Red1Auton;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
@@ -83,6 +87,8 @@ public class RobotContainer {
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
   private final LEDOff ledOff = new LEDOff(camera);
   private final LEDOn ledOn = new LEDOn(camera);
+
+  private final Red1Auton red1Auton = new Red1Auton(base);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -186,6 +192,7 @@ public class RobotContainer {
     logitechBtnY.whenPressed(resetGyro);
     logitechBtnB.whenHeld(new ResetWheels(base));
     logitechBtnX.whenHeld(ledOn);
+    logitechBtnRB.whenHeld(new RotateToHeading(base, 0));
 
   }
 
@@ -199,11 +206,12 @@ public class RobotContainer {
     Trajectory trajectory1;
     Trajectory trajectory2;
 
-    PathPlannerTrajectory test1 = PathPlanner.loadPath("Test1", 1.25, 1.25);
+    PathPlannerTrajectory test1 = PathPlanner.loadPath("Test1", 1, 1);
 
     SwerveControllerCommand command1;
     SwerveControllerCommand command2;
     SwerveControllerCommand test1Command;
+    PPSwerveControllerCommand ppTest1;
 
     config = new TrajectoryConfig(1.25, 1.25);
     config.setKinematics(base.getKinematics());
@@ -230,7 +238,7 @@ public class RobotContainer {
     base.resetOdometry(test1.getInitialPose());
 
     ProfiledPIDController thetaController = new ProfiledPIDController(
-      1, 0, 0, new TrapezoidProfile.Constraints(2, 1));
+      1, 0, 0, new TrapezoidProfile.Constraints(5, 5));
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     // command1 = new SwerveControllerCommand(
@@ -244,17 +252,45 @@ public class RobotContainer {
     //   base
     // );
 
-    command2 = new SwerveControllerCommand(
-      trajectory2, 
+    // command2 = new SwerveControllerCommand(
+    //   trajectory2, 
+    //   base::getPose, 
+    //   base.getKinematics(), 
+    //   new PIDController(1, 0, 0),
+    //   new PIDController(1, 0, 0),
+    //   thetaController,
+    //   base::setModuleStates,
+    //   base
+    // ); 
+
+    // test1Command = new SwerveControllerCommand(trajectory, pose, kinematics, xController, yController, thetaController, desiredRotation, outputModuleStates, requirements)
+    test1Command = new SwerveControllerCommand(
+      test1, 
       base::getPose, 
       base.getKinematics(), 
-      new PIDController(1, 0, 0),
-      new PIDController(1, 0, 0),
+      new PIDController(0.8, 0, 0),
+      new PIDController(0.8, 0, 0),
       thetaController,
+      base::getHeading,
       base::setModuleStates,
       base
-    ); 
-    test1Command = new SwerveControllerCommand(
+    );
+
+    // test1Command = new SwerveControllerCommand(
+    //   test1, 
+    //   base::getPose, 
+    //   base.getKinematics(), 
+    //   new PIDController(1, 0, 0),
+    //   new PIDController(1, 0, 0),
+    //   thetaController,
+    //   base::setModuleStates,
+    //   base
+    // );
+
+    // test1Command = new SwerveControllerCommand(trajectory, pose, kinematics, xController, yController, thetaController, desiredRotation, outputModuleStates, requirements)
+    // );
+    
+    ppTest1 = new PPSwerveControllerCommand(
       test1, 
       base::getPose, 
       base.getKinematics(), 
@@ -269,9 +305,41 @@ public class RobotContainer {
     // return testTrajectory;
     // return new ResetWheels(base);
     base.resetGyro();
-    return test1Command.andThen(() -> base.drive(0, 0, 0, false));
+    // return test1Command.andThen(() -> base.drive(0, 0, 0, false));
     // return command.andThen(new BaseStop(base));
-      
+
+    Trajectory red1 = PathPlanner.loadPath("Red 1 Part 1", 2, 2);
+    // Trajectory red1Traj = new Trajectory(
+    //   new Pose2d(),
+    //   new
+    // )
+    Trajectory red2 = PathPlanner.loadPath("Red 1 Part 2", 2, 2);
+    SwerveControllerCommand red1Command = new SwerveControllerCommand(
+      red1, 
+      base::getPose, 
+      base.getKinematics(), 
+      new PIDController(1, 0, 0),
+      new PIDController(1, 0, 0),
+      thetaController,
+      base::getHeading,
+      base::setModuleStates,
+      base
+    );
+    SwerveControllerCommand red2Command = new SwerveControllerCommand(
+      red2, 
+      base::getPose, 
+      base.getKinematics(), 
+      new PIDController(1, 0, 0),
+      new PIDController(1, 0, 0),
+      thetaController,
+      base::getHeading,
+      base::setModuleStates,
+      base
+    );
+
+    base.resetOdometry(red1.getInitialPose());
+    // return red1Command.andThen(new RotateToHeading(base, 0).andThen(red2Command));
+      return red2Command;
     }
   
 

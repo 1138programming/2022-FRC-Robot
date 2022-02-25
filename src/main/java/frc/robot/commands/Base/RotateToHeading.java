@@ -7,11 +7,13 @@ package frc.robot.commands.Base;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.NeoBase;
 
-public class ResetWheels extends CommandBase {
-  private NeoBase base;
-  /** Creates a new ResetWheels. */
-  public ResetWheels(NeoBase base) {
+public class RotateToHeading extends CommandBase {
+  NeoBase base;
+  double heading;
+
+  public RotateToHeading(NeoBase base, double heading) {
     this.base = base;
+    this.heading = heading;
     addRequirements(base);
   }
 
@@ -22,7 +24,7 @@ public class ResetWheels extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    base.resetWheelAngles();
+    base.rotateToHeading(heading);
   }
 
   // Called once the command ends or is interrupted.
@@ -32,6 +34,6 @@ public class ResetWheels extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return base.getWheelsHavereset();
+    return base.getHeadingDeg() <= heading + 3 && base.getHeadingDeg() >= heading - 3;
   }
 }
