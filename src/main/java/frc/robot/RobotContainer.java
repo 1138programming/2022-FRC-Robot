@@ -12,10 +12,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 // Subsystems:
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Storage;
+
 
 // Commands
 import frc.robot.commands.Base.DriveWithJoysticks;
@@ -24,10 +22,6 @@ import frc.robot.commands.Intake.IntakeSpinBackward;
 import frc.robot.commands.Intake.HuntMode;
 import frc.robot.commands.Intake.StowedMode;
 import frc.robot.commands.Intake.StowedMode;
-import frc.robot.commands.Shooter.Shoot;
-import frc.robot.commands.Shooter.ShooterStop;
-import frc.robot.commands.Storage.StorageStop;
-import frc.robot.commands.Hang.HangStop;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -38,10 +32,8 @@ import frc.robot.commands.Hang.HangStop;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final NeoBase base  = new NeoBase();
-  private final Hang hang = new Hang();
   private final Intake intake = new Intake();
-  private final Shooter shooter = new Shooter();
-  private final Storage storage = new Storage();
+
 
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
   private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);
@@ -49,11 +41,7 @@ public class RobotContainer {
   private final IntakeStop intakeStop = new IntakeStop(intake);
   private final HuntMode huntMode = new HuntMode(intake);
   private final StowedMode stowedMode = new StowedMode(intake);
-  private final Shoot shoot = new Shoot(shooter);
-  private final ShooterStop shooterStop = new ShooterStop(shooter);
-  private final HangStop hangStop = new HangStop(hang);
-  private final StorageStop storageStop= new StorageStop(storage);
-
+ 
   //Controller Ports
   private static final int KLogitechPort = 0;
   private static final int KXboxPort = 1;  
@@ -98,10 +86,8 @@ public class RobotContainer {
 
     //Default commands for each subsystem
     base.setDefaultCommand(driveWithJoysticks);
-    hang.setDefaultCommand(hangStop);
     intake.setDefaultCommand(stowedMode);
-    shooter.setDefaultCommand(shooterStop);
-    storage.setDefaultCommand(storageStop);
+ 
 
     //Game controllers
     logitech = new Joystick(KLogitechPort);
@@ -140,7 +126,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    xboxBtnLB.whenHeld(shoot);
     xboxBtnX.whenHeld(huntMode);
     xboxBtnB.whenHeld(intakeSpinBackward);
   }

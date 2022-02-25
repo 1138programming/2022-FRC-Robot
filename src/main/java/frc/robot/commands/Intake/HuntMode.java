@@ -27,10 +27,11 @@ public class HuntMode extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean pixySees = SmartDashboard.getBoolean("Pixy", false);
+    boolean pixySees = SmartDashboard.getNumber(, 0);
+
   if (intake.getIntakeEncoderDeg() == KIntakeAngle) //Checks to see if the the intake is at the correct angle.
     {  
-      if (intake.getPixyColorRed() == 3 || intake.getPixyColorBlue() == 3) 
+      if (intake.getPixyColorRed() == 1 || intake.getPixyColorBlue() == 3) 
       /* Checks to see if the ball is in the intake by adding the bumper objects to the total count of objects. 
          Then it caps the amount of objects it will register to 3, making it so the code does not need to be switched before the match.
       */
@@ -53,7 +54,7 @@ public class HuntMode extends CommandBase {
     }
   else
     {
-      if (intake.getIntakeEncoderDeg() <= KIntakeAngle && (intake.getPixyColorRed() == 3 || intake.getPixyColorBlue() == 3))
+      if (intake.getIntakeEncoderDeg() <= KIntakeAngle && (intake.getPixyColorRed() == 1 || intake.getPixyColorBlue() == 3))
         // Checks to see if the pixy still sees the ball and if the intake is below hunt mode angle.
        {
         intake.moveSpin(KIntakeSpinPWM);

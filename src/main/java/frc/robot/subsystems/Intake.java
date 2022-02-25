@@ -39,8 +39,8 @@ public class Intake extends SubsystemBase {
   private static Pixy2 pixy;
 
   public Intake() {
-    swivelIntakeMotor = new TalonSRX(KSwivelIntakeMotor);
-    spinIntakeMotor = new VictorSPX(KSpinIntakeMotor);
+    swivelIntakeMotor = new TalonSRX(KSwivelIntakeTalon);
+    spinIntakeMotor = new VictorSPX(KSpinIntakeVictor);
     swivelIntakeMotor.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
     pixy = Pixy2.createInstance(new SPILink());
     swivelController = new PIDController(intakeControllerkP, intakeControllerkI, intakeControllerkD);
@@ -62,7 +62,7 @@ public class Intake extends SubsystemBase {
   }
   //Pixy2 functions
   public int getPixyColorRed() {
-    return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 3);
+    return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 1);
   }
   public int getPixyColorBlue() {
     return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG2, 3);
