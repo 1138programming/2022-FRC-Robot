@@ -25,6 +25,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
@@ -204,34 +207,38 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    TrajectoryConfig config = new TrajectoryConfig(autonMaxVelocity, autonMaxAccel);
-    TrajectoryConfig config2 = new TrajectoryConfig(autonMaxVelocity, autonMaxAccel);
-    config.setKinematics(base.getKinematics());
-    config2.setKinematics(base.getKinematics());
-    config.setEndVelocity(1);
-    config2.setStartVelocity(1);
+    TrajectoryConfig config1 = new TrajectoryConfig(kAutonMaxDriveVelocity, kAutonMaxAccel);
+    TrajectoryConfig config2 = new TrajectoryConfig(kAutonMaxDriveVelocity, kAutonMaxAccel);
+    // config.setKinematics(base.getKinematics());
+    // config2.setKinematics(base.getKinematics());
+    // config.setEndVelocity(1);
+    // config2.setStartVelocity(1);
     // config2.setReversed(true);
 
     Trajectory trajectory1;
     Trajectory trajectory2;
+    Trajectory part1 = PathPlanner.loadPath("Blue 1 Part 1", kAutonMaxDriveVelocity, kAutonMaxAccel);
+    SwerveControllerCommand part1Command;
+    Trajectory part2 = PathPlanner.loadPath("Blue 1 Part 2", kAutonMaxDriveVelocity, kAutonMaxAccel);
+    SwerveControllerCommand part2Command;
 
     SwerveControllerCommand command1;
     SwerveControllerCommand command2;
 
     PIDController xController = new PIDController(0.9, 0, 0);
     PIDController yController = new PIDController(0.9, 0, 0);
-
     ProfiledPIDController thetaController = new ProfiledPIDController(
-      1, 0, 0, new TrapezoidProfile.Constraints(autonMaxVelocity, autonMaxAccel));
+      1, 0, 0, new TrapezoidProfile.Constraints(kAutonMaxAngularVelocity, kAutonMaxAngularAccel));
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     trajectory1 = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, new Rotation2d()),
+      new Pose2d(0, 0, new Rotation2d(0)),
       List.of(
-        new Translation2d(2, 0)
+        new Translation2d(2, 0),
+        new Translation2d(-1, 0)
       ),
-      new Pose2d(2, 0, new Rotation2d()),
-      config
+      new Pose2d(1, 0, new Rotation2d(0)),
+      config1
     );
 
     
@@ -243,10 +250,7 @@ public class RobotContainer {
       new Pose2d(3.16, 0, new Rotation2d()),
       config2
     );
-
-    trajectory1 = trajectory1.concatenate(trajectory2);
     
-
     command1 = new SwerveControllerCommand(
       trajectory1,
       base::getPose,
@@ -256,8 +260,8 @@ public class RobotContainer {
       thetaController,
       base::setModuleStates,
       base
-    );
-
+      );
+      
     command2 = new SwerveControllerCommand(
       trajectory2,
       base::getPose,
@@ -267,18 +271,44 @@ public class RobotContainer {
       thetaController,
       base::setModuleStates,
       base
+      );
+        
+    part1Command = new SwerveControllerCommand(
+      part1, 
+      base::getPose, 
+      base.getKinematics(), 
+      xController,
+      yController,
+      thetaController,
+      base::getHeading,
+      base::setModuleStates,
+      base
+      );
+
+    part2Command = new SwerveControllerCommand(
+      part2,
+      base::getPose, 
+      base.getKinematics(), 
+      xController,
+      yController,
+      thetaController,
+      base::getHeading,
+      base::setModuleStates,
+      base
     );
-
-    
-
-    base.resetOdometry(trajectory1.getInitialPose());
-
-    // base.resetOdometry(red1.getInitialPose());
-    return command1;
-      // return command1.andThen(command2);
-    }
-  
-
+        
+      // base.resetOdometry(trajectory1.getInitialPose());
+      
+      // trajectory1 = trajectory1.concatenate(trajectory2);
+      // base.resetOdometry(red1.getInitialPose());
+      // return command1;
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> base.resetOdometry(trajectory1.getInitialPose())),
+        command1,
+      new InstantCommand(() -> base.drive(0,0,0,true)));
+    // return command1.andThen(command2);
+  }
+       
   public double getLogiRightYAxis() {
     final double Y = logitech.getRawAxis(KRightYAxis);
     if (Y > KDeadZone || Y < -KDeadZone)

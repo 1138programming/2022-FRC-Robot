@@ -34,8 +34,10 @@ public final class Constants {
     public static final double kv = 1.8624;
     public static final double ka = 2.208;
 
-    public static final double autonMaxVelocity = 2;
-    public static final double autonMaxAccel = 2;
+    public static final double kAutonMaxDriveVelocity = 2;
+    public static final double kAutonMaxAngularVelocity = (4 * Math.PI)/10;
+    public static final double kAutonMaxAccel = 2;
+    public static final double kAutonMaxAngularAccel = Math.PI/4;
     
     //Storage
     public static final int KStorageSpark = 9;

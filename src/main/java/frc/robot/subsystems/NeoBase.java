@@ -202,12 +202,8 @@ public class NeoBase extends SubsystemBase {
   //  odometry.update(getHeading(), frontLeftState, new SwerfrontRightState, backLeftState, backRightState);
     // odometry.update(getHeading(), getSpeeds());
     pose = odometry.update(getHeading(), getSpeeds());
-    // SmartDashboard.putNu
     SmartDashboard.putString("Pose", pose.toString());
-    SmartDashboard.putNumber("xxxxx", pose.getX());
-
     SmartDashboard.putNumber("gyro", gyro.getAngle());
-    // This method will be called once per scheduler run
   }
 
   public void resetWheelAngles() {
@@ -369,7 +365,8 @@ public class NeoBase extends SubsystemBase {
   }
 
   public Pose2d getPose() {
-    return pose;
+    // return pose;
+    return odometry.getPoseMeters();
   }
 
   // public void resetPose() {
@@ -420,7 +417,7 @@ public class NeoBase extends SubsystemBase {
       angleController = new PIDController(KAngleP, KAngleI, KAngleD);
       driveController = new PIDController(KDriveP, KDriveI, KDriveD);
       
-      //Telling the PIDcontroller that 360 degrees in one direction is the same as 360 degrees in the other direction.
+      //Telling the PIDcontroller that 180 degrees in one direction is the same as 180 degrees in the other direction.
       angleController.enableContinuousInput(-180, 180);
       
       //Sets the motor break mode to either kBreak or kCoast.

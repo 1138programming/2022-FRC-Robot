@@ -16,7 +16,6 @@ public class Trajectories {
   private static double maxAccelConfig = 2;
   private static PIDController xController = new PIDController(1, 0, 0);
   private static PIDController yController = new PIDController(1, 0, 0);
-  private static NeoBase base = new NeoBase();
 
   private static ProfiledPIDController thetaController = new ProfiledPIDController(
     0, 0, 0, new TrapezoidProfile.Constraints(1, 1));
