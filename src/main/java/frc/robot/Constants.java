@@ -33,6 +33,9 @@ public final class Constants {
     public static final double ks = 0.56097;
     public static final double kv = 1.8624;
     public static final double ka = 2.208;
+
+    public static final double autonMaxVelocity = 2;
+    public static final double autonMaxAccel = 2;
     
     //Storage
     public static final int KStorageSpark = 9;

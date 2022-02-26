@@ -30,6 +30,8 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
+import static frc.robot.Constants.*;
+
 // Subsystems:
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Camera;
@@ -202,144 +204,78 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    TrajectoryConfig config;
+    TrajectoryConfig config = new TrajectoryConfig(autonMaxVelocity, autonMaxAccel);
+    TrajectoryConfig config2 = new TrajectoryConfig(autonMaxVelocity, autonMaxAccel);
+    config.setKinematics(base.getKinematics());
+    config2.setKinematics(base.getKinematics());
+    config.setEndVelocity(1);
+    config2.setStartVelocity(1);
+    // config2.setReversed(true);
+
     Trajectory trajectory1;
     Trajectory trajectory2;
 
-    PathPlannerTrajectory test1 = PathPlanner.loadPath("Test1", 1, 1);
-
     SwerveControllerCommand command1;
     SwerveControllerCommand command2;
-    SwerveControllerCommand test1Command;
-    PPSwerveControllerCommand ppTest1;
 
-    config = new TrajectoryConfig(1.25, 1.25);
-    config.setKinematics(base.getKinematics());
+    PIDController xController = new PIDController(0.9, 0, 0);
+    PIDController yController = new PIDController(0.9, 0, 0);
 
-    
-    // trajectory1 = TrajectoryGenerator.generateTrajectory(
-    //   new Pose2d(0, 0, new Rotation2d()),
-    //   List.of(
-    //     new Translation2d(5, 0)
-    //   ),
-    //   new Pose2d(5, 0, new Rotation2d()),
-    //   config
-    // ); 
-    trajectory2 = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(5, 0, new Rotation2d()),
-      List.of(
-        new Translation2d(-5, 0)
-      ),
+    ProfiledPIDController thetaController = new ProfiledPIDController(
+      1, 0, 0, new TrapezoidProfile.Constraints(autonMaxVelocity, autonMaxAccel));
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    trajectory1 = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new Rotation2d()),
+      List.of(
+        new Translation2d(2, 0)
+      ),
+      new Pose2d(2, 0, new Rotation2d()),
       config
     );
 
-    base.resetGyro();
-    base.resetOdometry(test1.getInitialPose());
-
-    ProfiledPIDController thetaController = new ProfiledPIDController(
-      1, 0, 0, new TrapezoidProfile.Constraints(5, 5));
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    // command1 = new SwerveControllerCommand(
-    //   trajectory1, 
-    //   base::getPose, 
-    //   base.getKinematics(), 
-    //   new PIDController(1, 0, 0),
-    //   new PIDController(1, 0, 0),
-    //   thetaController,
-    //   base::setModuleStates,
-    //   base
-    // );
-
-    // command2 = new SwerveControllerCommand(
-    //   trajectory2, 
-    //   base::getPose, 
-    //   base.getKinematics(), 
-    //   new PIDController(1, 0, 0),
-    //   new PIDController(1, 0, 0),
-    //   thetaController,
-    //   base::setModuleStates,
-    //   base
-    // ); 
-
-    // test1Command = new SwerveControllerCommand(trajectory, pose, kinematics, xController, yController, thetaController, desiredRotation, outputModuleStates, requirements)
-    test1Command = new SwerveControllerCommand(
-      test1, 
-      base::getPose, 
-      base.getKinematics(), 
-      new PIDController(0.8, 0, 0),
-      new PIDController(0.8, 0, 0),
-      thetaController,
-      base::getHeading,
-      base::setModuleStates,
-      base
-    );
-
-    // test1Command = new SwerveControllerCommand(
-    //   test1, 
-    //   base::getPose, 
-    //   base.getKinematics(), 
-    //   new PIDController(1, 0, 0),
-    //   new PIDController(1, 0, 0),
-    //   thetaController,
-    //   base::setModuleStates,
-    //   base
-    // );
-
-    // test1Command = new SwerveControllerCommand(trajectory, pose, kinematics, xController, yController, thetaController, desiredRotation, outputModuleStates, requirements)
-    // );
     
-    ppTest1 = new PPSwerveControllerCommand(
-      test1, 
-      base::getPose, 
-      base.getKinematics(), 
-      new PIDController(1, 0, 0),
-      new PIDController(1, 0, 0),
-      thetaController,
-      base::setModuleStates,
-      base
+    trajectory2 = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(2.16, 0, new Rotation2d()),
+      List.of(
+        new Translation2d(1, 0)
+      ),
+      new Pose2d(3.16, 0, new Rotation2d()),
+      config2
     );
+
+    trajectory1 = trajectory1.concatenate(trajectory2);
     
 
-    // return testTrajectory;
-    // return new ResetWheels(base);
-    base.resetGyro();
-    // return test1Command.andThen(() -> base.drive(0, 0, 0, false));
-    // return command.andThen(new BaseStop(base));
-
-    Trajectory red1 = PathPlanner.loadPath("Red 1 Part 1", 2, 2);
-    // Trajectory red1Traj = new Trajectory(
-    //   new Pose2d(),
-    //   new
-    // )
-    Trajectory red2 = PathPlanner.loadPath("Red 1 Part 2", 2, 2);
-    SwerveControllerCommand red1Command = new SwerveControllerCommand(
-      red1, 
-      base::getPose, 
-      base.getKinematics(), 
-      new PIDController(1, 0, 0),
-      new PIDController(1, 0, 0),
+    command1 = new SwerveControllerCommand(
+      trajectory1,
+      base::getPose,
+      base.getKinematics(),
+      xController,
+      yController,
       thetaController,
-      base::getHeading,
-      base::setModuleStates,
-      base
-    );
-    SwerveControllerCommand red2Command = new SwerveControllerCommand(
-      red2, 
-      base::getPose, 
-      base.getKinematics(), 
-      new PIDController(1, 0, 0),
-      new PIDController(1, 0, 0),
-      thetaController,
-      base::getHeading,
       base::setModuleStates,
       base
     );
 
-    base.resetOdometry(red1.getInitialPose());
-    // return red1Command.andThen(new RotateToHeading(base, 0).andThen(red2Command));
-      return red2Command;
+    command2 = new SwerveControllerCommand(
+      trajectory2,
+      base::getPose,
+      base.getKinematics(),
+      xController,
+      yController,
+      thetaController,
+      base::setModuleStates,
+      base
+    );
+
+    
+
+    base.resetOdometry(trajectory1.getInitialPose());
+
+    // base.resetOdometry(red1.getInitialPose());
+    return command1;
+      // return command1.andThen(command2);
     }
   
 

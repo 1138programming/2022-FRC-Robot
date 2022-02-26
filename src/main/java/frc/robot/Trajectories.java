@@ -28,38 +28,80 @@ public class Trajectories {
   }
   
   public static class Blue1 {
-    Trajectory part1 = PathPlanner.loadPath("Blue 1 Part 1", maxSpeedConfig, maxAccelConfig);
-  }
+    private static Trajectory part1 = PathPlanner.loadPath("Blue 1 Part 1", maxSpeedConfig, maxAccelConfig);
+    private static SwerveControllerCommand part1Command;
 
-  public static class Red1 {
-    private static Trajectory part1 = PathPlanner.loadPath("Red 1 Part 1", maxSpeedConfig, maxAccelConfig);
-    private static SwerveControllerCommand part1Command = new SwerveControllerCommand(
-      part1, 
-      base::getPose, 
-      base.getKinematics(), 
-      new PIDController(0.8, 0, 0),
-      new PIDController(0.8, 0, 0),
-      thetaController,
-      base::getHeading,
-      base::setModuleStates,
-      base
-    );
-
-    private static Trajectory part2 = PathPlanner.loadPath("Red 1 Part 2", maxSpeedConfig, maxAccelConfig);
-    private static SwerveControllerCommand part2Command = new SwerveControllerCommand(
-      part2, 
-      base::getPose, 
-      base.getKinematics(), 
-      new PIDController(0.8, 0, 0),
-      new PIDController(0.8, 0, 0),
-      thetaController,
-      base::getHeading,
-      base::setModuleStates,
-      base
-    );
+    private static Trajectory part2 = PathPlanner.loadPath("Blue 1 Part 2", maxSpeedConfig, maxAccelConfig);
+    private static SwerveControllerCommand part2Command;
 
     public static void configTrajectories (NeoBase base) {
-      
+      part1Command = new SwerveControllerCommand(
+        part1, 
+        base::getPose, 
+        base.getKinematics(), 
+        xController,
+        yController,
+        thetaController,
+        base::getHeading,
+        base::setModuleStates,
+        base
+      );
+
+      part2Command = new SwerveControllerCommand(
+        part2,
+        base::getPose, 
+        base.getKinematics(), 
+        xController,
+        yController,
+        thetaController,
+        base::getHeading,
+        base::setModuleStates,
+        base
+      );
+    }
+
+    public static SwerveControllerCommand getTrajectory(int partNum) {
+      switch (partNum) {
+        case(1): 
+          return part1Command;
+        case(2): 
+          return part2Command;
+      }
+      return part1Command;
+    }
+  }
+  
+  public static class Red1 {
+    private static Trajectory part1 = PathPlanner.loadPath("Red 1 Part 1", maxSpeedConfig, maxAccelConfig);
+    private static SwerveControllerCommand part1Command;
+
+    private static Trajectory part2 = PathPlanner.loadPath("Red 1 Part 2", maxSpeedConfig, maxAccelConfig);
+    private static SwerveControllerCommand part2Command;
+
+    public static void configTrajectories (NeoBase base) {
+      part1Command = new SwerveControllerCommand(
+        part1, 
+        base::getPose, 
+        base.getKinematics(), 
+        xController,
+        yController,
+        thetaController,
+        base::getHeading,
+        base::setModuleStates,
+        base
+      );
+
+      part2Command = new SwerveControllerCommand(
+        part2,
+        base::getPose, 
+        base.getKinematics(), 
+        xController,
+        yController,
+        thetaController,
+        base::getHeading,
+        base::setModuleStates,
+        base
+      );
     }
 
     public static SwerveControllerCommand getTrajectory(int partNum) {

@@ -14,16 +14,12 @@ import frc.robot.Trajectories.Red1;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Red1Auton extends SequentialCommandGroup {
-  Red1 red1;
-  /** Creates a new Red1Auton. */
   public Red1Auton(NeoBase base) {
-    // red1 = new Red1(base);
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-      // red1.getTrajectory(1),
-      // new RotateToHeading(base, 90),
-      // red1.getTrajectory(2)
-    );
+    // Red1.configTrajectories(base);
+    // addCommands(
+    //   Red1.getTrajectory(1),
+    //   new RotateToHeading(base, 90),
+    //   Red1.getTrajectory(2)
+    // );
   }
 }
