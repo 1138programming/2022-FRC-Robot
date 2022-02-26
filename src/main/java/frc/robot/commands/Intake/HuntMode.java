@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import static frc.robot.Constants.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.ArrayList;
+
 
 public class HuntMode extends CommandBase {
   /** Creates a new HuntMode. */
@@ -21,17 +23,29 @@ public class HuntMode extends CommandBase {
   @Override
   public void initialize() {
     intake.swivelToPos(KIntakeAngle); // Sets the intake to hunt mode.
-    SmartDashboard.putBoolean("Pixy", false);
+    SmartDashboard.putNumber("Pixy", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    boolean pixySees = SmartDashboard.getNumber(, 0);
+  public void execute() {   
+    
+    
+    
+    
+    ArrayList<Block> blocks = intake.().getPixy().getCCC().getBlocks();
+		if (blocks == null) {
+			System.err.println("No Blocks");
+			return;
+
+
+
+
+
 
   if (intake.getIntakeEncoderDeg() == KIntakeAngle) //Checks to see if the the intake is at the correct angle.
     {  
-      if (intake.getPixyColorRed() == 1 || intake.getPixyColorBlue() == 3) 
+      if (intake.getPixyColorRed() >= 1 || intake.getPixyColorBlue() == 3) 
       /* Checks to see if the ball is in the intake by adding the bumper objects to the total count of objects. 
          Then it caps the amount of objects it will register to 3, making it so the code does not need to be switched before the match.
       */
@@ -67,8 +81,8 @@ public class HuntMode extends CommandBase {
        }
 
     }
+    SmartDashboard.putNumber("Pixy", intake.getPixyColorRed());
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}

@@ -36,7 +36,7 @@ public final class Constants {
     
     //Intake
     public static final int KSwivelIntakeTalon = 12;
-    public static final int KSpinIntakeVictor = 13;
+    public static final int KSpinIntakeVictor = 9;
     
     // public static final int KSwivelIntakeMotor = 10;
     // public static final int KSpinIntakeMotor = 10;

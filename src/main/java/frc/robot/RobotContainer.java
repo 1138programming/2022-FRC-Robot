@@ -44,7 +44,7 @@ public class RobotContainer {
  
   //Controller Ports
   private static final int KLogitechPort = 0;
-  private static final int KXboxPort = 1;  
+  private static final int KXboxPort = 0;  
 
   //Deadzone
   private static final double KDeadZone = 0.05;

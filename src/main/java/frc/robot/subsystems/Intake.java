@@ -19,13 +19,12 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 
-
+import io.github.pseudoresonance.pixy2api.Pixy2CCC;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
 import io.github.pseudoresonance.pixy2api.links.SPILink;
-import io.github.pseudoresonance.pixy2api.Pixy2CCC;
 
 public class Intake extends SubsystemBase {
   private TalonSRX swivelIntakeMotor;
@@ -35,6 +34,9 @@ public class Intake extends SubsystemBase {
   private DutyCycleEncoder swivelMagEncoder;
   private PIDController swivelController;
   private double intakeControllerkP, intakeControllerkI, intakeControllerkD;
+  public static byte CCC_SIG1;
+
+
 
   private static Pixy2 pixy;
 
@@ -43,7 +45,10 @@ public class Intake extends SubsystemBase {
     spinIntakeMotor = new VictorSPX(KSpinIntakeVictor);
     swivelIntakeMotor.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
     pixy = Pixy2.createInstance(new SPILink());
+    pixy.init();
     swivelController = new PIDController(intakeControllerkP, intakeControllerkI, intakeControllerkD);
+    topLimitSwitch = new DigitalInput(KLiftTopLimit);
+    bottomLimitSwitch = new DigitalInput(KLiftBottomLimit);
   }
   //Talon
   public void moveSwivel(double speed) {
@@ -62,7 +67,7 @@ public class Intake extends SubsystemBase {
   }
   //Pixy2 functions
   public int getPixyColorRed() {
-    return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 1);
+    return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 3);
   }
   public int getPixyColorBlue() {
     return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG2, 3);
