@@ -98,7 +98,7 @@ public class NeoBase extends SubsystemBase {
   public NeoBase() {
 
     //setting up navx gyro
-    gyro = new AHRS(SPI.Port.kMXP); 
+    gyro = new AHRS(SPI.Port.kMXP); //axis calibration and reset (OmniMount): https://pdocs.kauailabs.com/navx-mxp/installation/omnimount/
 
     SmartDashboard.putNumber("kp", 0);
     SmartDashboard.putNumber("ki", 0);
