@@ -34,10 +34,16 @@ public class Flywheel extends SubsystemBase {
   public void move(double speed) {
     flywheelMotor.set(ControlMode.PercentOutput, flywheelController.calculate(getVelocity(), speed));
   }
-  public double getVelocity()
-  {
-    return flywheelMotor.getSelectedSensorVelocity();
+  
+  public void moveRawPercent(double speed) {
+    flywheelMotor.set(ControlMode.PercentOutput, speed);
   }
+  
+  public double getVelocity() //max velocity = 19776u / 100ms, which is 2896.875 rotations/min, conversion factor is 600/4096 (75/512)
+  {
+    return flywheelMotor.getSelectedSensorVelocity() * (75/512); //returns in RPM
+  }
+  
   public void setFlywheelGains(double kP, double kI, double kD){
     flywheelController.setPID(kP, kI, kD);
   }
