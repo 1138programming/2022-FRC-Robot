@@ -25,6 +25,7 @@ public class MoveArms extends CommandBase {
   }
 
   // Called when the command is initially scheduled.
+  // Checks to see if Hang has reset
   @Override
   public void initialize() {
     // if (!hang.getArmHasReset()) {
@@ -35,10 +36,9 @@ public class MoveArms extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // currentEncoderValue = hang.getLeftArmEncoder();
-    // output = armPosController.calculate(currentEncoderValue, armSetPoint);
-    // hang.moveToPosition(KLevelPosition, 0);
-    hang.moveArms(KArmSpeed);
+    currentEncoderValue = hang.getLeftArmEncoder();
+    output = armPosController.calculate(currentEncoderValue, armSetPoint);
+    hang.moveToPosition(KLevelPosition, 0);
   }
 
   // Called once the command ends or is interrupted.
@@ -48,11 +48,12 @@ public class MoveArms extends CommandBase {
   }
 
   // Returns true when the command should end.
+  // Ends the command when the current encoder value is equal to the arm's set point
   @Override
   public boolean isFinished() {
-    if (currentEncoderValue >= armSetPoint) {
-      return true;
-    }
+  //   if (currentEncoderValue >= armSetPoint) {
+  //     return true;
+    // }
     return false;
   }
 }

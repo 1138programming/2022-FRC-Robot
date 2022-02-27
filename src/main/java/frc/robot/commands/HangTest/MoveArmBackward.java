@@ -2,21 +2,23 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Hang;
+package frc.robot.commands.HangTest;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.Hang;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import static frc.robot.Constants.*;
+import frc.robot.subsystems.Hang;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class HangServoMove extends CommandBase {
-  /** Creates a new HangStop. */
-
-  private final Hang hang;
-
-  public HangServoMove(Hang hang) {
+public class MoveArmBackward extends CommandBase {
+  private Hang hang;
+  /** Creates a new MoveArmBackward. */
+  public MoveArmBackward(Hang hang){
     this.hang = hang;
+
     addRequirements(hang);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -26,7 +28,7 @@ public class HangServoMove extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.move(1, 1); // might have to change values
+    hang.moveArms(-1);
   }
 
   // Called once the command ends or is interrupted.

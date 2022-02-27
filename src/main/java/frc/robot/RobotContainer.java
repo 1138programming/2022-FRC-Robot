@@ -46,11 +46,13 @@ import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Storage.BottomStorageIn;
 import frc.robot.commands.Storage.TopStorageOut;
 import frc.robot.commands.Storage.TopStorageIn;
-import frc.robot.commands.Hang.HangMove;
-import frc.robot.commands.Hang.HangServoMove;
+import frc.robot.commands.HangTest.MoveArmBackward;
+import frc.robot.commands.HangTest.MoveArmForward;
+import frc.robot.commands.HangTest.MoveClawIn;
+import frc.robot.commands.HangTest.MoveClawOut;
+import frc.robot.commands.HangTest.MoveHangDown;
+import frc.robot.commands.HangTest.MoveHangUp;
 import frc.robot.commands.Hang.HangStop;
-import frc.robot.commands.Hang.HangServoStop;
-import frc.robot.commands.Hang.MoveArms;
 import frc.robot.commands.Hang.MoveArmsToLimit;
 import frc.robot.commands.Hang.MoveClaw;
 import frc.robot.commands.Hang.MoveLiftToPosition;
@@ -84,14 +86,14 @@ public class RobotContainer {
   private final FlywheelSpin flywheelSpin = new FlywheelSpin(flywheel);
   private final FlywheelStop flywheelStop = new FlywheelStop(flywheel);
   // Hang
-  private final HangMove hangMove = new HangMove(hang);
   private final HangStop hangStop = new HangStop(hang);
-  private final HangServoMove hangServoMove = new HangServoMove(hang);
-  private final HangServoStop hangServoStop = new HangServoStop(hang);
-  private final MoveArms moveArms = new MoveArms(hang);
+  private final MoveArmBackward moveArmBackward = new MoveArmBackward(hang);
+  private final MoveArmForward moveArmForward = new MoveArmForward(hang);
+  private final MoveClawIn moveClawIn  = new MoveClawIn(hang);
+  private final MoveClawOut moveClawOut = new MoveClawOut(hang);
+  private final MoveHangDown moveHangDown = new MoveHangDown(hang);
+  private final MoveHangUp moveHangUp = new MoveHangUp(hang);
   private final MoveArmsToLimit moveArmsToLimit = new MoveArmsToLimit(hang);
-  private final MoveClaw moveClawOut = new MoveClaw(hang, 1);
-  private final MoveClaw moveClawIn = new MoveClaw(hang, 0);
   private final MoveLiftToBottomLimit moveLiftToBottomLimit = new MoveLiftToBottomLimit(hang);
   private final MoveLiftToTopLimit moveLiftToTopLimit = new MoveLiftToTopLimit(hang);
   // Intake

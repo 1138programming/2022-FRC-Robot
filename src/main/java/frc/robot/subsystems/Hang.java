@@ -30,6 +30,8 @@ public class Hang extends SubsystemBase {
   private DigitalInput topLiftLimitSwitch;
   private DigitalInput armLimitSwitch;
 
+  private double armEncoderFrontLimit;
+
   public Hang() {
     leftSwingMotor = new TalonFX(KLeftHangMotor);
     rightSwingMotor = new TalonFX(KRightHangMotor);
@@ -44,10 +46,12 @@ public class Hang extends SubsystemBase {
 
     leftClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     rightClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
-
+    
     bottomLiftLimitSwitch = new DigitalInput(KLiftBottomLimit);
     topLiftLimitSwitch = new DigitalInput(KLiftTopLimit);
     armLimitSwitch = new DigitalInput(KArmsLimit);
+
+    armEncoderFrontLimit = 12; //Change When Testing
   }
 
   public void move(double swingMotorSpeed, double levelMotorSpeed){
@@ -57,8 +61,27 @@ public class Hang extends SubsystemBase {
   }
 
   public void moveArms(double speed) {
-    leftSwingMotor.set(ControlMode.PercentOutput, speed);
-    rightSwingMotor.set(ControlMode.PercentOutput, speed);
+    if (speed < 0){
+      if(armLimitSwitch.get()){
+        leftSwingMotor.set(ControlMode.PercentOutput, 0);
+        rightSwingMotor.set(ControlMode.PercentOutput, 0);
+        resetArmEncoders();
+      }
+      else {
+        leftSwingMotor.set(ControlMode.PercentOutput, speed);
+        rightSwingMotor.set(ControlMode.PercentOutput, speed);
+      }
+    }
+    else {
+      if (getLeftArmEncoder() <= armEncoderFrontLimit) {
+        leftSwingMotor.set(ControlMode.PercentOutput, speed);
+        rightSwingMotor.set(ControlMode.PercentOutput, speed);
+      }
+      else {
+        leftSwingMotor.set(ControlMode.PercentOutput, 0);
+        rightSwingMotor.set(ControlMode.PercentOutput, 0);
+      }
+    }
   }
 
   public void moveLevel(double speed) {
@@ -118,7 +141,7 @@ public class Hang extends SubsystemBase {
     return levelHangMotor.getSelectedSensorPosition();
   }
 
-  public void resetArmEncders() {
+  public void resetArmEncoders() {
     leftSwingMotor.setSelectedSensorPosition(0);
     rightSwingMotor.setSelectedSensorPosition(0);
   }
