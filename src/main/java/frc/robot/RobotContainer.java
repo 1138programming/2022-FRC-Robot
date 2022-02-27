@@ -17,7 +17,6 @@ import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Storage;
-import frc.robot.subsystems.Camera;
 
 // Commands
 import frc.robot.commands.Base.DriveWithJoysticks;
@@ -28,13 +27,26 @@ import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
 import frc.robot.commands.Intake.IntakeStop;
-import frc.robot.commands.Intake.IntakeIn;
-import frc.robot.commands.Intake.IntakeOut;
+import frc.robot.commands.Intake.IntakeSpinBackward;
+import frc.robot.commands.Intake.IntakeStop;
+import frc.robot.commands.Intake.IntakeSpinBackward;
+import frc.robot.commands.Intake.HuntMode;
+import frc.robot.commands.Intake.StowedMode;
+import frc.robot.commands.Intake.StowedMode;
 import frc.robot.commands.Storage.StorageStop;
+import frc.robot.commands.Storage.BottomStorageIn;
+import frc.robot.commands.Storage.TopStorageOut;
+import frc.robot.commands.Storage.TopStorageIn;
+import frc.robot.commands.Hang.HangMove;
+import frc.robot.commands.Hang.HangServoMove;
 import frc.robot.commands.Hang.HangStop;
-
-
-
+import frc.robot.commands.Hang.HangServoStop;
+import frc.robot.commands.Hang.MoveArms;
+import frc.robot.commands.Hang.MoveArmsToLimit;
+import frc.robot.commands.Hang.MoveClaw;
+import frc.robot.commands.Hang.MoveLiftToPosition;
+import frc.robot.commands.Hang.MoveLiftToBottomLimit;
+import frc.robot.commands.Hang.MoveLiftToTopLimit;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -48,7 +60,7 @@ public class RobotContainer {
   private final Hang hang = new Hang();
   private final Camera camera = new Camera();
   private final Intake intake = new Intake();
-  private final Flywheel shooter = new Flywheel();
+  private final Flywheel flywheel = new Flywheel();
   private final Storage storage = new Storage();
   
   // Each subsystems' commands
@@ -56,18 +68,31 @@ public class RobotContainer {
   private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
   private final BaseDriveLow baseDriveLow = new BaseDriveLow(base);
   private final BaseDriveHigh baseDriveHigh = new BaseDriveHigh(base);
-  private final IntakeIn intakeIn = new IntakeIn(intake);
-  private final IntakeOut intakeOut = new IntakeOut(intake);
+  private final HangMove hangMove = new HangMove(hang);
+  private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);  
   private final IntakeStop intakeStop = new IntakeStop(intake);
+  private final HuntMode huntMode = new HuntMode(intake);
+  private final StowedMode stowedMode = new StowedMode(intake);
   private final HangStop hangStop = new HangStop(hang);
+  private final HangServoMove hangServoMove = new HangServoMove(hang);
+  private final HangServoStop hangServoStop = new HangServoStop(hang);
+  private final MoveArms moveArms = new MoveArms(hang);
+  private final MoveArmsToLimit moveArmsToLimit = new MoveArmsToLimit(hang);
+  private final MoveClaw moveClawOut = new MoveClaw(hang, 1);
+  private final MoveClaw moveClawIn = new MoveClaw(hang, 0);
+  private final MoveLiftToBottomLimit moveLiftToBottomLimit = new MoveLiftToBottomLimit(hang);
+  private final MoveLiftToTopLimit moveLiftToTopLimit = new MoveLiftToTopLimit(hang);
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
-  private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
-  private final FlywheelStop flywheelStop = new FlywheelStop(shooter);
+  private final FlywheelSpin flywheelSpin = new FlywheelSpin(flywheel);
+  private final FlywheelStop flywheelStop = new FlywheelStop(flywheel);
+  private final BottomStorageIn bottomStorageIn = new BottomStorageIn(storage);
+  private final TopStorageOut topStorageOut = new TopStorageOut(storage);
+  private final TopStorageIn topStorageIn = new TopStorageIn(storage);
 
   //Controller Ports
-  private static final int KLogitechPort = 0;
-  private static final int KXboxPort = 1;  
+  private static final int KLogitechPort = 1;
+  private static final int KXboxPort = 0;  
 
   //Deadzone
   private static final double KDeadZone = 0.05;
@@ -112,7 +137,8 @@ public class RobotContainer {
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
     intake.setDefaultCommand(intakeStop);
-    shooter.setDefaultCommand(flywheelStop);
+    flywheel.setDefaultCommand(flywheelStop);
+    intake.setDefaultCommand(stowedMode);
     storage.setDefaultCommand(storageStop);
 
     //Game controllers
@@ -152,24 +178,19 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
-    // xboxBtnLB.whenHeld(shoot);
-    xboxBtnX.whenHeld(intakeIn);
-    xboxBtnY.whenHeld(intakeOut);
-    xboxBtnB.whenHeld(flywheelSpin);
 
     logitechBtnA.whenHeld(aimWithLimelight);
     logitechBtnRT.whileHeld(driveWithLimelight);
-    logitechBtnLT.whenPressed(baseDriveLow);
-    logitechBtnLT.whenReleased(baseDriveHigh);
+    logitechBtnLT.whenPressed(baseDriveHigh);
+    logitechBtnLT.whenReleased(baseDriveLow);
 
+    // xboxBtnLB.whenHeld(flywheelSpin);
+    xboxBtnRB.whenHeld(bottomStorageIn);
+    xboxBtnX.whenHeld(huntMode);
+    xboxBtnB.whenHeld(intakeSpinBackward);
+    xboxBtnA.whenHeld(moveClawIn);
+    xboxBtnY.whenHeld(moveClawOut);
   }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return null;

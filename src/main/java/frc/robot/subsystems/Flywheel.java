@@ -12,19 +12,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 public class Flywheel extends SubsystemBase {
-  private TalonFX flywheelMotor;
-  // private final  flywheelEncoder;
-  private PIDController flywheelController;
-  private double kFlywheelP = 0;
-  private double kFlywheelI = 0;
-  private double kFlywheelD = 0;
-  
-  public Flywheel() {
-    flywheelMotor = new TalonFX(KFlywheelMotor);
-    flywheelController = new PIDController(kFlywheelP, kFlywheelI, kFlywheelD);
-    flywheelMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
-    SmartDashboard.putNumber("Flywheel kP", 0.0);
+  private TalonFX flywheelMotor;
+  private PIDController flywheelController;
+  private double flywheelControllerKP = 1;
+  private double flywheelControllerKI = 0;
+  private double flywheelControllerKD = 0;
+  private boolean isMoving = false;
+
+  public Flywheel() {
+    flywheelMotor = new TalonFX(KFlywheelMotorTalon);
+    flywheelController = new PIDController(flywheelControllerKP, flywheelControllerKI, flywheelControllerKD);
+    // flywheelMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
+    flywheelMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+
+    SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
     SmartDashboard.putNumber("Flywheel kI", 0.0);
     SmartDashboard.putNumber("Flywheel kD", 0.0);
   }
@@ -45,5 +47,7 @@ public class Flywheel extends SubsystemBase {
     setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0), 
                     SmartDashboard.getNumber("Flywheel kI", 0.0), 
                     SmartDashboard.getNumber("Flywheel kD", 0.0));
+    SmartDashboard.putNumber("flywheel velocity", flywheelController.calculate(getVelocity(), 1));
+    SmartDashboard.putBoolean("flywheelmoving", isMoving);
   }
 }
