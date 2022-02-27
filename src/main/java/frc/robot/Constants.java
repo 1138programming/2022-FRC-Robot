@@ -88,13 +88,6 @@ public final class Constants {
     public static final double KIntakeSpinPWM = 0.4;
     public static final double KIntakeSwivelPWM = 0.4;
     
-    // Limelight 
-    public static final double KLimelightRange = 29.8;
-    public static final double kDesiredYOffset = 1;
-    public static final double kDesiredXOffset = 1;
-    public static final double kLimelightXOffsetDeadzone = 0.05;
-    // public static final double kYOffsetDeadzone = 10; //not implemented yet
-    
     //FlyWheel
     public static final double KFlywheelSpeed = 1.0;
     public static final double kYOffsetDeadzone = 10;
@@ -120,4 +113,14 @@ public final class Constants {
     public static double backLeftOffset = 0;
     public static double backRightOffset = 0;
     
+    // Limelight Constants
+    public static final double KLimelightHeight = 18.75; // inches
+    public static final double KHubHeight = 104; // inches
+    public static final double KHeightDifference = KHubHeight - KLimelightHeight; // inches
+    public static final double KLimelightAngle = 45;
+    public static final double KLimelightRange = 29.8;
+    public static final double kDesiredYOffset = 1;
+    public static final double kDesiredXOffset = 1;
+    public static final double kLimelightXOffsetDeadzone = 0.05;
+    // public static final double kYOffsetDeadzone = 10; //not implemented yet
 }

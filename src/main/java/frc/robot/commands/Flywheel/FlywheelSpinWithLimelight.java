@@ -32,12 +32,25 @@ public class FlywheelSpinWithLimelight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    //max flywheel RPM is 2896 RPM
+    //nolan testing data: 202 in. is 85% (2462 rpm), 60 in. is 65% flywheel speed (1883 rpm)
+    //assume linear relationship between distance and RPM required to score, (2462-1883)/(202-60) = 4.077
+    distanceFromHub = camera.getDistance();
+    if (distanceFromHub > 60) {
+      flywheelOutput = 1883 + distanceFromHub * 4.077;
+    }
+    else {
+      flywheelOutput = 0;
+    }
+    SmartDashboard.putNumber("flywheel output (RPM)", flywheelOutput);
+    flywheel.move(flywheelOutput);    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    flywheel.move(0);
+  }
 
   // Returns true when the command should end.
   @Override
