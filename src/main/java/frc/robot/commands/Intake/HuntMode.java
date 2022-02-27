@@ -9,11 +9,22 @@ import frc.robot.subsystems.Intake;
 import static frc.robot.Constants.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
-
+import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
+import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.links.Link;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
+import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
+import io.github.pseudoresonance.pixy2api.links.SPILink;
+import io.github.pseudoresonance.pixy2api.*;
 
 public class HuntMode extends CommandBase {
   /** Creates a new HuntMode. */
   private final Intake intake;
+  private int state = -1;
+  private boolean isCamera = false ;
   public HuntMode(Intake intake) {
     this.intake = intake;
     addRequirements(intake);
@@ -24,24 +35,18 @@ public class HuntMode extends CommandBase {
   public void initialize() {
     intake.swivelToPos(KIntakeAngle); // Sets the intake to hunt mode.
     SmartDashboard.putNumber("Pixy", 0);
-  }
+    intake.setLamp();
+	  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {   
-    
-    
-    
-    
-    ArrayList<Block> blocks = intake.().getPixy().getCCC().getBlocks();
-		if (blocks == null) {
-			System.err.println("No Blocks");
-			return;
+  public void execute() {  
 
-
-
-
-
+    if (!isCamera) {
+      state = intake.pixyInit(); // if no camera present, try to initialize  
+      isCamera = (state >= 0);
+    }
+    SmartDashboard.putBoolean("Camera", isCamera); 
 
   if (intake.getIntakeEncoderDeg() == KIntakeAngle) //Checks to see if the the intake is at the correct angle.
     {  
@@ -81,8 +86,8 @@ public class HuntMode extends CommandBase {
        }
 
     }
-    SmartDashboard.putNumber("Pixy", intake.getPixyColorRed());
-  }
+    SmartDashboard.putNumber("Pixy", intake.getRedPixyCashe().size());
+   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
