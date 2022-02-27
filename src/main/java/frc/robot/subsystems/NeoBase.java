@@ -2,8 +2,6 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
-import frc.robot.Gains;
-
 //All First FRC imports
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -162,7 +160,6 @@ public class NeoBase extends SubsystemBase {
 
   class SwerveX {
     
-    private final Gains kAngleGains = new Gains(0.006, 0.0, 0.0, 0.0); 
     private CANSparkMax driveMotor;
     private CANSparkMax angleMotor;
     private DutyCycleEncoder magEncoder;
@@ -181,9 +178,7 @@ public class NeoBase extends SubsystemBase {
       this.offset = offset;
       this.isInverted = isInverted;
       
-      //PIDControllers
-      angleController = new PIDController(kAngleGains.kP, kAngleGains.kI, kAngleGains.kD);
-      
+      //PIDControllers      
       //Telling the PIDcontroller that 360 degrees in one direction is the same as 360 degrees in the other direction.
       angleController.enableContinuousInput(-180, 180);
       
