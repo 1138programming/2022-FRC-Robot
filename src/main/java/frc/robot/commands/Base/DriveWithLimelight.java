@@ -7,7 +7,6 @@ package frc.robot.commands.Base;
 import static frc.robot.Constants.*;
 
 import frc.robot.Robot;
-import frc.robot.Gains;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.NeoBase;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -23,7 +22,9 @@ public class DriveWithLimelight extends CommandBase {
   private Camera camera;
   private NeoBase base;
   private PIDController rotationController;
-  private Gains pidGains;
+  private final double kLimglightP = 0.8;
+  private final double kLimglightI = 0;
+  private final double kLimglightD = 0;
 
   /** Creates a new DriveWithLimelight. */
   public DriveWithLimelight(NeoBase base, Camera camera) {
@@ -31,8 +32,7 @@ public class DriveWithLimelight extends CommandBase {
     this.base = base;
     this.camera = camera;
 
-    pidGains = new Gains(0.8, 0, 0, 0);
-    rotationController = new PIDController(pidGains.kP, pidGains.kI, pidGains.kD);
+    rotationController = new PIDController(kLimglightP, kLimglightI, kLimglightD);
 
     addRequirements(base);
     addRequirements(camera);

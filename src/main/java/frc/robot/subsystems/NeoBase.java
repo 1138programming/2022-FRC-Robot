@@ -2,9 +2,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
-import frc.robot.Gains;
-
-//All First FRC imports
+//All WPILib imports
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -18,8 +16,9 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.MathUtil;
 
-//REV Robotics Imports
+//REV Imports
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxRelativeEncoder.Type;
 import com.revrobotics.RelativeEncoder;
@@ -27,13 +26,12 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-//Misc Imports
-import edu.wpi.first.math.MathUtil;
+//NavX Imports
 import com.kauailabs.navx.frc.AHRS;
 
 public class NeoBase extends SubsystemBase {
    
-  public static AHRS gyro = new AHRS(SPI.Port.kMXP); //not on the bot yet
+  public static AHRS gyro;
 
   private SwerveDriveKinematics kinematics;
 
@@ -64,7 +62,10 @@ public class NeoBase extends SubsystemBase {
 
   //distance in inches of a module from the center of mass (we use a square base so only 1 number is needed)
   private double kSwerveModuleLocationFromCoM = 14.5; 
+  
   public NeoBase() {
+
+    gyro = new AHRS(SPI.Port.kMXP);
 
     //defining the physical position of the swerve modules
     kinematics = new SwerveDriveKinematics(
@@ -162,7 +163,6 @@ public class NeoBase extends SubsystemBase {
 
   class SwerveX {
     
-    private final Gains kAngleGains = new Gains(0.006, 0.0, 0.0, 0.0); 
     private CANSparkMax driveMotor;
     private CANSparkMax angleMotor;
     private DutyCycleEncoder magEncoder;
@@ -173,6 +173,9 @@ public class NeoBase extends SubsystemBase {
     private boolean isInverted;
     private double[] pulseWidthAndPeriod = new double[]{1, 1/244}; //pulse width found in mag encoder manual pdf, period is 1/frequency (also found in pdf)
     private double angleMotorOutput;
+    private final double kAngleP = 0.006;
+    private final double kAngleI = 0;
+    private final double kAngleD = 0;
     
     SwerveX(CANSparkMax driveMotor, CANSparkMax angleMotor, DutyCycleEncoder magEncoder, Rotation2d offset, boolean isInverted) {
       this.driveMotor = driveMotor;
@@ -182,7 +185,7 @@ public class NeoBase extends SubsystemBase {
       this.isInverted = isInverted;
       
       //PIDControllers
-      angleController = new PIDController(kAngleGains.kP, kAngleGains.kI, kAngleGains.kD);
+      angleController = new PIDController(kAngleP, kAngleI, kAngleD);
       
       //Telling the PIDcontroller that 360 degrees in one direction is the same as 360 degrees in the other direction.
       angleController.enableContinuousInput(-180, 180);

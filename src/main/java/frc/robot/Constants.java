@@ -37,13 +37,6 @@ public final class Constants {
     //Intake
     public static final int KSwivelIntakeTalon = 12;
     public static final int KSpinIntakeVictor = 13;
-    
-    // public static final int KSwivelIntakeMotor = 10;
-    // public static final int KSpinIntakeMotor = 10;
-    public static final int KIntakeAngle = 45;
-
-    // public static final int KSwivelIntakeEncoder = 1; 
-    // public static final int KHingeIntakeEncoder = 1; 
 
     //Hang
     public static final int KLeftHangMotor = 14;
@@ -70,7 +63,6 @@ public final class Constants {
     public static final int KLiftBottomLimit = 8;
     public static final int KLiftTopLimit = 9;
     public static final int KArmsLimit = 10; 
-    
     
     //PWM Ports
     //Hang
@@ -119,5 +111,8 @@ public final class Constants {
     public static double frontRightOffset = 0;
     public static double backLeftOffset = 0;
     public static double backRightOffset = 0;
-    
+
+    //Intake Constants
+    public static final int KIntakeAngle = 45;
+
 }

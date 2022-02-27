@@ -32,7 +32,6 @@ import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeSpinBackward;
 import frc.robot.commands.Intake.HuntMode;
 import frc.robot.commands.Intake.StowedMode;
-import frc.robot.commands.Intake.StowedMode;
 import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Storage.BottomStorageIn;
 import frc.robot.commands.Storage.TopStorageOut;
@@ -63,16 +62,17 @@ public class RobotContainer {
   private final Flywheel flywheel = new Flywheel();
   private final Storage storage = new Storage();
   
-  // Each subsystems' commands
+  //Each subsystems' commands
+  // Base
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
   private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
   private final BaseDriveLow baseDriveLow = new BaseDriveLow(base);
   private final BaseDriveHigh baseDriveHigh = new BaseDriveHigh(base);
+  // Flywheel
+  private final FlywheelSpin flywheelSpin = new FlywheelSpin(flywheel);
+  private final FlywheelStop flywheelStop = new FlywheelStop(flywheel);
+  // Hang
   private final HangMove hangMove = new HangMove(hang);
-  private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);  
-  private final IntakeStop intakeStop = new IntakeStop(intake);
-  private final HuntMode huntMode = new HuntMode(intake);
-  private final StowedMode stowedMode = new StowedMode(intake);
   private final HangStop hangStop = new HangStop(hang);
   private final HangServoMove hangServoMove = new HangServoMove(hang);
   private final HangServoStop hangServoStop = new HangServoStop(hang);
@@ -82,10 +82,14 @@ public class RobotContainer {
   private final MoveClaw moveClawIn = new MoveClaw(hang, 0);
   private final MoveLiftToBottomLimit moveLiftToBottomLimit = new MoveLiftToBottomLimit(hang);
   private final MoveLiftToTopLimit moveLiftToTopLimit = new MoveLiftToTopLimit(hang);
+  // Intake
+  private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);  
+  private final IntakeStop intakeStop = new IntakeStop(intake);
+  private final HuntMode huntMode = new HuntMode(intake);
+  private final StowedMode stowedMode = new StowedMode(intake);
+  // Storage
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
-  private final FlywheelSpin flywheelSpin = new FlywheelSpin(flywheel);
-  private final FlywheelStop flywheelStop = new FlywheelStop(flywheel);
   private final BottomStorageIn bottomStorageIn = new BottomStorageIn(storage);
   private final TopStorageOut topStorageOut = new TopStorageOut(storage);
   private final TopStorageIn topStorageIn = new TopStorageIn(storage);
