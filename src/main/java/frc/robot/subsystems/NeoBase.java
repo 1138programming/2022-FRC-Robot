@@ -303,14 +303,13 @@ public class NeoBase extends SubsystemBase {
   }
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     applyModuleStates(desiredStates);
-  }
-  
+  }  
 
-  private double velocityToDriveVolts(double speedMetersPerSecond){
-    double ff = feedforward.calculate(speedMetersPerSecond);
-    MathUtil.clamp(ff, -12, 12);
-    return -ff;
-  }
+  // private double velocityToDriveVolts(double speedMetersPerSecond){
+  //   double ff = feedforward.calculate(speedMetersPerSecond);
+  //   MathUtil.clamp(ff, -12, 12);
+  //   return -ff;
+  // }
   //straightfoward commands and definitions, just look at the names and it will be obvious
   public void applyModuleStates(SwerveModuleState[] desiredStates) {
     desiredStates[0].speedMetersPerSecond = -desiredStates[0].speedMetersPerSecond;
@@ -365,19 +364,13 @@ public class NeoBase extends SubsystemBase {
   }
 
   public Pose2d getPose() {
-    // return pose;
     return odometry.getPoseMeters();
   }
-
-  // public void resetPose() {
-    // pose
-  // }
 
   public void resetOdometry(Pose2d pose) {
     Rotation2d gyroR2D = Rotation2d.fromDegrees(-gyro.getAngle());
     odometry.resetPosition(pose, gyroR2D);
   }
-
 
   // ks: volts
   // kV: volts * seconds / meter
@@ -477,10 +470,10 @@ public class NeoBase extends SubsystemBase {
       double angle = -getRawAbsoluteTicks() * 360;
       return angle;
     }
-    public double getAngleDegWithOdometryOffset(double offset) {
-      double angle = -(getAbsoluteTicksWithOdometryOffset(offset) / kticksPerRevolution) * 360;
-      return angle;
-    }
+    // public double getAngleDegWithOdometryOffset(double offset) {
+    //   double angle = -(getAbsoluteTicksWithOdometryOffset(offset) / kticksPerRevolution) * 360;
+    //   return angle;
+    // }
     public double getAngleDegFromGyro() {
       return gyro.getAngle() - getAngleDeg() % 360;
     }
@@ -500,17 +493,17 @@ public class NeoBase extends SubsystemBase {
       }
       return magEncoderAbsValue;
     }
-    public double getAbsoluteTicksWithOdometryOffset(double offset){
-      double magEncoderAbsValue = magEncoder.get();
-      if (magEncoderAbsValue < 0)
-      {
-        magEncoderAbsValue = kticksPerRevolution + ((magEncoder.get() + offset/360) % 1 ) * kticksPerRevolution;  //convert from revoltions (unit) to ticks(unit)
-      }
-      else {
-        magEncoderAbsValue = ((magEncoder.get() + offset/360) % 1) * kticksPerRevolution;
-      }
-      return magEncoderAbsValue;
-    }
+    // public double getAbsoluteTicksWithOdometryOffset(double offset){
+    //   double magEncoderAbsValue = magEncoder.get();
+    //   if (magEncoderAbsValue < 0)
+    //   {
+    //     magEncoderAbsValue = kticksPerRevolution + ((magEncoder.get() + offset/360) % 1 ) * kticksPerRevolution;  //convert from revoltions (unit) to ticks(unit)
+    //   }
+    //   else {
+    //     magEncoderAbsValue = ((magEncoder.get() + offset/360) % 1) * kticksPerRevolution;
+    //   }
+    //   return magEncoderAbsValue;
+    // }
 
     public void resetWheelAngle() {
       double output = angleController.calculate(getAngleEncoderDeg(), 0);
@@ -536,44 +529,44 @@ public class NeoBase extends SubsystemBase {
         return;
       }
 
-    Rotation2d currentAngleR2D = getAngleR2D();
-    desiredState = SwerveModuleState.optimize(desiredState, currentAngleR2D);
-    
-    //Find the difference between our current rotational position and our new rotational position
-    Rotation2d rotationDelta = desiredState.angle.minus(currentAngleR2D);
+      Rotation2d currentAngleR2D = getAngleR2D();
+      desiredState = SwerveModuleState.optimize(desiredState, currentAngleR2D);
+      
+      //Find the difference between our current rotational position and our new rotational position
+      Rotation2d rotationDelta = desiredState.angle.minus(currentAngleR2D);
 
-    //Find the new absolute position of the module based on the difference in degrees
-    double deltaDeg = rotationDelta.getDegrees();
+      //Find the new absolute position of the module based on the difference in degrees
+      double deltaDeg = rotationDelta.getDegrees();
 
-    if (Math.abs(deltaDeg) < 2) {
-       angleMotorOutput = 0;
+      if (Math.abs(deltaDeg) < 2) {
+        angleMotorOutput = 0;
+        }
+      else {
+        angleMotorOutput = angleController.calculate(getAngleEncoderDeg(), desiredState.angle.getDegrees());
+      }  
+
+      //comment out when testing so fingies dont get chopped off
+      angleMotor.set(angleMotorOutput);
+
+      if (isInverted) {
+        // driveMotorOutput = driveController.calculate(getDriveEncoderVel(), -(desiredState.speedMetersPerSecond));
+        driveMotorOutput = -desiredState.speedMetersPerSecond / kPhysicalMaxDriveSpeedMPS;
+        // driveMotorOutput = MathUtil.clamp(driveMotorOutput, -1.0, 1.0);
       }
-    else {
-      angleMotorOutput = angleController.calculate(getAngleEncoderDeg(), desiredState.angle.getDegrees());
-    }  
+      else {
+        // driveMotorOutput = driveController.calculate(getDriveEncoderVel(), (desiredState.speedMetersPerSecond));
+        driveMotorOutput = desiredState.speedMetersPerSecond / kPhysicalMaxDriveSpeedMPS;
+        // driveMotorOutput = MathUtil.clamp(driveMotorOutput, -1.0, 1.0);
+      }
 
-    //comment out when testing so fingies dont get chopped off
-    angleMotor.set(angleMotorOutput);
-
-    if (isInverted) {
-      // driveMotorOutput = driveController.calculate(getDriveEncoderVel(), -(desiredState.speedMetersPerSecond));
-      driveMotorOutput = -desiredState.speedMetersPerSecond / kPhysicalMaxDriveSpeedMPS;
-      // driveMotorOutput = MathUtil.clamp(driveMotorOutput, -1.0, 1.0);
-    }
-    else {
-      // driveMotorOutput = driveController.calculate(getDriveEncoderVel(), (desiredState.speedMetersPerSecond));
-      driveMotorOutput = desiredState.speedMetersPerSecond / kPhysicalMaxDriveSpeedMPS;
-      // driveMotorOutput = MathUtil.clamp(driveMotorOutput, -1.0, 1.0);
-    }
-
-    //comment out when testing so fingies dont get chopped off
-    driveMotor.set(driveMotorOutput); 
-    // driveMotor.set(desiredState.speedMetersPerSecond / kPhysicalMaxDriveSpeedMPS); 
-    SmartDashboard.putNumber("driveouput", driveMotorOutput);
-    SmartDashboard.putNumber("driveVel", getDriveEncoderVel());
-    SmartDashboard.putNumber("destate speed", desiredState.speedMetersPerSecond);
-    SmartDashboard.putNumber("kDriveEncoderRPM2MeterPerSec", kDriveEncoderRPM2MeterPerSec);
-    SmartDashboard.putNumber("kMaxDriveSpeedMPS", maxDriveSpeedMPS);
+      //comment out when testing so fingies dont get chopped off
+      driveMotor.set(driveMotorOutput); 
+      // driveMotor.set(desiredState.speedMetersPerSecond / kPhysicalMaxDriveSpeedMPS); 
+      SmartDashboard.putNumber("driveouput", driveMotorOutput);
+      SmartDashboard.putNumber("driveVel", getDriveEncoderVel());
+      SmartDashboard.putNumber("destate speed", desiredState.speedMetersPerSecond);
+      SmartDashboard.putNumber("kDriveEncoderRPM2MeterPerSec", kDriveEncoderRPM2MeterPerSec);
+      SmartDashboard.putNumber("kMaxDriveSpeedMPS", maxDriveSpeedMPS);
     }
   }
 }
