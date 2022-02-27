@@ -9,10 +9,23 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import static frc.robot.Constants.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.ArrayList;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
+import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.links.Link;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
+import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
+import io.github.pseudoresonance.pixy2api.links.SPILink;
+import io.github.pseudoresonance.pixy2api.*;
 
 public class HuntMode extends CommandBase {
   /** Creates a new HuntMode. */
   private final Intake intake;
+  private int state = -1;
+  private boolean isCamera = false ;
   public HuntMode(Intake intake) {
     this.intake = intake;
     addRequirements(intake);
@@ -21,31 +34,61 @@ public class HuntMode extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.swivelToPos(KIntakeAngle);
-    SmartDashboard.putBoolean("Pixy", false);
-  }
+    intake.swivelToPos(KIntakeAngle); // Sets the intake to hunt mode.
+    SmartDashboard.putNumber("Pixy", 0);
+    intake.setLamp();
+	  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    boolean pixySees = SmartDashboard.getBoolean("Pixy", false);
-    if (intake.getPixyColorRed() == 3 || intake.getPixyColorBlue() == 3 )
-    {
-      intake.moveSwivel(KIntakeSwivelPWM);
-      intake.moveSpin(KIntakeSpinPWM);
-    }
-    else
-    {
-      intake.swivelToPos(KIntakeAngle);
-      intake.moveSpin(0);
-    }
-    if (intake.getBottomLimitSwitch()) 
-    {
-      intake.moveSwivel(0);
-    }
-    
-  }
+  public void execute() {  
 
+    if (!isCamera) {
+      state = intake.pixyInit(); // if no camera present, try to initialize  
+      isCamera = (state >= 0);
+    }
+    SmartDashboard.putBoolean("Camera", isCamera); 
+
+  if (intake.getIntakeEncoderDeg() == KIntakeAngle) //Checks to see if the the intake is at the correct angle.
+    {  
+      if (intake.getPixyColorRed() >= 1 || intake.getPixyColorBlue() == 3) 
+      /* Checks to see if the ball is in the intake by adding the bumper objects to the total count of objects. 
+         Then it caps the amount of objects it will register to 3, making it so the code does not need to be switched before the match.
+      */
+        {
+          intake.swivelToPos(10);
+          intake.moveSpin(KIntakeSpinPWM); 
+          // This swivels the intake to the collection position and spins the intake motor.
+        }
+      else
+      {
+        intake.swivelToPos(KIntakeAngle);
+        intake.moveSpin(0);
+        // This keeps the intake in the hunt postion and stops the motor.
+      }
+      if (intake.getBottomLimitSwitch()) 
+      {
+        intake.moveSwivel(0);
+        // Stops the intakes when it gets to the limit switch. This is a failsafe if the intake starts to go too far down. 
+      }
+    }
+  else
+    {
+      if (intake.getIntakeEncoderDeg() <= KIntakeAngle && (intake.getPixyColorRed() == 1 || intake.getPixyColorBlue() == 3))
+        // Checks to see if the pixy still sees the ball and if the intake is below hunt mode angle.
+       {
+        intake.moveSpin(KIntakeSpinPWM);
+        // Spins the intake.
+       }
+      else
+       {
+         intake.swivelToPos(KIntakeAngle);
+         // Moves the intake back to hunt mode. 
+       }
+
+    }
+    SmartDashboard.putNumber("Pixy", intake.getRedPixyCashe().size());
+   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
