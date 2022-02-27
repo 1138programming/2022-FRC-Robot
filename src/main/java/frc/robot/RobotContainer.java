@@ -46,18 +46,14 @@ import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Storage.BottomStorageIn;
 import frc.robot.commands.Storage.TopStorageOut;
 import frc.robot.commands.Storage.TopStorageIn;
-import frc.robot.commands.HangTest.MoveArmBackward;
-import frc.robot.commands.HangTest.MoveArmForward;
-import frc.robot.commands.HangTest.MoveClawIn;
-import frc.robot.commands.HangTest.MoveClawOut;
-import frc.robot.commands.HangTest.MoveHangDown;
-import frc.robot.commands.HangTest.MoveHangUp;
 import frc.robot.commands.Hang.HangStop;
-import frc.robot.commands.Hang.MoveArmsToLimit;
-import frc.robot.commands.Hang.MoveClaw;
-import frc.robot.commands.Hang.MoveLiftToPosition;
-import frc.robot.commands.Hang.MoveLiftToBottomLimit;
-import frc.robot.commands.Hang.MoveLiftToTopLimit;
+import frc.robot.commands.Hang.MoveArmBackward;
+import frc.robot.commands.Hang.MoveArmForward;
+import frc.robot.commands.Hang.MoveClawIn;
+import frc.robot.commands.Hang.MoveClawOut;
+import frc.robot.commands.Hang.MoveHangDown;
+import frc.robot.commands.Hang.MoveHangUp;
+import frc.robot.commands.Hang.MoveLiftTo;
 import io.github.pseudoresonance.pixy2api.*;
 
 
@@ -93,9 +89,7 @@ public class RobotContainer {
   private final MoveClawOut moveClawOut = new MoveClawOut(hang);
   private final MoveHangDown moveHangDown = new MoveHangDown(hang);
   private final MoveHangUp moveHangUp = new MoveHangUp(hang);
-  private final MoveArmsToLimit moveArmsToLimit = new MoveArmsToLimit(hang);
-  private final MoveLiftToBottomLimit moveLiftToBottomLimit = new MoveLiftToBottomLimit(hang);
-  private final MoveLiftToTopLimit moveLiftToTopLimit = new MoveLiftToTopLimit(hang);
+
   // Intake
   private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);  
   private final IntakeStop intakeStop = new IntakeStop(intake);

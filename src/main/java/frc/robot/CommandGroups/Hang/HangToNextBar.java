@@ -6,12 +6,6 @@ package frc.robot.CommandGroups.Hang;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import frc.robot.commands.Hang.MoveArms;
-import frc.robot.commands.Hang.MoveArmsToLimit;
-import frc.robot.commands.Hang.MoveLiftToPosition;
-import frc.robot.commands.Hang.MoveLiftToBottomLimit;
-import frc.robot.commands.Hang.MoveLiftToTopLimit;
-import frc.robot.commands.Hang.MoveClaw;
 import frc.robot.subsystems.Hang;
 import static frc.robot.Constants.*;
 
@@ -24,10 +18,10 @@ public class HangToNextBar extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new MoveLiftToTopLimit(hang),
-      new MoveArmsToLimit(hang),
-      new MoveClaw(hang, 1),
-      new MoveLiftToBottomLimit(hang)
+      // new MoveLiftToTopLimit(hang),
+      // new MoveArmsToLimit(hang),
+      // new MoveClaw(hang, 1),
+      // new MoveLiftToBottomLimit(hang)
     );
   }
 }

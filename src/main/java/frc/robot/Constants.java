@@ -60,9 +60,9 @@ public final class Constants {
     public static final int kIntakeTopLimit = 7;  
     
     //Hang
-    public static final int KLiftBottomLimit = 8;
-    public static final int KLiftTopLimit = 9;
-    public static final int KArmsLimit = 10; 
+    public static final int KLeftArmLimit = 8;
+    public static final int KRightArmLimit = 9;
+    public static final int KHangLimit = 10; 
     
     //PWM Ports
     //Hang

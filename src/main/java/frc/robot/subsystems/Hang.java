@@ -19,26 +19,28 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Hang extends SubsystemBase {
   /** Creates a new Hang. */
   
-  private TalonFX leftSwingMotor;
-  private TalonFX rightSwingMotor;
+  private TalonFX leftArmMotor;
+  private TalonFX rightArmMotor;
   private TalonSRX levelHangMotor;
   private Servo rightClawServo;
   private Servo leftClawServo;
   private Servo ratchetServo;
 
-  private DigitalInput bottomLiftLimitSwitch;
-  private DigitalInput topLiftLimitSwitch;
-  private DigitalInput armLimitSwitch;
+  private DigitalInput leftArmLimit;
+  private DigitalInput rightArmLimit;
+  private DigitalInput hangLimit;
 
-  private double armEncoderFrontLimit;
+  private final double kHangEncoderLimitPos = 6.9; //Change When Testing
+
+  private final double armEncoderFrontLimit = 6.9; //Change When Testing
 
   public Hang() {
-    leftSwingMotor = new TalonFX(KLeftHangMotor);
-    rightSwingMotor = new TalonFX(KRightHangMotor);
+    leftArmMotor = new TalonFX(KLeftHangMotor);
+    rightArmMotor = new TalonFX(KRightHangMotor);
     levelHangMotor = new TalonSRX(KLevelHangMotor);
 
-    leftSwingMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-    rightSwingMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    leftArmMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    rightArmMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     levelHangMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
     leftClawServo = new Servo(KLeftClawServo);
@@ -47,56 +49,78 @@ public class Hang extends SubsystemBase {
     leftClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     rightClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     
-    bottomLiftLimitSwitch = new DigitalInput(KLiftBottomLimit);
-    topLiftLimitSwitch = new DigitalInput(KLiftTopLimit);
-    armLimitSwitch = new DigitalInput(KArmsLimit);
-
-    armEncoderFrontLimit = 12; //Change When Testing
+    leftArmLimit = new DigitalInput(KLeftArmLimit);
+    rightArmLimit = new DigitalInput(KRightArmLimit);
+    hangLimit = new DigitalInput(KHangLimit);
   }
 
   public void move(double swingMotorSpeed, double levelMotorSpeed){
-    leftSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
-    rightSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
+    leftArmMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
+    rightArmMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
     levelHangMotor.set(ControlMode.PercentOutput, levelMotorSpeed);
   }
 
   public void moveArms(double speed) {
     if (speed < 0){
-      if(armLimitSwitch.get()){
-        leftSwingMotor.set(ControlMode.PercentOutput, 0);
-        rightSwingMotor.set(ControlMode.PercentOutput, 0);
-        resetArmEncoders();
+      if(leftArmLimit.get()){
+        leftArmMotor.set(ControlMode.PercentOutput, 0);
+        resetLeftArmEncoder();
       }
       else {
-        leftSwingMotor.set(ControlMode.PercentOutput, speed);
-        rightSwingMotor.set(ControlMode.PercentOutput, speed);
+        leftArmMotor.set(ControlMode.PercentOutput, speed);
       }
     }
     else {
       if (getLeftArmEncoder() <= armEncoderFrontLimit) {
-        leftSwingMotor.set(ControlMode.PercentOutput, speed);
-        rightSwingMotor.set(ControlMode.PercentOutput, speed);
+        leftArmMotor.set(ControlMode.PercentOutput, speed);
       }
       else {
-        leftSwingMotor.set(ControlMode.PercentOutput, 0);
-        rightSwingMotor.set(ControlMode.PercentOutput, 0);
+        leftArmMotor.set(ControlMode.PercentOutput, 0);
       }
     }
+
+    if (speed < 0){
+      if(rightArmLimit.get()){
+        rightArmMotor.set(ControlMode.PercentOutput, 0);
+        resetLeftArmEncoder();
+      }
+      else {
+        rightArmMotor.set(ControlMode.PercentOutput, speed);
+      }
+    }
+    else {
+      if (getRightArmEncoder() <= armEncoderFrontLimit) {
+        rightArmMotor.set(ControlMode.PercentOutput, speed);
+      }
+      else {
+        rightArmMotor.set(ControlMode.PercentOutput, 0);
+      }
+    }
+
   }
 
   public void moveLevel(double speed) {
-    levelHangMotor.set(ControlMode.PercentOutput, speed);
+    if (speed > 0 && getHangLimit()) {
+      levelHangMotor.set(ControlMode.PercentOutput, 0);
+      resetLevelHangEncoder();
+    }
+    else if (speed < 0 && (getLevelHangEncoder() > kHangEncoderLimitPos)) {
+      levelHangMotor.set(ControlMode.PercentOutput, 0);
+    }
+    else {
+      levelHangMotor.set(ControlMode.PercentOutput, speed);
+    }
   }
 
   public void moveToPosition(double armPosition, double levelPosition){
-    leftSwingMotor.set(ControlMode.Position, armPosition);
-    rightSwingMotor.set(ControlMode.Position, armPosition);
+    leftArmMotor.set(ControlMode.Position, armPosition);
+    rightArmMotor.set(ControlMode.Position, armPosition);
     levelHangMotor.set(ControlMode.Position, levelPosition);
   }
 
   public void moveArmsToPosition(double position) {
-    leftSwingMotor.set(ControlMode.Position, position);
-    rightSwingMotor.set(ControlMode.Position, position);
+    leftArmMotor.set(ControlMode.Position, position);
+    rightArmMotor.set(ControlMode.Position, position);
   }
 
   public void moveLevelToPosition(double position) {
@@ -121,37 +145,39 @@ public class Hang extends SubsystemBase {
     ratchetServo.set(pos);
   }
 
-  public boolean getBottomLiftLimitSwitch() {
-    return bottomLiftLimitSwitch.get();
+  public boolean getHangLimit() {
+    return hangLimit.get();
   }
-  public boolean getTopLiftLimitSwitch() {
-    return topLiftLimitSwitch.get();
+  public boolean getLeftArmLimit() {
+    return leftArmLimit.get();
   }
-  public boolean getArmsLimitSwitch() {
-    return armLimitSwitch.get();
+  public boolean getRightArmLimit() {
+    return rightArmLimit.get();
   }
 
   public double getLeftArmEncoder() {
-    return leftSwingMotor.getSelectedSensorPosition();
+    return leftArmMotor.getSelectedSensorPosition();
   }
   public double getRightArmEncoder() {
-    return rightSwingMotor.getSelectedSensorPosition();
+    return rightArmMotor.getSelectedSensorPosition();
   }
-  public double getLevelEncoder() {
+  public double getLevelHangEncoder() {
     return levelHangMotor.getSelectedSensorPosition();
   }
 
-  public void resetArmEncoders() {
-    leftSwingMotor.setSelectedSensorPosition(0);
-    rightSwingMotor.setSelectedSensorPosition(0);
+  public void resetLeftArmEncoder() {
+    leftArmMotor.setSelectedSensorPosition(0);
   }
-  public void resetLevelEncoder() {
+  public void resetRightArmEncoder() {
+    rightArmMotor.setSelectedSensorPosition(0);
+  }
+  public void resetLevelHangEncoder() {
     levelHangMotor.setSelectedSensorPosition(0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("hangBottom", getBottomLiftLimitSwitch());
+    SmartDashboard.putBoolean("hangBottom", getHangLimit());
   }
 }

@@ -4,42 +4,40 @@
 
 package frc.robot.commands.Hang;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hang;
 import static frc.robot.Constants.*;
 
-public class MoveArmsToLimit extends CommandBase {
+public class MoveClawTo extends CommandBase {
   private Hang hang;
-  private double speed;
+  private double pos;
 
-  /** Creates a new MoveArmsToLimit. */
-  public MoveArmsToLimit(Hang hang) {
+  /** Creates a new ClawOut. */
+  public MoveClawTo(Hang hang, double pos) {
+    this.pos = pos;
     this.hang = hang;
     addRequirements(hang);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
+  public void initialize() {
+  }
+  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.moveArms(KArmSpeed); //position not determined
+    hang.moveClaw(pos);    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!hang.getArmsLimitSwitch()) {
-      return true;
-    }
-    return false;
+    return true;
   }
 }

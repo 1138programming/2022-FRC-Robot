@@ -43,8 +43,8 @@ public class Intake extends SubsystemBase {
     spinIntakeMotor = new VictorSPX(KSpinIntakeVictor);
     swivelIntakeMotor.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
     swivelController = new PIDController(intakeControllerkP, intakeControllerkI, intakeControllerkD);
-    topLimitSwitch = new DigitalInput(KLiftTopLimit);
-    bottomLimitSwitch = new DigitalInput(KLiftBottomLimit);
+    topLimitSwitch = new DigitalInput(kIntakeTopLimit);
+    bottomLimitSwitch = new DigitalInput(kIntakeBottomLimit);
 
     pixy = Pixy2.createInstance(Pixy2.LinkType.SPI);
     pixyInit();
