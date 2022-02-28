@@ -54,6 +54,8 @@ import frc.robot.commands.Hang.MoveClawOut;
 import frc.robot.commands.Hang.MoveHangDown;
 import frc.robot.commands.Hang.MoveHangUp;
 import frc.robot.commands.Hang.MoveLiftTo;
+import frc.robot.commands.Hang.MoveRachetIn;
+import frc.robot.commands.Hang.MoveRachetOut;
 import io.github.pseudoresonance.pixy2api.*;
 
 
@@ -89,6 +91,8 @@ public class RobotContainer {
   private final MoveClawOut moveClawOut = new MoveClawOut(hang);
   private final MoveHangDown moveHangDown = new MoveHangDown(hang);
   private final MoveHangUp moveHangUp = new MoveHangUp(hang);
+  private final MoveRachetIn moveRachetIn = new MoveRachetIn(hang);
+  private final MoveRachetOut moveRachetOut = new MoveRachetOut(hang);
 
   // Intake
   private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);  
@@ -103,8 +107,8 @@ public class RobotContainer {
   private final TopStorageIn topStorageIn = new TopStorageIn(storage);
 
   //Controller Ports
-  private static final int KLogitechPort = 1;
-  private static final int KXboxPort = 0;  
+  private static final int KLogitechPort = 0;
+  private static final int KXboxPort = 1;  
 
   //Deadzone
   private static final double KDeadZone = 0.05;
@@ -150,7 +154,8 @@ public class RobotContainer {
     hang.setDefaultCommand(hangStop);
     intake.setDefaultCommand(intakeStop);
     flywheel.setDefaultCommand(flywheelStop);
-    intake.setDefaultCommand(stowedMode);
+    // intake.setDefaultCommand(stowedMode);
+    intake.setDefaultCommand(intakeStop);
     storage.setDefaultCommand(storageStop);
 
     //Game controllers
@@ -196,12 +201,20 @@ public class RobotContainer {
     logitechBtnLT.whenPressed(baseDriveHigh);
     logitechBtnLT.whenReleased(baseDriveLow);
 
-    // xboxBtnLB.whenHeld(flywheelSpin);
-    xboxBtnRB.whenHeld(bottomStorageIn);
-    xboxBtnX.whenHeld(huntMode);
-    xboxBtnB.whenHeld(intakeSpinBackward);
+    // xboxBtnY.whenHeld(moveArmForward);
+    // xboxBtnA.whenHeld(moveArmBackward);
+    xboxBtnX.whenHeld(moveHangDown);
+    xboxBtnY.whenHeld(moveHangUp);
+
     xboxBtnA.whenHeld(moveClawIn);
-    xboxBtnY.whenHeld(moveClawOut);
+    xboxBtnB.whenHeld(moveClawOut);
+    // xboxBtnLT.whenPressed(moveClawIn);
+    // xboxBtnLB.whenPressed(moveRachetOut);
+    // xboxBtnRB.whenPressed(moveRachetIn);
+    xboxBtnLB.whenHeld(moveArmForward);
+    xboxBtnRB.whenHeld(moveArmBackward);
+    // xboxBtnRB.whenPressed(moveRachetIn);
+    // xboxBtnRT.whenPressed(moveRachetOut);
   }
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous

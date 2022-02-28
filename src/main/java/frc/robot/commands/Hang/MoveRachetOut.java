@@ -11,11 +11,10 @@ import frc.robot.subsystems.Hang;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-
-public class MoveArmForward extends CommandBase {
+public class MoveRachetOut extends CommandBase {
   private Hang hang;
-  /** Creates a new ArmForward. */
-  public MoveArmForward(Hang hang) {
+  /** Creates a new MoveClawOut. */
+  public MoveRachetOut(Hang hang) {
     this.hang = hang;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -27,8 +26,7 @@ public class MoveArmForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // hang.moveArms(KArmPWM);
-    hang.moveArmsBad(KArmPWM);
+    hang.moveRachet(1);
   }
 
   // Called once the command ends or is interrupted.

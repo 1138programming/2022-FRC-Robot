@@ -66,9 +66,9 @@ public final class Constants {
     
     //PWM Ports
     //Hang
-    public static final int KLeftClawServo = 1;
-    public static final int KMiddleLinearServo = 2;
-    public static final int KRightClawServo = 3;
+    public static final int KLeftClawServo = 2;
+    public static final int KRatchetServo = 0;
+    public static final int KRightClawServo = 1;
     
     // Default PWM Values
     //Base
@@ -87,12 +87,10 @@ public final class Constants {
 
     //storage
     public static final double kStoragePWM = 0.5;
+
     //Hang 
-    public static final double KArmSpeed = 0.3;
-    public static final double KArmPosition = 1.0;
-    public static final double KLevelSpeed = 1.0;
-    public static final double KLevelPosition = 1.0;
-    
+    public static final double KArmPWM = 0.5; //Left Arm positive goes back, right arm positive goes forward
+    public static final double KLevelHangSpeed = 0.45; //Negative is up.
     
     //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second

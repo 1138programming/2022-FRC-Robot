@@ -11,6 +11,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.RelativeEncoder;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -43,11 +45,16 @@ public class Hang extends SubsystemBase {
     rightArmMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     levelHangMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
+    leftArmMotor.setNeutralMode(NeutralMode.Brake);
+    rightArmMotor.setNeutralMode(NeutralMode.Brake);
+    
     leftClawServo = new Servo(KLeftClawServo);
     rightClawServo = new Servo(KRightClawServo);
+    ratchetServo = new Servo(KRatchetServo);
 
     leftClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     rightClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
+    ratchetServo.setBounds(2.5, 1.8, 1.5, 1.2, 0.5);
     
     leftArmLimit = new DigitalInput(KLeftArmLimit);
     rightArmLimit = new DigitalInput(KRightArmLimit);
@@ -60,6 +67,7 @@ public class Hang extends SubsystemBase {
     levelHangMotor.set(ControlMode.PercentOutput, levelMotorSpeed);
   }
 
+  //Left Arm positive speed goes back, right arm positive speed goes forward
   public void moveArms(double speed) {
     if (speed < 0){
       if(leftArmLimit.get()){
@@ -85,12 +93,12 @@ public class Hang extends SubsystemBase {
         resetLeftArmEncoder();
       }
       else {
-        rightArmMotor.set(ControlMode.PercentOutput, speed);
+        rightArmMotor.set(ControlMode.PercentOutput, -speed);
       }
     }
     else {
       if (getRightArmEncoder() <= armEncoderFrontLimit) {
-        rightArmMotor.set(ControlMode.PercentOutput, speed);
+        rightArmMotor.set(ControlMode.PercentOutput, -speed);
       }
       else {
         rightArmMotor.set(ControlMode.PercentOutput, 0);
@@ -99,6 +107,16 @@ public class Hang extends SubsystemBase {
 
   }
 
+  public void moveArmsBad(double speed) {
+    leftArmMotor.set(ControlMode.PercentOutput, speed);
+    rightArmMotor.set(ControlMode.PercentOutput, -speed);
+
+  }
+  public void moveLeveHangBad(double speed) {
+    levelHangMotor.set(ControlMode.PercentOutput, -speed);
+  }
+
+  //Negative speed is up
   public void moveLevel(double speed) {
     if (speed > 0 && getHangLimit()) {
       levelHangMotor.set(ControlMode.PercentOutput, 0);
@@ -108,7 +126,7 @@ public class Hang extends SubsystemBase {
       levelHangMotor.set(ControlMode.PercentOutput, 0);
     }
     else {
-      levelHangMotor.set(ControlMode.PercentOutput, speed);
+      levelHangMotor.set(ControlMode.PercentOutput, -speed);
     }
   }
 

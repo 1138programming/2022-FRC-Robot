@@ -27,7 +27,7 @@ public class MoveClawIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.moveClaw(1);
+    hang.moveClaw(0);
   }
 
   // Called once the command ends or is interrupted.
@@ -37,6 +37,6 @@ public class MoveClawIn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

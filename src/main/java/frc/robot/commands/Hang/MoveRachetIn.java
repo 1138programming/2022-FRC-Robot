@@ -8,14 +8,14 @@ import frc.robot.Robot;
 
 import static frc.robot.Constants.*;
 import frc.robot.subsystems.Hang;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-
-public class MoveArmForward extends CommandBase {
+public class MoveRachetIn extends CommandBase {
   private Hang hang;
-  /** Creates a new ArmForward. */
-  public MoveArmForward(Hang hang) {
+  /** Creates a new MoveClawOut. */
+  public MoveRachetIn(Hang hang) {
     this.hang = hang;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -27,8 +27,8 @@ public class MoveArmForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // hang.moveArms(KArmPWM);
-    hang.moveArmsBad(KArmPWM);
+    double servoPos = MathUtil.clamp(50, 0, 255);
+    hang.moveRachet(0);
   }
 
   // Called once the command ends or is interrupted.
