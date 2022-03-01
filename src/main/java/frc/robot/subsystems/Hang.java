@@ -48,6 +48,7 @@ public class Hang extends SubsystemBase {
 
     leftArmMotor.setNeutralMode(NeutralMode.Brake);
     rightArmMotor.setNeutralMode(NeutralMode.Brake);
+    levelHangMotor.setNeutralMode(NeutralMode.Brake);
     
     leftClawServo = new Servo(KLeftClawServo);
     rightClawServo = new Servo(KRightClawServo);

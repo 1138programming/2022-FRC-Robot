@@ -196,26 +196,24 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    logitechBtnA.whenHeld(aimWithLimelight);
+    //Drive Controls
+    // logitechBtnA.whenHeld(aimWithLimelight);
     logitechBtnRT.whileHeld(driveWithLimelight);
     logitechBtnLT.whenPressed(baseDriveHigh);
     logitechBtnLT.whenReleased(baseDriveLow);
 
-    // xboxBtnY.whenHeld(moveArmForward);
-    // xboxBtnA.whenHeld(moveArmBackward);
-    xboxBtnX.whenHeld(moveHangDown);
-    xboxBtnY.whenHeld(moveHangUp);
-
-    xboxBtnA.whenHeld(moveClawIn);
-    xboxBtnB.whenHeld(moveClawOut);
-    // xboxBtnLT.whenPressed(moveClawIn);
-    // xboxBtnLB.whenPressed(moveRachetOut);
-    // xboxBtnRB.whenPressed(moveRachetIn);
-    xboxBtnLB.whenHeld(moveArmForward);
-    xboxBtnRB.whenHeld(moveArmBackward);
-    // xboxBtnRB.whenPressed(moveRachetIn);
-    // xboxBtnRT.whenPressed(moveRachetOut);
+    //Hang Controls
+    logitechBtnA.whenHeld(moveClawIn);
+    logitechBtnB.whenHeld(moveClawOut);
+    logitechBtnX.whenHeld(moveHangDown);
+    logitechBtnY.whenHeld(moveHangUp);
+    logitechBtnLB.whenHeld(moveArmForward);
+    logitechBtnRB.whenHeld(moveArmBackward);
+    
+    //Intake Controls
+    xboxBtnA.whenHeld(intakeSpinBackward);
   }
+
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return null;
