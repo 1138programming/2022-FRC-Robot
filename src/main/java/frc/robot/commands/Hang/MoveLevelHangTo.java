@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hang;
 import static frc.robot.Constants.*;
 
-public class MoveLiftTo extends CommandBase {
+public class MoveLevelHangTo extends CommandBase {
   private Hang hang;
   private double liftSetPoint;
   private double currentEncoderValue;
@@ -18,7 +18,7 @@ public class MoveLiftTo extends CommandBase {
   private double output;
 
   /** Creates a new MoveArmsTo. */
-  public MoveLiftTo(Hang hang) {
+  public MoveLevelHangTo(Hang hang) {
     this.hang = hang;
     liftPosController = new PIDController(kP, kI, kD);
     addRequirements(hang);
@@ -37,7 +37,7 @@ public class MoveLiftTo extends CommandBase {
   public void execute() {
     currentEncoderValue = hang.getLevelHangEncoder();
     output = liftPosController.calculate(currentEncoderValue, liftSetPoint);
-    hang.moveLevel(output);
+    hang.moveLevelHangSpeed(output);
   }
 
   // Called once the command ends or is interrupted.

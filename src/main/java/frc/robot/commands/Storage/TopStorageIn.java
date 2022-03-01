@@ -16,13 +16,12 @@ public class TopStorageIn extends CommandBase {
     }
 
     public void intialize(){
-        SmartDashboard.putBoolean("why", true);
+
     }
 
     public void execute(){
         //First number is the top motor, second number is the bottom motor
         storage.moveTop(kStoragePWM);
-        SmartDashboard.putBoolean("topStorageIn", true);
     }
 
     public void end(boolean interrupted){}

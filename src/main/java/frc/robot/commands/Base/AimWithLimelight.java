@@ -31,7 +31,7 @@ public class AimWithLimelight extends CommandBase {
   @Override
   public void initialize() {
     if (camera.getTargetFound() == 0) {
-      SmartDashboard.putBoolean("Target Found", false);
+      SmartDashboard.putBoolean("Limelight Target Found", false);
     }
   }
 
@@ -40,7 +40,6 @@ public class AimWithLimelight extends CommandBase {
   public void execute() {
     rot = rotationController.calculate(camera.getXOffset()/KLimelightRange, 0);
     base.drive(0, 0, -rot, false);
-    SmartDashboard.putNumber("Rotation", rot);
   }
 
   // Called once the command ends or is interrupted.

@@ -53,7 +53,7 @@ import frc.robot.commands.Hang.MoveClawIn;
 import frc.robot.commands.Hang.MoveClawOut;
 import frc.robot.commands.Hang.MoveHangDown;
 import frc.robot.commands.Hang.MoveHangUp;
-import frc.robot.commands.Hang.MoveLiftTo;
+import frc.robot.commands.Hang.MoveLevelHangTo;
 import frc.robot.commands.Hang.MoveRachetIn;
 import frc.robot.commands.Hang.MoveRachetOut;
 import io.github.pseudoresonance.pixy2api.*;

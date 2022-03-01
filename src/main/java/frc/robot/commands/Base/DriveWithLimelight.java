@@ -62,8 +62,6 @@ public class DriveWithLimelight extends CommandBase {
     rot -= rotationController.calculate(camera.getXOffset()/KLimelightRange, 0);
     
     base.drive(fbSpeed, lrSpeed, rot, false);
-    
-    SmartDashboard.putNumber("fbspeed", fbSpeed);
   }
 
   // Called once the command ends or is interrupted.

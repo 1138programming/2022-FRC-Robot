@@ -39,7 +39,6 @@ public class Camera extends SubsystemBase {
     y = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
     area = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
     
-    SmartDashboard.putNumber("Target Found", targetFound);
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
@@ -70,7 +69,6 @@ public class Camera extends SubsystemBase {
 
   public double getDistance() {
     double distance = KHeightDifference / Math.tan(Math.toRadians(KLimelightAngle + y));
-    SmartDashboard.putNumber("currentY", y);
     return distance;
   }
 }

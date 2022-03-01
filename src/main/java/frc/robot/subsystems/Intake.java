@@ -59,7 +59,6 @@ public class Intake extends SubsystemBase {
   }
   // Getters
   public boolean getBottomLimitSwitch() {
-    SmartDashboard.putBoolean("getBottomLimitSwitch", bottomLimitSwitch.get());
     return bottomLimitSwitch.get();
   }
   public boolean getTopLimitSwitch() {

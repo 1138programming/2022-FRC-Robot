@@ -34,7 +34,8 @@ public class Hang extends SubsystemBase {
 
   private final double kHangEncoderLimitPos = 6.9; //Change When Testing
 
-  private final double armEncoderFrontLimit = 6.9; //Change When Testing
+  private final double kArmMaxForwardLimit = 6.9; //Change When Testing
+  private final double kArmMaxReverseLimit = 0; //Encoder should reset everytime it hits the arm limit switches
 
   public Hang() {
     leftArmMotor = new TalonFX(KLeftHangMotor);
@@ -61,14 +62,18 @@ public class Hang extends SubsystemBase {
     hangLimit = new DigitalInput(KHangLimit);
   }
 
-  public void move(double swingMotorSpeed, double levelMotorSpeed){
-    leftArmMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
-    rightArmMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
-    levelHangMotor.set(ControlMode.PercentOutput, levelMotorSpeed);
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("hangLimit", getHangLimit());
+    SmartDashboard.putBoolean("LeftArmLimit", getLeftArmLimit());
+    SmartDashboard.putBoolean("rightArmLimit", getRightArmLimit());
+    SmartDashboard.putNumber("leftArmEncoder", getLeftArmEncoder());
+    SmartDashboard.putNumber("rightArmEncoder", getRightArmEncoder());
   }
 
   //Left Arm positive speed goes back, right arm positive speed goes forward
-  public void moveArms(double speed) {
+  public void moveArmsSpeed(double speed) {
     if (speed < 0){
       if(leftArmLimit.get()){
         leftArmMotor.set(ControlMode.PercentOutput, 0);
@@ -79,7 +84,7 @@ public class Hang extends SubsystemBase {
       }
     }
     else {
-      if (getLeftArmEncoder() <= armEncoderFrontLimit) {
+      if (getLeftArmEncoder() <= kArmMaxForwardLimit) {
         leftArmMotor.set(ControlMode.PercentOutput, speed);
       }
       else {
@@ -97,27 +102,38 @@ public class Hang extends SubsystemBase {
       }
     }
     else {
-      if (getRightArmEncoder() <= armEncoderFrontLimit) {
+      if (getRightArmEncoder() <= kArmMaxForwardLimit) {
         rightArmMotor.set(ControlMode.PercentOutput, -speed);
       }
       else {
         rightArmMotor.set(ControlMode.PercentOutput, 0);
       }
     }
-
   }
-
-  public void moveArmsBad(double speed) {
-    leftArmMotor.set(ControlMode.PercentOutput, speed);
-    rightArmMotor.set(ControlMode.PercentOutput, -speed);
-
-  }
-  public void moveLeveHangBad(double speed) {
-    levelHangMotor.set(ControlMode.PercentOutput, -speed);
+  
+  public void moveArmsToPosition(double position) {
+    if(leftArmLimit.get()){
+      resetLeftArmEncoder();
+    }
+    if(rightArmLimit.get()){
+      resetRightArmEncoder();
+    }
+    if (position > kArmMaxForwardLimit) {
+      leftArmMotor.set(ControlMode.Position, kArmMaxForwardLimit);
+      rightArmMotor.set(ControlMode.Position, kArmMaxForwardLimit);
+    }
+    else if (position < kArmMaxReverseLimit) {
+      leftArmMotor.set(ControlMode.Position, kArmMaxReverseLimit);
+      rightArmMotor.set(ControlMode.Position, kArmMaxReverseLimit);
+    }
+    else {
+      leftArmMotor.set(ControlMode.Position, position);
+      rightArmMotor.set(ControlMode.Position, position);
+    }
   }
 
   //Negative speed is up
-  public void moveLevel(double speed) {
+  public void moveLevelHangSpeed(double speed) {
     if (speed > 0 && getHangLimit()) {
       levelHangMotor.set(ControlMode.PercentOutput, 0);
       resetLevelHangEncoder();
@@ -129,38 +145,30 @@ public class Hang extends SubsystemBase {
       levelHangMotor.set(ControlMode.PercentOutput, -speed);
     }
   }
-
-  public void moveToPosition(double armPosition, double levelPosition){
-    leftArmMotor.set(ControlMode.Position, armPosition);
-    rightArmMotor.set(ControlMode.Position, armPosition);
-    levelHangMotor.set(ControlMode.Position, levelPosition);
-  }
-
-  public void moveArmsToPosition(double position) {
-    leftArmMotor.set(ControlMode.Position, position);
-    rightArmMotor.set(ControlMode.Position, position);
-  }
-
-  public void moveLevelToPosition(double position) {
-    levelHangMotor.set(ControlMode.PercentOutput, position);
-    // levelHangMotor.set(ControlMode.Position, position);
-  }
-  // public void moveArms(double swingMotorSpeed) {
-  //   leftSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
-  //   rightSwingMotor.set(ControlMode.PercentOutput, swingMotorSpeed);
-  // }
-  // public void moveLift(double levelMotorSpeed) {
-  //   levelHangMotor.set(ControlMode.PercentOutput, levelMotorSpeed);
-  // }
-
+  
   public void moveClaw(double pos) {
     leftClawServo.set(pos);
     rightClawServo.set(pos);
-    SmartDashboard.putString("Claw", "ClawMoving");
 
   }
   public void moveRachet(double pos) {
     ratchetServo.set(pos);
+  }
+  
+  //BAD!!! Arm mvoement in this function is unrestricted, can crush the bot
+  public void moveArmsUnrestricted(double speed) {
+      leftArmMotor.set(ControlMode.PercentOutput, speed);
+      rightArmMotor.set(ControlMode.PercentOutput, -speed);
+  }
+  
+  //BAD!!! Hang mvoement in this function is unrestricted, can crush the bot
+  public void moveLeveHangUnrestricted(double speed) {
+    levelHangMotor.set(ControlMode.PercentOutput, -speed);
+  }
+  
+
+  public void moveLevelToPosition(double position) {
+    levelHangMotor.set(ControlMode.Position, position);
   }
 
   public boolean getHangLimit() {
@@ -193,9 +201,4 @@ public class Hang extends SubsystemBase {
     levelHangMotor.setSelectedSensorPosition(0);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("hangBottom", getHangLimit());
-  }
 }

@@ -33,7 +33,6 @@ public class Storage extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("storageMoving", isMoving);
   }
 
   //move function, to make top run bottom not run, (1,0), vice versa
@@ -44,12 +43,10 @@ public class Storage extends SubsystemBase {
   public void moveTop(double speed) {
     topStorageMotor.set(VictorSPXControlMode.PercentOutput, speed);
     isMoving = true;
-    SmartDashboard.putNumber("rising speed", speed);
   }
   public void moveBottom(double speed) {
     bottomStorageMotor.set(VictorSPXControlMode.PercentOutput, speed);
     isMoving = true;
-    SmartDashboard.putNumber("descending speed", speed);
   }
 
   public boolean getBallSensorTop(){

@@ -35,7 +35,6 @@ public class HuntMode extends CommandBase {
   @Override
   public void initialize() {
     intake.swivelToPos(KIntakeAngle); // Sets the intake to hunt mode.
-    SmartDashboard.putNumber("Pixy", 0);
     intake.setLamp();
 	  }
 
