@@ -57,6 +57,7 @@ import frc.robot.subsystems.Storage;
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
 import frc.robot.commands.Flywheel.FlywheelSpin;
+import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Flywheel.FlywheelStop; 
 import frc.robot.commands.Base.MoveBase;
 import frc.robot.commands.Base.ResetWheels;
@@ -116,6 +117,7 @@ public class RobotContainer {
   // Flywheel
   private final FlywheelSpin flywheelSpin = new FlywheelSpin(flywheel);
   private final FlywheelStop flywheelStop = new FlywheelStop(flywheel);
+  private final FlywheelSpinWithLimelight flywheelSpinWithLimelight = new FlywheelSpinWithLimelight(flywheel, camera);
   // Hang
   private final HangStop hangStop = new HangStop(hang);
   private final MoveArmBackward moveArmBackward = new MoveArmBackward(hang);
@@ -244,6 +246,7 @@ public class RobotContainer {
     logitechBtnRT.whileHeld(driveWithLimelight);
     logitechBtnLT.whenPressed(baseDriveHigh);
     logitechBtnLT.whenReleased(baseDriveLow);
+    logitechBtnY.whenPressed(resetGyro);
 
     //Hang Controls
     logitechBtnA.whenHeld(moveClawIn);
@@ -255,11 +258,10 @@ public class RobotContainer {
     
     //Intake Controls
     xboxBtnA.whenHeld(intakeSpinBackward);
-    logitechBtnY.whenPressed(resetGyro);
-    logitechBtnB.whenHeld(new ResetWheels(base));
-    logitechBtnX.whenHeld(ledOn);
-    logitechBtnRB.whenHeld(new RotateToHeading(base, 0));
 
+    //FLywheel Controls
+    xboxBtnY.toggleWhenActive(flywheelSpinWithLimelight);
+    xboxBtnY.toggleWhenActive(ledOn);
   }
 
   public Command getAutonomousCommand() {
@@ -381,6 +383,10 @@ public class RobotContainer {
         part2Command,
       new InstantCommand(() -> base.drive(0,0,0,true)));
     // return command1.andThen(command2);
+  }
+
+  public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {
+    return (maxAllowed - minAllowed) * (unscaledNum - min) / (max - min) + minAllowed;
   }
        
   public double getLogiRightYAxis() {
