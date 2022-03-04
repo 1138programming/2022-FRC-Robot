@@ -2,27 +2,25 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Base;
+package frc.robot.commands.Camera;
 
-import static frc.robot.Constants.*;
-import frc.robot.subsystems.NeoBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Camera;
 
-public class BaseDriveLow extends CommandBase {
+public class LEDOff extends CommandBase {
+  /** Creates a new LEDOff. */
+  private final Camera camera;
 
-  private final NeoBase base;
-
-  /** Creates a new BaseDriveLow. */
-  public BaseDriveLow(NeoBase base) {
-    this.base = base;
+  public LEDOff(Camera camera) {
+    this.camera = camera;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(camera);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    base.setMaxDriveSpeedPercent(kBaseDriveLowSpeed);
+    camera.LEDOff();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,6 +34,6 @@ public class BaseDriveLow extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

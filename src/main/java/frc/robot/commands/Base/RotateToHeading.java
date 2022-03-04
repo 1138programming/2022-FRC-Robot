@@ -4,30 +4,28 @@
 
 package frc.robot.commands.Base;
 
-import static frc.robot.Constants.*;
-import frc.robot.subsystems.NeoBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.NeoBase;
 
-public class BaseDriveLow extends CommandBase {
+public class RotateToHeading extends CommandBase {
+  NeoBase base;
+  double heading;
 
-  private final NeoBase base;
-
-  /** Creates a new BaseDriveLow. */
-  public BaseDriveLow(NeoBase base) {
+  public RotateToHeading(NeoBase base, double heading) {
     this.base = base;
-    // Use addRequirements() here to declare subsystem dependencies.
+    this.heading = heading;
+    addRequirements(base);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    base.setMaxDriveSpeedPercent(kBaseDriveLowSpeed);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    base.rotateToHeading(heading);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -36,6 +34,6 @@ public class BaseDriveLow extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return base.getHeadingDeg() <= heading + 3 && base.getHeadingDeg() >= heading - 3;
   }
 }

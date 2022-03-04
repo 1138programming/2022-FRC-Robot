@@ -4,8 +4,23 @@
 
 package frc.robot;
 
+import java.lang.reflect.Array;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.cfg.MapperConfigBase;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -20,6 +35,16 @@ import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
 import io.github.pseudoresonance.pixy2api.links.SPILink;
 import io.github.pseudoresonance.pixy2api.links.Link;
 
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
+import static frc.robot.Constants.*;
 
 // Subsystems:
 import frc.robot.subsystems.Intake;
@@ -33,9 +58,17 @@ import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
 import frc.robot.commands.Flywheel.FlywheelSpin;
 import frc.robot.commands.Flywheel.FlywheelStop; 
+import frc.robot.commands.Base.MoveBase;
+import frc.robot.commands.Base.ResetWheels;
+import frc.robot.commands.Base.RotateToHeading;
+import frc.robot.commands.Camera.LEDOff;
+import frc.robot.commands.Camera.LEDOn;
+import frc.robot.CommandGroups.Auton.Red1Auton;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
+import frc.robot.commands.Base.BaseStop;
+import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeSpinBackward;
 import frc.robot.commands.Intake.IntakeStop;
@@ -80,6 +113,7 @@ public class RobotContainer {
   private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
   private final BaseDriveLow baseDriveLow = new BaseDriveLow(base);
   private final BaseDriveHigh baseDriveHigh = new BaseDriveHigh(base);
+  private final ResetGyro resetGyro = new ResetGyro(base);
   // Flywheel
   private final FlywheelSpin flywheelSpin = new FlywheelSpin(flywheel);
   private final FlywheelStop flywheelStop = new FlywheelStop(flywheel);
@@ -105,6 +139,13 @@ public class RobotContainer {
   private final BottomStorageIn bottomStorageIn = new BottomStorageIn(storage);
   private final TopStorageOut topStorageOut = new TopStorageOut(storage);
   private final TopStorageIn topStorageIn = new TopStorageIn(storage);
+  
+  //Camera
+  private final LEDOff ledOff = new LEDOff(camera);
+  private final LEDOn ledOn = new LEDOn(camera);
+  
+  //Auton
+  private final Red1Auton red1Auton = new Red1Auton(base);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -157,6 +198,7 @@ public class RobotContainer {
     // intake.setDefaultCommand(stowedMode);
     intake.setDefaultCommand(intakeStop);
     storage.setDefaultCommand(storageStop);
+    camera.setDefaultCommand(ledOff);
 
     //Game controllers
     logitech = new Joystick(KLogitechPort); //Logitech Dual Action
@@ -186,6 +228,10 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+
+    //reset base gyro for field relative drive.
+    //RobotContrainer Constructor is run in Robot init, so we put resetgyro in here
+    base.resetGyro();
   }
 
   /**
@@ -195,7 +241,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
     //Drive Controls
     // logitechBtnA.whenHeld(aimWithLimelight);
     logitechBtnRT.whileHeld(driveWithLimelight);
@@ -212,13 +257,134 @@ public class RobotContainer {
     
     //Intake Controls
     xboxBtnA.whenHeld(intakeSpinBackward);
+    logitechBtnY.whenPressed(resetGyro);
+    logitechBtnB.whenHeld(new ResetWheels(base));
+    logitechBtnX.whenHeld(ledOn);
+    logitechBtnRB.whenHeld(new RotateToHeading(base, 0));
+
   }
 
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
-  }
+    // TrajectoryConfig config1 = new TrajectoryConfig(kAutonMaxDriveVelocity, kAutonMaxAccel);
+    // TrajectoryConfig config2 = new TrajectoryConfig(kAutonMaxDriveVelocity, kAutonMaxAccel);
+    // // config.setKinematics(base.getKinematics());
+    // // config2.setKinematics(base.getKinematics());
+    // // config.setEndVelocity(1);
+    // // config2.setStartVelocity(1);
+    // config1.setReversed(false);
+    // config2.setReversed(true);
 
+    // Trajectory trajectory1;
+    // Trajectory trajectory2;
+    PathPlannerTrajectory part1 = PathPlanner.loadPath("Blue 1 Part 1", kAutonMaxDriveVelocity, kAutonMaxAccel);
+    PPSwerveControllerCommand part1Command;
+    PathPlannerTrajectory part2 = PathPlanner.loadPath("Blue 1 Part 2", kAutonMaxDriveVelocity, kAutonMaxAccel);
+    PPSwerveControllerCommand part2Command;
+
+    // SwerveControllerCommand command1;
+    // SwerveControllerCommand command2;
+    // SwerveControllerCommand concatTrajCommand;
+
+    PIDController xController = new PIDController(0.45, 0, 0);
+    PIDController yController = new PIDController(0.4, 0, 0);
+    ProfiledPIDController thetaController = new ProfiledPIDController(
+      0.8, 0, 0, new TrapezoidProfile.Constraints(kAutonMaxAngularVelocity, kAutonMaxAngularAccel));
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    // trajectory1 = TrajectoryGenerator.generateTrajectory(
+    //   new Pose2d(0, 0, new Rotation2d(0)),
+    //   List.of(
+    //     new Translation2d(2, 0)
+    //   ),
+    //   new Pose2d(2, 0, new Rotation2d(0)),
+    //   config1
+    // );
+
+    
+    // trajectory2 = TrajectoryGenerator.generateTrajectory(
+    //   new Pose2d(0, 0, new Rotation2d(0)),
+    //   List.of(
+    //     new Translation2d(-2, 0)
+    //   ),
+    //   new Pose2d(-2, 0, new Rotation2d(0)),
+    //   config2
+    // );
+
+    // var concatTraj = trajectory1.concatenate(trajectory2);
+    
+    // command1 = new SwerveControllerCommand(
+    //   trajectory1,
+    //   base::getPose,
+    //   base.getKinematics(),
+    //   xController,
+    //   yController,
+    //   thetaController,
+    //   base::setModuleStates,
+    //   base
+    //   );
+      
+    // command2 = new SwerveControllerCommand(
+    //   trajectory2,
+    //   base::getPose,
+    //   base.getKinematics(),
+    //   xController,
+    //   yController,
+    //   thetaController,
+    //   base::setModuleStates,
+    //   base
+    //   );
+      
+    // concatTrajCommand = new SwerveControllerCommand(
+    //   concatTraj,
+    //   base::getPose,
+    //   base.getKinematics(),
+    //   xController,
+    //   yController,
+    //   thetaController,
+    //   base::setModuleStates,
+    //   base
+    //   );
+        
+    part1Command = new PPSwerveControllerCommand(
+      part1, 
+      base::getPose, 
+      base.getKinematics(), 
+      xController,
+      yController,
+      thetaController,
+      base::setModuleStates,
+      base
+      );
+
+    part2Command = new PPSwerveControllerCommand(
+      part2,
+      base::getPose, 
+      base.getKinematics(), 
+      xController,
+      yController,
+      thetaController,
+      base::setModuleStates,
+      base
+    );
+        
+      // base.resetOdometry(trajectory1.getInitialPose());
+      
+      // trajectory1 = trajectory1.concatenate(trajectory2);
+      // base.resetOdometry(red1.getInitialPose());
+      // return command1;
+    return new SequentialCommandGroup(
+      // new InstantCommand(() -> base.resetOdometry(trajectory1.getInitialPose())),
+        // command1,
+        // concatTrajCommand,
+      // new InstantCommand(() -> base.resetOdometry(trajectory2.getInitialPose())),
+      //   command2,
+      new InstantCommand(() -> base.resetOdometry(part1.getInitialPose())),
+        part1Command,
+        part2Command,
+      new InstantCommand(() -> base.drive(0,0,0,true)));
+    // return command1.andThen(command2);
+  }
+       
   public double getLogiRightYAxis() {
     final double Y = logitech.getRawAxis(KRightYAxis);
     if (Y > KDeadZone || Y < -KDeadZone)

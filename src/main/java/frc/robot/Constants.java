@@ -18,10 +18,10 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public final class Constants {
     // Motors IDs
     //Base
-    public static final int frontLeftDriveId = 1; 
-    public static final int frontLeftSteerId = 2;
-    public static final int frontRightDriveId = 3; 
-    public static final int frontRightSteerId = 4; 
+    public static final int frontRightDriveId = 1; 
+    public static final int frontRightSteerId = 2; 
+    public static final int frontLeftDriveId = 3; 
+    public static final int frontLeftSteerId = 4;
     public static final int backLeftDriveId = 5; 
     public static final int backLeftSteerId = 6;
     public static final int backRightDriveId = 7; 
@@ -72,10 +72,11 @@ public final class Constants {
     
     // Default PWM Values
     //Base
-    public static final double kBaseDriveLowSpeed = 0.6;
+    public static final double kBaseDriveLowSpeed = 0.4;
     public static final double kBaseDriveMediumSpeed = 0.8;
-    public static final double kBaseDriveHighSpeed = 1.0;
+    public static final double kBaseDriveHighSpeed = 1.0; //about 5700 RPM
     
+
     //Intake
     public static final double KIntakeSpinPWM = 0.4;
     public static final double KIntakeSwivelPWM = 0.4;
@@ -97,11 +98,13 @@ public final class Constants {
     public static final double kMaxMotorOutput = 1.0;
     public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
     public static final double kticksPerRevolution = 4096;
-    public static double fieldCalibration = 0;
-    public static double frontLeftOffset = 0;
-    public static double frontRightOffset = 0;
-    public static double backLeftOffset = 0;
-    public static double backRightOffset = 0;
+    public static final double kAutonMaxDriveVelocity = 2;
+    public static final double kAutonMaxAngularVelocity = (4 * Math.PI)/10;
+    public static final double kAutonMaxAccel = 2;
+    public static final double kAutonMaxAngularAccel = Math.PI/4;
+    public static final double ks = 0.56097;
+    public static final double kv = 1.8624;
+    public static final double ka = 2.208;
 
     //Intake Constants
     public static final int KIntakeAngle = 45;
