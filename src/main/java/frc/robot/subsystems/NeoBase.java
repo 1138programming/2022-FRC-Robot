@@ -4,8 +4,6 @@ import static frc.robot.Constants.*;
 
 import java.util.function.DoublePredicate;
 
-import frc.robot.Gains;
-
 //All First FRC imports
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;

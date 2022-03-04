@@ -88,7 +88,6 @@ import frc.robot.commands.Hang.MoveHangDown;
 import frc.robot.commands.Hang.MoveHangUp;
 import frc.robot.commands.Hang.MoveLevelHangTo;
 import frc.robot.commands.Hang.MoveRachetIn;
-import frc.robot.commands.Hang.MoveRachetOut;
 import io.github.pseudoresonance.pixy2api.*;
 
 
@@ -126,7 +125,6 @@ public class RobotContainer {
   private final MoveHangDown moveHangDown = new MoveHangDown(hang);
   private final MoveHangUp moveHangUp = new MoveHangUp(hang);
   private final MoveRachetIn moveRachetIn = new MoveRachetIn(hang);
-  private final MoveRachetOut moveRachetOut = new MoveRachetOut(hang);
 
   // Intake
   private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);  
