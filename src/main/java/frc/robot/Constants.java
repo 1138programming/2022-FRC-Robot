@@ -76,7 +76,6 @@ public final class Constants {
     public static final double kBaseDriveMediumSpeed = 0.8;
     public static final double kBaseDriveHighSpeed = 1.0; //about 5700 RPM
     
-
     //Intake
     public static final double KIntakeSpinPWM = 0.4;
     public static final double KIntakeSwivelPWM = 0.4;
@@ -111,7 +110,7 @@ public final class Constants {
 
     
     // Limelight Constants
-    public static final double KLimelightHeight = 18.75; // inches
+    public static final double KLimelightHeight = 35; // inches
     public static final double KHubHeight = 104; // inches
     public static final double KHeightDifference = KHubHeight - KLimelightHeight; // inches
     public static final double KLimelightAngle = 45;

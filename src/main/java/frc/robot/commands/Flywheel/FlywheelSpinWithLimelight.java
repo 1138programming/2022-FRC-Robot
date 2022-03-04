@@ -6,8 +6,10 @@ package frc.robot.commands.Flywheel;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheel;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Camera;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 
 public class FlywheelSpinWithLimelight extends CommandBase {
@@ -36,6 +38,7 @@ public class FlywheelSpinWithLimelight extends CommandBase {
     //nolan testing data: 202 in. is 85% (2462 rpm), 60 in. is 65% flywheel speed (1883 rpm)
     //assume linear relationship between distance and RPM required to score, (2462-1883)/(202-60) = 4.077
     distanceFromHub = camera.getDistance();
+
     if (distanceFromHub > 60) {
       flywheelOutput = 1883 + distanceFromHub * 4.077;
     }
@@ -43,6 +46,8 @@ public class FlywheelSpinWithLimelight extends CommandBase {
       flywheelOutput = 0;
     }
     SmartDashboard.putNumber("flywheel output (RPM)", flywheelOutput);
+    // flywheelOutput = RobotContainer.scaleBetween(flywheelOutput, -1, 1, -2896, 2896);
+    // SmartDashboard.putNumber("flywheel output (Percent)", flywheelOutput);
     flywheel.move(flywheelOutput);    
   }
 

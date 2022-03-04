@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
+import frc.robot.RobotContainer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -30,9 +31,11 @@ public class Flywheel extends SubsystemBase {
     SmartDashboard.putNumber("Flywheel kI", 0.0);
     SmartDashboard.putNumber("Flywheel kD", 0.0);
   }
-
+  
   public void move(double speed) {
-    flywheelMotor.set(ControlMode.PercentOutput, flywheelController.calculate(getVelocity(), speed));
+    speed = -RobotContainer.scaleBetween(speed, -1, 1, -2896, 2896); //Reversed
+    // flywheelMotor.set(ControlMode.PercentOutput, flywheelController.calculate(getVelocity(), speed));
+    SmartDashboard.putNumber("FlywheelPID Output", flywheelController.calculate(getVelocity(), speed));
   }
   
   public void moveRawPercent(double speed) {
@@ -41,7 +44,8 @@ public class Flywheel extends SubsystemBase {
   
   public double getVelocity() //max velocity = 19776u / 100ms, which is 2896.875 rotations/min, conversion factor is 600/4096 (75/512)
   {
-    return flywheelMotor.getSelectedSensorVelocity() * (75/512); //returns in RPM
+    double factor = 75.0 / 512.0;
+    return flywheelMotor.getSelectedSensorVelocity() * factor;
   }
   
   public void setFlywheelGains(double kP, double kI, double kD){
@@ -51,9 +55,9 @@ public class Flywheel extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0), 
-                    SmartDashboard.getNumber("Flywheel kI", 0.0), 
-                    SmartDashboard.getNumber("Flywheel kD", 0.0));
-    SmartDashboard.putNumber("flywheel velocity", flywheelController.calculate(getVelocity(), 1));
-    SmartDashboard.putBoolean("flywheelmoving", isMoving);
+    SmartDashboard.getNumber("Flywheel kI", 0.0), 
+    SmartDashboard.getNumber("Flywheel kD", 0.0));
+    SmartDashboard.putNumber("Flywheel RPM", getVelocity());
+    SmartDashboard.putNumber("Motor RPM", flywheelMotor.getSelectedSensorVelocity());
   }
 }
