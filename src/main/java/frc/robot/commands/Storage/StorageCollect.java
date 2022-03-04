@@ -25,19 +25,21 @@ public class StorageCollect extends CommandBase {
         //if the bottom sensor sees a ball, both motors will run
         if(ballInBottom)
         {
-            storage.move(1,1);
             //if the top sensor sees the ball (and the bottom sensor also sees ball), then both stop
-            if(ballInTop && ballInBottom)
-            {
-                storage.move(0,0);            
+            if (ballInTop) {
+                storage.move(0, 0);
+            }
+            else {
+                storage.move(1,1);
             }
         }
+        
         //if the bottom sensor does NOT see a ball, only the bottom motor will run
-            else 
-            {
-                storage.move(0, 1);
-            }
+        else 
+        {
+            storage.move(0, 1);
         }
+    }
 
     public void end(boolean interrupted){}
 

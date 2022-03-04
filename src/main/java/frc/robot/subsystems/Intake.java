@@ -100,10 +100,10 @@ public class Intake extends SubsystemBase {
 		return pixy;
 	}
   public int getPixyColorRed() {
-    return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 3);
+    return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1);
   }
   public int getPixyColorBlue() {
-    return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG2, 3);
+    return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG2);
   }
 
 

@@ -48,9 +48,9 @@ public class HuntMode extends CommandBase {
     }
     SmartDashboard.putBoolean("Camera", isCamera); 
 
-  if (intake.getIntakeEncoderDeg() == KIntakeAngle) //Checks to see if the the intake is at the correct angle.
+  if (intake.getIntakeEncoderDeg() <= KIntakeAngle + 1 && intake.getIntakeEncoderDeg() >= KIntakeAngle - 1) //Checks to see if the the intake is at the correct angle.
     {  
-      if (intake.getPixyColorRed() >= 1 || intake.getPixyColorBlue() == 3) 
+      if (intake.getPixyColorRed() >= 1 || intake.getPixyColorBlue() >= 1) 
       /* Checks to see if the ball is in the intake by adding the bumper objects to the total count of objects. 
          Then it caps the amount of objects it will register to 3, making it so the code does not need to be switched before the match.
       */
@@ -61,7 +61,6 @@ public class HuntMode extends CommandBase {
         }
       else
       {
-        intake.swivelToPos(KIntakeAngle);
         intake.moveSpin(0);
         // This keeps the intake in the hunt postion and stops the motor.
       }
@@ -73,7 +72,7 @@ public class HuntMode extends CommandBase {
     }
   else
     {
-      if (intake.getIntakeEncoderDeg() <= KIntakeAngle && (intake.getPixyColorRed() == 1 || intake.getPixyColorBlue() == 3))
+      if (intake.getIntakeEncoderDeg() <= KIntakeAngle && (intake.getPixyColorRed() >= 1 || intake.getPixyColorBlue() >= 1))
         // Checks to see if the pixy still sees the ball and if the intake is below hunt mode angle.
        {
         intake.moveSpin(KIntakeSpinPWM);
@@ -87,7 +86,7 @@ public class HuntMode extends CommandBase {
 
     }
     SmartDashboard.putNumber("Pixy", intake.getRedPixyCashe().size());
-   }
+  }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
