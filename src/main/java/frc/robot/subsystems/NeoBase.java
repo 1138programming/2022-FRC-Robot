@@ -145,6 +145,16 @@ public class NeoBase extends SubsystemBase {
     autonStates = new SwerveModuleState[4];
 
     rotController = new PIDController(10, 0, 0);
+
+    
+    SmartDashboard.putNumber("new x", 0);
+    SmartDashboard.putNumber("new y", 0);
+    SmartDashboard.putNumber("new rotation", 0);
+
+    SmartDashboard.putNumber("rotP", 0);
+    SmartDashboard.putNumber("rotI", 0);
+    SmartDashboard.putNumber("rotD", 0);
+
   }
 
   /**
@@ -368,6 +378,11 @@ public class NeoBase extends SubsystemBase {
   public void resetOdometry(Pose2d pose) {
     Rotation2d gyroR2D = Rotation2d.fromDegrees(-gyro.getAngle());
     odometry.resetPosition(pose, gyroR2D);
+  }
+
+  public Pose2d getSmartDashboardPose(double x, double y) {
+    Pose2d smartDashboardPose = new Pose2d(x, y, new Rotation2d());
+    return smartDashboardPose;
   }
 
   // ks: volts

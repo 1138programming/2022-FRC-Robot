@@ -69,6 +69,7 @@ import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
 import frc.robot.commands.Base.BaseStop;
+import frc.robot.commands.Base.DriveToPose;
 import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeSpinBackward;
@@ -247,6 +248,8 @@ public class RobotContainer {
     logitechBtnLT.whenPressed(baseDriveHigh);
     logitechBtnLT.whenReleased(baseDriveLow);
     logitechBtnY.whenPressed(resetGyro);
+    logitechBtnY.whileHeld(new ResetWheels(base));
+    logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
     logitechBtnA.whenHeld(moveClawIn);
@@ -255,6 +258,9 @@ public class RobotContainer {
     logitechBtnY.whenHeld(moveHangUp);
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
+    
+
+    logitechBtnRT.whileHeld(new DriveToPose(base, new Pose2d()));
     
     //Intake Controls
     xboxBtnA.whenHeld(intakeSpinBackward);

@@ -4,12 +4,12 @@
 
 package frc.robot.commands.Base;
 
-import com.fasterxml.jackson.databind.node.POJONode;
+import javax.crypto.interfaces.DHPublicKey;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.NeoBase;
 
@@ -26,6 +26,10 @@ public class DriveToPose extends CommandBase {
   private double lrSpeed;
   private double rotSpeed;
 
+  double rotP;
+  double rotI;
+  double rotD;
+
   private PIDController fbController;
   private PIDController lrController;
   private PIDController rotController;
@@ -33,12 +37,18 @@ public class DriveToPose extends CommandBase {
   /** Creates a new DriveToPose. */
   public DriveToPose(NeoBase base, Pose2d targetPose) {
     this.base = base;
-    this.targetPose = targetPose;
-    currentPose = new Pose2d();
+    // this.targetPose = targetPose;
+
+    this.targetPose = new Pose2d(SmartDashboard.getNumber("new x", 0), SmartDashboard.getNumber("new y", 0), new Rotation2d());
+    SmartDashboard.putString("targetPose", this.targetPose.toString());
+    
+
+    currentPose = base.getPose();
 
     fbController = new PIDController(1, 0, 0);
     lrController = new PIDController(1, 0, 0);
-    rotController = new PIDController(1, 0, 0);
+    rotController = new PIDController(SmartDashboard.getNumber("rotP", 0), SmartDashboard.getNumber("rotI", 0), SmartDashboard.getNumber("rotD", 0));
+    
 
     addRequirements(base);
   }
@@ -46,7 +56,8 @@ public class DriveToPose extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    targetPose = new Pose2d(SmartDashboard.getNumber("new x", 0), SmartDashboard.getNumber("new y", 0), Rotation2d.fromDegrees(SmartDashboard.getNumber("new rotation", 0)));
+    SmartDashboard.putString("targetPose", targetPose.toString());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -57,22 +68,30 @@ public class DriveToPose extends CommandBase {
     lrOffset = targetPose.getY() - currentPose.getY();
     headingOffset = base.getHeadingDeg() - currentPose.getRotation().getDegrees();
 
-    fbSpeed = fbController.calculate(fbOffset, targetPose.getX());
-    lrSpeed = lrController.calculate(lrOffset, targetPose.getY());
-    rotSpeed = rotController.calculate(headingOffset, targetPose.getRotation().getDegrees());
+    fbSpeed = fbController.calculate(currentPose.getX(), targetPose.getX());
+    lrSpeed = lrController.calculate(currentPose.getY(), targetPose.getY());
 
-    base.drive(fbSpeed, lrSpeed, rotSpeed, true);
+    rotSpeed = rotController.calculate(base.getHeadingDeg(), targetPose.getRotation().getDegrees());
+
+    base.drive(-fbSpeed, lrSpeed, rotSpeed, true);
+
+    SmartDashboard.putNumber("fb offset", fbOffset);
+    SmartDashboard.putNumber("lr offset", lrOffset);
+    SmartDashboard.putNumber("fb speed", fbSpeed);
+    SmartDashboard.putNumber("lr speed", lrSpeed);
+    SmartDashboard.putNumber("rotSpeed", rotSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(fbOffset) < 0.1 && Math.abs(lrOffset) < 0.1 && Math.abs(headingOffset) < 0.1;
+    return false;
+    // return Math.abs(fbOffset) < 0.1 && Math.abs(lrOffset) < 0.1 && Math.abs(headingOffset) < 0.1;
   }
 }

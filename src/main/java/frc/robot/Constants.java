@@ -46,8 +46,8 @@ public final class Constants {
     
     //Digital IO Ports
     //Base
-    public static final int frontLeftMagEncoderId = 0; 
-    public static final int frontRightMagEncoderId = 1; 
+    public static final int frontRightMagEncoderId = 0; 
+    public static final int frontLeftMagEncoderId = 1; 
     public static final int backLeftMagEncoderId = 2; 
     public static final int backRightMagEncoderId = 3; 
     
