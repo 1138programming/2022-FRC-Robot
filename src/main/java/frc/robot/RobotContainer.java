@@ -65,6 +65,7 @@ import frc.robot.commands.Base.RotateToHeading;
 import frc.robot.commands.Camera.LEDOff;
 import frc.robot.commands.Camera.LEDOn;
 import frc.robot.CommandGroups.Auton.Red1Auton;
+import frc.robot.CommandGroups.Auton.TestAuton;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
@@ -244,7 +245,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //Drive Controls
     // logitechBtnA.whenHeld(aimWithLimelight);
-    logitechBtnRT.whileHeld(driveWithLimelight);
+    // logitechBtnRT.whileHeld(driveWithLimelight);
+    logitechBtnRT.whenPressed(new DriveToPose(base, new Pose2d()), false);
     logitechBtnLT.whenPressed(baseDriveHigh);
     logitechBtnLT.whenReleased(baseDriveLow);
     logitechBtnY.whenPressed(resetGyro);
@@ -258,9 +260,6 @@ public class RobotContainer {
     logitechBtnY.whenHeld(moveHangUp);
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
-    
-
-    logitechBtnRT.whileHeld(new DriveToPose(base, new Pose2d()));
     
     //Intake Controls
     xboxBtnA.whenHeld(intakeSpinBackward);
@@ -374,23 +373,25 @@ public class RobotContainer {
       base::setModuleStates,
       base
     );
+
+    return new TestAuton(base);
         
-      // base.resetOdometry(trajectory1.getInitialPose());
+    //   // base.resetOdometry(trajectory1.getInitialPose());
       
-      // trajectory1 = trajectory1.concatenate(trajectory2);
-      // base.resetOdometry(red1.getInitialPose());
-      // return command1;
-    return new SequentialCommandGroup(
-      // new InstantCommand(() -> base.resetOdometry(trajectory1.getInitialPose())),
-        // command1,
-        // concatTrajCommand,
-      // new InstantCommand(() -> base.resetOdometry(trajectory2.getInitialPose())),
-      //   command2,
-      new InstantCommand(() -> base.resetOdometry(part1.getInitialPose())),
-        part1Command,
-        part2Command,
-      new InstantCommand(() -> base.drive(0,0,0,true)));
-    // return command1.andThen(command2);
+    //   // trajectory1 = trajectory1.concatenate(trajectory2);
+    //   // base.resetOdometry(red1.getInitialPose());
+    //   // return command1;
+    // return new SequentialCommandGroup(
+    //   // new InstantCommand(() -> base.resetOdometry(trajectory1.getInitialPose())),
+    //     // command1,
+    //     // concatTrajCommand,
+    //   // new InstantCommand(() -> base.resetOdometry(trajectory2.getInitialPose())),
+    //   //   command2,
+    //   new InstantCommand(() -> base.resetOdometry(part1.getInitialPose())),
+    //     part1Command,
+    //     part2Command,
+    //   new InstantCommand(() -> base.drive(0,0,0,true)));
+    // // return command1.andThen(command2);
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {

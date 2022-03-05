@@ -70,9 +70,7 @@ public class DriveWithJoysticks extends CommandBase {
       initHeading = base.getHeadingDeg();
     }
     base.drive(fbSpeed, lrSpeed, rot, true);
-    
-    SmartDashboard.putNumber("fbspeed", fbSpeed);
-  }
+    }
 
   // Called once the command ends or is interrupted.
   @Override

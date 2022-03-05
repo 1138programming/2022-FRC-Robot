@@ -66,11 +66,11 @@ public class Hang extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("hangLimit", getHangLimit());
-    SmartDashboard.putBoolean("LeftArmLimit", getLeftArmLimit());
-    SmartDashboard.putBoolean("rightArmLimit", getRightArmLimit());
-    SmartDashboard.putNumber("leftArmEncoder", getLeftArmEncoder());
-    SmartDashboard.putNumber("rightArmEncoder", getRightArmEncoder());
+    // SmartDashboard.putBoolean("hangLimit", getHangLimit());
+    // SmartDashboard.putBoolean("LeftArmLimit", getLeftArmLimit());
+    // SmartDashboard.putBoolean("rightArmLimit", getRightArmLimit());
+    // SmartDashboard.putNumber("leftArmEncoder", getLeftArmEncoder());
+    // SmartDashboard.putNumber("rightArmEncoder", getRightArmEncoder());
   }
 
   //Left Arm positive speed goes back, right arm positive speed goes forward

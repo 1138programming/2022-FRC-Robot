@@ -46,10 +46,10 @@ public final class Constants {
     
     //Digital IO Ports
     //Base
-    public static final int frontRightMagEncoderId = 0; 
-    public static final int frontLeftMagEncoderId = 1; 
-    public static final int backLeftMagEncoderId = 2; 
-    public static final int backRightMagEncoderId = 3; 
+    public static final int frontRightMagEncoderId = 0;
+    public static final int frontLeftMagEncoderId = 1;
+    public static final int backLeftMagEncoderId = 2;
+    public static final int backRightMagEncoderId = 3;
     
     //Storage
     public static final int KBallSensorTop = 4;

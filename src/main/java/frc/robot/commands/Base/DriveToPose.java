@@ -4,9 +4,9 @@
 
 package frc.robot.commands.Base;
 
-import javax.crypto.interfaces.DHPublicKey;
-
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,20 +26,24 @@ public class DriveToPose extends CommandBase {
   private double lrSpeed;
   private double rotSpeed;
 
-  double rotP;
-  double rotI;
-  double rotD;
+  private double rotP = 0.05;
+  private double rotI = 0;
+  private double rotD = 0;
 
   private PIDController fbController;
   private PIDController lrController;
   private PIDController rotController;
 
+  private SlewRateLimiter fbSpeedLimiter;
+  private SlewRateLimiter lrSpeedLimiter;
+  private SlewRateLimiter rotSpeedLimiter;
+
   /** Creates a new DriveToPose. */
   public DriveToPose(NeoBase base, Pose2d targetPose) {
     this.base = base;
-    // this.targetPose = targetPose;
+    this.targetPose = targetPose;
 
-    this.targetPose = new Pose2d(SmartDashboard.getNumber("new x", 0), SmartDashboard.getNumber("new y", 0), new Rotation2d());
+    // this.targetPose = new Pose2d(SmartDashboard.getNumber("new x", 0), SmartDashboard.getNumber("new y", 0), new Rotation2d());
     SmartDashboard.putString("targetPose", this.targetPose.toString());
     
 
@@ -47,8 +51,11 @@ public class DriveToPose extends CommandBase {
 
     fbController = new PIDController(1, 0, 0);
     lrController = new PIDController(1, 0, 0);
-    rotController = new PIDController(SmartDashboard.getNumber("rotP", 0), SmartDashboard.getNumber("rotI", 0), SmartDashboard.getNumber("rotD", 0));
-    
+    rotController = new PIDController(rotP, rotI, rotD);
+
+    fbSpeedLimiter = new SlewRateLimiter(2);
+    lrSpeedLimiter = new SlewRateLimiter(2);
+    rotSpeedLimiter = new SlewRateLimiter(2);
 
     addRequirements(base);
   }
@@ -56,13 +63,18 @@ public class DriveToPose extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    targetPose = new Pose2d(SmartDashboard.getNumber("new x", 0), SmartDashboard.getNumber("new y", 0), Rotation2d.fromDegrees(SmartDashboard.getNumber("new rotation", 0)));
+    SmartDashboard.putNumber("rotP", rotP);
+    SmartDashboard.putNumber("rotI", rotI);
+    SmartDashboard.putNumber("rotD", rotD);
+
     SmartDashboard.putString("targetPose", targetPose.toString());
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    rotController.setPID(SmartDashboard.getNumber("rotP", 0), SmartDashboard.getNumber("rotI", 0), SmartDashboard.getNumber("rotD", 0));
+
     currentPose = base.getPose();
     fbOffset = targetPose.getX() - currentPose.getX();
     lrOffset = targetPose.getY() - currentPose.getY();
@@ -73,25 +85,20 @@ public class DriveToPose extends CommandBase {
 
     rotSpeed = rotController.calculate(base.getHeadingDeg(), targetPose.getRotation().getDegrees());
 
-    base.drive(-fbSpeed, lrSpeed, rotSpeed, true);
+    // fbSpeed = MathUtil.clamp(fbSpeed, -2, 2);
+    // lrSpeed = MathUtil.clamp(lrSpeed, -2, 2);
+    rotSpeed = MathUtil.clamp(rotSpeed, -2, 2);
 
-    SmartDashboard.putNumber("fb offset", fbOffset);
-    SmartDashboard.putNumber("lr offset", lrOffset);
-    SmartDashboard.putNumber("fb speed", fbSpeed);
-    SmartDashboard.putNumber("lr speed", lrSpeed);
-    SmartDashboard.putNumber("rotSpeed", rotSpeed);
+    base.drive(-fbSpeed, -lrSpeed, rotSpeed, true);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
-    // return Math.abs(fbOffset) < 0.1 && Math.abs(lrOffset) < 0.1 && Math.abs(headingOffset) < 0.1;
+    return Math.abs(fbOffset) < 0.05 && Math.abs(lrOffset) < 0.05 && Math.abs(headingOffset) < 0.05;
   }
 }

@@ -6,15 +6,16 @@ package frc.robot.commands.Base;
 
 import static frc.robot.Constants.*;
 import frc.robot.subsystems.NeoBase;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class BaseDriveHigh extends CommandBase {
+public class ResetOdometry extends CommandBase {
 
   private final NeoBase base;
 
-  /** Creates a new BaseDriveHigh. */
-  public BaseDriveHigh(NeoBase base) {
+  /** Creates a new ResetGyro. */
+  public ResetOdometry(NeoBase base) {
     this.base = base;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -22,9 +23,7 @@ public class BaseDriveHigh extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putString("Base Drive", "High");
-    base.setMaxDriveSpeedPercent(kBaseDriveMediumSpeed); //set to medium for testing
-    // base.setMaxDriveSpeed(kBaseDriveHighSpeed);
+    base.resetOdometry(new Pose2d());
   }
 
   // Called every time the scheduler runs while the command is scheduled.

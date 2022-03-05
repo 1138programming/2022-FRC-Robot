@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Base.DriveToPose;
+import frc.robot.commands.Base.ResetOdometry;
 import frc.robot.commands.Flywheel.FlywheelSpin;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Intake.HuntMode;
@@ -34,6 +35,8 @@ public class Blue1Auton extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      new ResetOdometry(base),
+      
       new ParallelDeadlineGroup(new DeadlineTimer(1000),
         new FlywheelSpinWithLimelight(flywheel, camera)
       ),

@@ -43,7 +43,6 @@ public class Flywheel extends SubsystemBase {
     flywheelMotor.set(ControlMode.PercentOutput, output);
 
     // flywheelMotor.set(ControlMode.Velocity, speedInEncoderUnits);
-    // SmartDashboard.putNumber("FlywheelPID Setpoint", speedInEncoderUnits);
   }
   
   public void moveRawPercent(double speed) {
@@ -72,6 +71,6 @@ public class Flywheel extends SubsystemBase {
     setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0), 
       SmartDashboard.getNumber("Flywheel kI", 0.0), 
       SmartDashboard.getNumber("Flywheel kD", 0.0));
-    SmartDashboard.putNumber("Flywheel RPM", getVelocity());
+    SmartDashboard.putNumber("Flywheel Current RPM", getVelocity());
   }
 }
