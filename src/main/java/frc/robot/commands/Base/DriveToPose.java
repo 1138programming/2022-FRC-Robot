@@ -78,16 +78,19 @@ public class DriveToPose extends CommandBase {
     currentPose = base.getPose();
     fbOffset = targetPose.getX() - currentPose.getX();
     lrOffset = targetPose.getY() - currentPose.getY();
-    headingOffset = base.getHeadingDeg() - currentPose.getRotation().getDegrees();
+    headingOffset = targetPose.getRotation().getDegrees() - currentPose.getRotation().getDegrees();
 
     fbSpeed = fbController.calculate(currentPose.getX(), targetPose.getX());
     lrSpeed = lrController.calculate(currentPose.getY(), targetPose.getY());
 
-    rotSpeed = rotController.calculate(base.getHeadingDeg(), targetPose.getRotation().getDegrees());
+    rotSpeed = rotController.calculate(currentPose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
 
     // fbSpeed = MathUtil.clamp(fbSpeed, -2, 2);
     // lrSpeed = MathUtil.clamp(lrSpeed, -2, 2);
     rotSpeed = MathUtil.clamp(rotSpeed, -2, 2);
+
+    fbSpeed = fbSpeedLimiter.calculate(fbSpeed);
+    lrSpeed = lrSpeedLimiter.calculate(lrSpeed);
 
     base.drive(-fbSpeed, -lrSpeed, rotSpeed, true);
   }
