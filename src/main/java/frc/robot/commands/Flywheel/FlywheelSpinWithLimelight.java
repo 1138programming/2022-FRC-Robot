@@ -6,16 +6,20 @@ package frc.robot.commands.Flywheel;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheel;
+import pabeles.concurrency.IntOperatorTask.Max;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Camera;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 
+import static frc.robot.Constants.*;
+
 public class FlywheelSpinWithLimelight extends CommandBase {
   private final Flywheel flywheel;
   private final Camera camera;
   private double flywheelOutput;
+  private double encoderUnitOutput;
   private double distanceFromHub;
   /** Creates a new FlywheelSpinWithLimelight. */
   public FlywheelSpinWithLimelight(Flywheel flywheel, Camera camera) {
@@ -34,21 +38,23 @@ public class FlywheelSpinWithLimelight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //max flywheel RPM is 2896 RPM
-    //nolan testing data: 202 in. is 85% (2462 rpm), 60 in. is 65% flywheel speed (1883 rpm)
+    //nolan testing data: 202 in. is 85% (2602 rpm), 60 in.(closest we can get to hub) is 65% flywheel speed (1950 rpm)
     //assume linear relationship between distance and RPM required to score, (2462-1883)/(202-60) = 4.077
     distanceFromHub = camera.getDistance();
 
     if (distanceFromHub > 60) {
-      flywheelOutput = 1883 + distanceFromHub * 4.077;
+      flywheelOutput = 1950 + distanceFromHub * 4.077;
     }
     else {
       flywheelOutput = 0;
     }
     SmartDashboard.putNumber("flywheel output (RPM)", flywheelOutput);
-    // flywheelOutput = RobotContainer.scaleBetween(flywheelOutput, -1, 1, -2896, 2896);
+    double flywheelOutputPercent = RobotContainer.scaleBetween(flywheelOutput, -1, 1, -kFlywheelMaxRPM, kFlywheelMaxRPM);
+    SmartDashboard.putNumber("flywheel output (percent)", flywheelOutput);
+    // encoderUnitOutput = flywheelOutput * (512.0 / 75.0);
+    // SmartDashboard.putNumber("flywheel output (u/100ms)", encoderUnitOutput);
     // SmartDashboard.putNumber("flywheel output (Percent)", flywheelOutput);
-    flywheel.move(flywheelOutput);    
+    flywheel.move(flywheelOutputPercent); 
   }
 
   // Called once the command ends or is interrupted.

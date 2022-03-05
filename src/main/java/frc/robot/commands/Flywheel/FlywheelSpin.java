@@ -23,7 +23,8 @@ public class FlywheelSpin extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    flywheel.move(KFlywheelSpeed);
+    flywheel.moveRawPercent(KFlywheelSpeed);
+    // flywheel.move(KFlywheelSpeed);
   }
 
   // Called once the command ends or is interrupted.

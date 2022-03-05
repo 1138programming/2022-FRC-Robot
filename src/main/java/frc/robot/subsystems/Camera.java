@@ -27,8 +27,6 @@ public class Camera extends SubsystemBase {
     x = 0;
     y = 0;
     area = 0;
-
-    
   }
   
   @Override
@@ -69,6 +67,6 @@ public class Camera extends SubsystemBase {
 
   public double getDistance() {
     double distance = KHeightDifference / Math.tan(Math.toRadians(KLimelightAngle + y));
-    return distance;
+    return distance + 20; //constant offset
   }
 }

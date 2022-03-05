@@ -267,7 +267,9 @@ public class RobotContainer {
 
     //FLywheel Controls
     xboxBtnY.toggleWhenActive(flywheelSpinWithLimelight);
+    xboxBtnB.toggleWhenActive(flywheelSpin);
     xboxBtnY.toggleWhenActive(ledOn);
+    xboxBtnX.whenHeld(huntMode);
   }
 
   public Command getAutonomousCommand() {

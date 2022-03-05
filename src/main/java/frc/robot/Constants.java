@@ -105,6 +105,9 @@ public final class Constants {
     public static final double kv = 1.8624;
     public static final double ka = 2.208;
 
+    //Flywheel Constants
+    public static final double kFlywheelMaxRPM = 3060.0; //Max Flywheel RPM From Testing
+
     //Intake Constants
     public static final int KIntakeAngle = 45;
 
