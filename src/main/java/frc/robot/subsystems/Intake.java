@@ -37,7 +37,7 @@ public class Intake extends SubsystemBase {
   private DutyCycleEncoder swivelMagEncoder;
   private PIDController swivelController;
   private double intakeControllerkP, intakeControllerkI, intakeControllerkD;
-  private final Pixy2 pixy;
+  private Pixy2 pixy;
   
   public Intake() {
     swivelIntakeMotor = new TalonSRX(KSwivelIntakeTalon);
@@ -65,25 +65,22 @@ public class Intake extends SubsystemBase {
   public boolean getTopLimitSwitch() {
     return topLimitSwitch.get();
   }
-  //Pixy2 functions
-
   public void resetEncoder() {
-    // swivelMagEncoder.reset();
     swivelIntakeMotor.setSelectedSensorPosition(0);
   }
   public double getIntakeEncoderDeg() {
-    // return (swivelMagEncoder.get() % 360);
     return (swivelIntakeMotor.getSelectedSensorPosition() % 360);
   }
   public void swivelToPos(double setPoint) {
     swivelIntakeMotor.set(TalonSRXControlMode.PercentOutput, swivelController.calculate(getIntakeEncoderDeg(), setPoint));
   }
-
-  public int pixyInit() {
-    SmartDashboard.putNumber("init", pixy.init());
-    return pixy.init();
+ 
+  //Pixy2 functions
+  public double pixyInit() {
+    double pixyInitCode = pixy.init();
+    SmartDashboard.putNumber("init", pixyInitCode);
+    return pixyInitCode;
   }
-
   public ArrayList<Block> getRedPixyCashe() {
     pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 3);
     return pixy.getCCC().getBlockCache();
@@ -92,7 +89,6 @@ public class Intake extends SubsystemBase {
     pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG2, 3);
     return pixy.getCCC().getBlockCache();
   } 
-
   public void setLamp(){
     pixy.setLamp((byte) 1, (byte) 1); // Turns the LEDs on
 		pixy.setLED(255, 255, 255); // Sets the RGB LED to full white

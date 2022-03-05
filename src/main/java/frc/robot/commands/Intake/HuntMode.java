@@ -8,21 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import static frc.robot.Constants.*;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import java.util.ArrayList;
-import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
-import io.github.pseudoresonance.pixy2api.Pixy2;
-import io.github.pseudoresonance.pixy2api.links.Link;
-import io.github.pseudoresonance.pixy2api.Pixy2CCC;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import io.github.pseudoresonance.pixy2api.Pixy2;
-import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
-import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
-import io.github.pseudoresonance.pixy2api.links.SPILink;
-import io.github.pseudoresonance.pixy2api.*;
 
 public class HuntMode extends CommandBase {
-  /** Creates a new HuntMode. */
   private final Intake intake;
   public HuntMode(Intake intake) {
     this.intake = intake;
@@ -39,8 +26,11 @@ public class HuntMode extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {  
+  
+  //Gets the # of red and blue balls
   SmartDashboard.putNumber("Red Ball", intake.getRedPixyCashe().size());
   SmartDashboard.putNumber("Blue Ball", intake.getBluePixyCashe().size());
+
   if (intake.getIntakeEncoderDeg() == KIntakeAngle) //Checks to see if the the intake is at the correct angle.
     {  
       if (intake.getPixyColorRed() >= 1 || intake.getPixyColorBlue() == 3) 
@@ -77,9 +67,7 @@ public class HuntMode extends CommandBase {
          intake.swivelToPos(KIntakeAngle);
          // Moves the intake back to hunt mode. 
        }
-
     }
-    SmartDashboard.putNumber("Pixy", intake.getRedPixyCashe().size());
    }
   // Called once the command ends or is interrupted.
   @Override
