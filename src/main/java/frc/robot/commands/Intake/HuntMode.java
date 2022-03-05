@@ -24,8 +24,6 @@ import io.github.pseudoresonance.pixy2api.*;
 public class HuntMode extends CommandBase {
   /** Creates a new HuntMode. */
   private final Intake intake;
-  private int state = -1;
-  private boolean isCamera = false ;
   public HuntMode(Intake intake) {
     this.intake = intake;
     addRequirements(intake);
@@ -41,13 +39,8 @@ public class HuntMode extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {  
-
-    if (!isCamera) {
-      state = intake.pixyInit(); // if no camera present, try to initialize  
-      isCamera = (state >= 0);
-    }
-    SmartDashboard.putBoolean("Camera", isCamera); 
-
+  SmartDashboard.putNumber("Red Ball", intake.getRedPixyCashe().size());
+  SmartDashboard.putNumber("Blue Ball", intake.getBluePixyCashe().size());
   if (intake.getIntakeEncoderDeg() == KIntakeAngle) //Checks to see if the the intake is at the correct angle.
     {  
       if (intake.getPixyColorRed() >= 1 || intake.getPixyColorBlue() == 3) 

@@ -26,9 +26,7 @@ public class Camera extends SubsystemBase {
     targetFound = 0;
     x = 0;
     y = 0;
-    area = 0;
-
-    
+    area = 0;    
   }
   
   @Override

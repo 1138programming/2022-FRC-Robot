@@ -24,7 +24,11 @@ public class StowedMode extends CommandBase {
   @Override
   public void execute() 
   {
-    if (intake.getTopLimitSwitch()) {
+    if (intake.getIntakeEncoderDeg() == 0)
+    {
+      intake.moveSwivel(0);
+    }
+    else if (intake.getTopLimitSwitch()) {
       intake.moveSwivel(0);
       intake.resetEncoder();
     }

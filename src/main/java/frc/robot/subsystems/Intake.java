@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.links.I2CLink;
 import io.github.pseudoresonance.pixy2api.links.Link;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
@@ -46,7 +47,7 @@ public class Intake extends SubsystemBase {
     topLimitSwitch = new DigitalInput(kIntakeTopLimit);
     bottomLimitSwitch = new DigitalInput(kIntakeBottomLimit);
 
-    pixy = Pixy2.createInstance(Pixy2.LinkType.SPI);
+    pixy = Pixy2.createInstance(new I2CLink());
     pixyInit();
   }
   //Talon
@@ -79,16 +80,16 @@ public class Intake extends SubsystemBase {
   }
 
   public int pixyInit() {
-    SmartDashboard.putNumber("init", pixy.init(1));
-    return pixy.init(1);
+    SmartDashboard.putNumber("init", pixy.init());
+    return pixy.init();
   }
 
   public ArrayList<Block> getRedPixyCashe() {
-    pixy.getCCC().getBlocks(true, Pixy2CCC.CCC_SIG1, 3);
+    pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 3);
     return pixy.getCCC().getBlockCache();
   } 
   public ArrayList<Block> getBluePixyCashe() {
-    pixy.getCCC().getBlocks(true, Pixy2CCC.CCC_SIG2, 3);
+    pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG2, 3);
     return pixy.getCCC().getBlockCache();
   } 
 
