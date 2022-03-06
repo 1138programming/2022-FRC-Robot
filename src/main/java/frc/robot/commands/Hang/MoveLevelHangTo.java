@@ -18,8 +18,9 @@ public class MoveLevelHangTo extends CommandBase {
   private double output;
 
   /** Creates a new MoveArmsTo. */
-  public MoveLevelHangTo(Hang hang) {
+  public MoveLevelHangTo(Hang hang, double liftSetPoint) {
     this.hang = hang;
+    this.liftSetPoint = liftSetPoint;
     liftPosController = new PIDController(kP, kI, kD);
     addRequirements(hang);
   }
@@ -48,9 +49,9 @@ public class MoveLevelHangTo extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (currentEncoderValue >= liftSetPoint) {
-      return true;
-    }
-    return false;
+    // if (currentEncoderValue >= liftSetPoint) {
+    //   return true;
+    // }
+    return currentEncoderValue <= liftSetPoint + 3 && currentEncoderValue >= liftSetPoint - 3;
   }
 }
