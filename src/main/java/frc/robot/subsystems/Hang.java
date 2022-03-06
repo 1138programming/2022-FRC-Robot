@@ -8,11 +8,15 @@ import static frc.robot.Constants.*;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,10 +27,11 @@ public class Hang extends SubsystemBase {
   
   private TalonFX leftArmMotor;
   private TalonFX rightArmMotor;
-  private TalonSRX levelHangMotor;
+  private CANSparkMax levelHangMotor;
   private Servo rightClawServo;
   private Servo leftClawServo;
-  private Servo ratchetServo;
+  private RelativeEncoder levelEncoder;
+  // private Servo ratchetServo;
 
   private DigitalInput leftArmLimit;
   private DigitalInput rightArmLimit;
@@ -40,23 +45,23 @@ public class Hang extends SubsystemBase {
   public Hang() {
     leftArmMotor = new TalonFX(KLeftHangMotor);
     rightArmMotor = new TalonFX(KRightHangMotor);
-    levelHangMotor = new TalonSRX(KLevelHangMotor);
+    levelHangMotor = new CANSparkMax(KLevelHangMotor, MotorType.kBrushless);
 
     leftArmMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     rightArmMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-    levelHangMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    levelEncoder = levelHangMotor.getEncoder();
 
     leftArmMotor.setNeutralMode(NeutralMode.Brake);
     rightArmMotor.setNeutralMode(NeutralMode.Brake);
-    levelHangMotor.setNeutralMode(NeutralMode.Brake);
+    levelHangMotor.setIdleMode(IdleMode.kBrake);
     
     leftClawServo = new Servo(KLeftClawServo);
     rightClawServo = new Servo(KRightClawServo);
-    ratchetServo = new Servo(KRatchetServo);
+    // ratchetServo = new Servo(KRatchetServo);
 
     leftClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     rightClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
-    ratchetServo.setBounds(2.5, 1.8, 1.5, 1.2, 0.5);
+    // ratchetServo.setBounds(2.5, 1.8, 1.5, 1.2, 0.5);
     
     leftArmLimit = new DigitalInput(KLeftArmLimit);
     rightArmLimit = new DigitalInput(KRightArmLimit);
@@ -136,14 +141,14 @@ public class Hang extends SubsystemBase {
   //Negative speed is up
   public void moveLevelHangSpeed(double speed) {
     if (speed > 0 && getHangLimit()) {
-      levelHangMotor.set(ControlMode.PercentOutput, 0);
+      levelHangMotor.set(speed);
       resetLevelHangEncoder();
     }
     else if (speed < 0 && (getLevelHangEncoder() > kHangEncoderLimitPos)) {
-      levelHangMotor.set(ControlMode.PercentOutput, 0);
+      levelHangMotor.set(0);
     }
     else {
-      levelHangMotor.set(ControlMode.PercentOutput, -speed);
+      levelHangMotor.set(-speed);
     }
   }
   
@@ -152,9 +157,9 @@ public class Hang extends SubsystemBase {
     rightClawServo.set(pos);
 
   }
-  public void moveRachet(double pos) {
-    ratchetServo.set(pos);
-  }
+  // public void moveRachet(double pos) {
+    // ratchetServo.set(pos);
+  // }
   
   //BAD!!! Arm mvoement in this function is unrestricted, can crush the bot
   public void moveArmsUnrestricted(double speed) {
@@ -164,12 +169,14 @@ public class Hang extends SubsystemBase {
   
   //BAD!!! Hang mvoement in this function is unrestricted, can crush the bot
   public void moveLeveHangUnrestricted(double speed) {
-    levelHangMotor.set(ControlMode.PercentOutput, -speed);
+    levelHangMotor.set(-speed);
   }
   
 
   public void moveLevelToPosition(double position) {
-    levelHangMotor.set(ControlMode.Position, position);
+    PIDController speedController = new PIDController(1, 0, 0);
+    
+    levelHangMotor.set(speedController.calculate(getLevelHangEncoder(), position));
   }
 
   public boolean getHangLimit() {
@@ -189,7 +196,7 @@ public class Hang extends SubsystemBase {
     return rightArmMotor.getSelectedSensorPosition();
   }
   public double getLevelHangEncoder() {
-    return levelHangMotor.getSelectedSensorPosition();
+    return levelEncoder.getPosition();
   }
 
   public void resetLeftArmEncoder() {
@@ -199,7 +206,7 @@ public class Hang extends SubsystemBase {
     rightArmMotor.setSelectedSensorPosition(0);
   }
   public void resetLevelHangEncoder() {
-    levelHangMotor.setSelectedSensorPosition(0);
+    levelHangMotor.getEncoder().setPosition(0);
   }
 
 }

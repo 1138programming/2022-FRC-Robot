@@ -4,17 +4,16 @@
 
 package frc.robot.commands.Intake;
 
-import frc.robot.Robot;
-import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import static frc.robot.Constants.*;
+import frc.robot.subsystems.Intake;
 
-public class IntakeSpinBackward extends CommandBase {
-  private final Intake intake;
-
-  /** Creates a new IntakeUp. */
-  public IntakeSpinBackward(Intake intake) {
+public class IntakeMoveSwivel extends CommandBase {
+  private Intake intake;
+  private boolean direction;
+  /** Creates a new IntakeSwivelDown. */
+  public IntakeMoveSwivel(Intake intake, boolean direction) {
     this.intake = intake;
+    this.direction = direction;
     addRequirements(intake);
   }
 
@@ -25,7 +24,12 @@ public class IntakeSpinBackward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.moveSpin(-0.9);
+    if (direction) {
+      intake.moveSwivel(0.1);
+    }
+    else {
+      intake.moveSwivel(-0.1);
+    }
   }
 
   // Called once the command ends or is interrupted.

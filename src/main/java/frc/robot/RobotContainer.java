@@ -74,9 +74,11 @@ import frc.robot.commands.Base.DriveToPose;
 import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeSpinBackward;
+import frc.robot.commands.Intake.IntakeSpinForward;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeSpinBackward;
 import frc.robot.commands.Intake.HuntMode;
+import frc.robot.commands.Intake.IntakeMoveSwivel;
 import frc.robot.commands.Intake.StowedMode;
 import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Storage.BottomStorageIn;
@@ -90,7 +92,7 @@ import frc.robot.commands.Hang.MoveClawOut;
 import frc.robot.commands.Hang.MoveHangDown;
 import frc.robot.commands.Hang.MoveHangUp;
 import frc.robot.commands.Hang.MoveLevelHangTo;
-import frc.robot.commands.Hang.MoveRachetIn;
+// import frc.robot.commands.Hang.MoveRachetIn;
 import io.github.pseudoresonance.pixy2api.*;
 
 
@@ -128,13 +130,16 @@ public class RobotContainer {
   private final MoveClawOut moveClawOut = new MoveClawOut(hang);
   private final MoveHangDown moveHangDown = new MoveHangDown(hang);
   private final MoveHangUp moveHangUp = new MoveHangUp(hang);
-  private final MoveRachetIn moveRachetIn = new MoveRachetIn(hang);
+  // private final MoveRachetIn moveRachetIn = new MoveRachetIn(hang);
 
   // Intake
   private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);  
+  private final IntakeSpinForward intakeSpinForward = new IntakeSpinForward(intake);  
   private final IntakeStop intakeStop = new IntakeStop(intake);
   private final HuntMode huntMode = new HuntMode(intake);
   private final StowedMode stowedMode = new StowedMode(intake);
+  private final IntakeMoveSwivel swivelDown = new IntakeMoveSwivel(intake, true);
+  private final IntakeMoveSwivel swivelUp = new IntakeMoveSwivel(intake, false);
   // Storage
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
@@ -246,30 +251,35 @@ public class RobotContainer {
     //Drive Controls
     // logitechBtnA.whenHeld(aimWithLimelight);
     // logitechBtnRT.whileHeld(driveWithLimelight);
-    logitechBtnRT.whenPressed(new DriveToPose(base, new Pose2d()), false);
-    logitechBtnLT.whenPressed(baseDriveHigh);
-    logitechBtnLT.whenReleased(baseDriveLow);
-    logitechBtnY.whenPressed(resetGyro);
-    logitechBtnY.whileHeld(new ResetWheels(base));
-    logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
+    // logitechBtnRT.whenPressed(new DriveToPose(base, new Pose2d()), false);
+    // logitechBtnLT.whenPressed(baseDriveHigh);
+    // logitechBtnLT.whenReleased(baseDriveLow);
+    // logitechBtnY.whenPressed(resetGyro);
+    // logitechBtnY.whileHeld(new ResetWheels(base));
+    // logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
-    logitechBtnA.whenHeld(moveClawIn);
-    logitechBtnB.whenHeld(moveClawOut);
-    logitechBtnX.whenHeld(moveHangDown);
-    logitechBtnY.whenHeld(moveHangUp);
-    logitechBtnLB.whenHeld(moveArmForward);
-    logitechBtnRB.whenHeld(moveArmBackward);
+    // logitechBtnA.whenHeld(moveClawIn);
+    // logitechBtnB.whenHeld(moveClawOut);
+    // logitechBtnX.whenHeld(moveHangDown);
+    // logitechBtnY.whenHeld(moveHangUp);
+    // logitechBtnLB.whenHeld(moveArmForward);
+    // logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
     xboxBtnA.whenHeld(intakeSpinBackward);
+    xboxBtnB.whenHeld(intakeSpinForward);
+    xboxBtnX.whenHeld(swivelDown);
+    xboxBtnY.whenHeld(swivelUp);
 
     //FLywheel Controls
     // xboxBtnY.toggleWhenActive(flywheelSpinWithLimelight);
-    xboxBtnY.whenHeld(topStorageIn);
-    xboxBtnB.toggleWhenActive(flywheelSpin);
-    xboxBtnY.toggleWhenActive(ledOn);
-    xboxBtnX.whenHeld(huntMode);
+    xboxBtnRB.whenHeld(topStorageIn);
+    xboxBtnLB.whenHeld(bottomStorageIn);
+    xboxBtnLT.whenHeld(flywheelSpin);
+    // xboxBtnB.toggleWhenActive(flywheelSpin);
+    // xboxBtnY.toggleWhenActive(ledOn);
+    // xboxBtnX.whenHeld(huntMode);
   }
 
   public Command getAutonomousCommand() {
