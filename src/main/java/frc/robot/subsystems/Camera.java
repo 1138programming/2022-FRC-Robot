@@ -10,6 +10,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+
 
 import static frc.robot.Constants.*;
 
@@ -27,6 +31,13 @@ public class Camera extends SubsystemBase {
     x = 0;
     y = 0;
     area = 0;
+
+  // Creates UsbCamera and MjpegServer [1] and connects them
+  CameraServer.startAutomaticCapture();
+
+  // Creates the CvSink and connects it to the UsbCamera
+  CvSink cvSink = CameraServer.getVideo();
+
   }
   
   @Override
