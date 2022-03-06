@@ -50,7 +50,7 @@ public class FlywheelSpinWithLimelight extends CommandBase {
     }
     SmartDashboard.putNumber("flywheel output (RPM)", flywheelOutput);
     double flywheelOutputPercent = RobotContainer.scaleBetween(flywheelOutput, -1, 1, -kFlywheelMaxRPM, kFlywheelMaxRPM);
-    SmartDashboard.putNumber("flywheel output (percent)", flywheelOutput);
+    // SmartDashboard.putNumber("flywheel output (percent)", flywheelOutput);
     // encoderUnitOutput = flywheelOutput * (512.0 / 75.0);
     // SmartDashboard.putNumber("flywheel output (u/100ms)", encoderUnitOutput);
     // SmartDashboard.putNumber("flywheel output (Percent)", flywheelOutput);

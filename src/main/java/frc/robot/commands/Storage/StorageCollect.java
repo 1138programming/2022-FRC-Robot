@@ -17,28 +17,28 @@ public class StorageCollect extends CommandBase {
     public void intialize(){}
 
     public void execute(){
-        boolean ballInTop = storage.getBallSensorTop();
-        boolean ballInBottom = storage.getBallSensorBottom();
-        //start by moving the bottom motor
-        storage.move(0, 1);
-        //logik loop
-        //if the bottom sensor sees a ball, both motors will run
-        if(ballInBottom)
-        {
-            //if the top sensor sees the ball (and the bottom sensor also sees ball), then both stop
-            if (ballInTop) {
-                storage.move(0, 0);
-            }
-            else {
-                storage.move(1,1);
-            }
-        }
+    //     // boolean ballInTop = storage.getBallSensorTop();
+    //     boolean ballInBottom = storage.getBallSensorBottom();
+    //     //start by moving the bottom motor
+    //     storage.move(0, 1);
+    //     //logik loop
+    //     //if the bottom sensor sees a ball, both motors will run
+    //     if(ballInBottom)
+    //     {
+    //         //if the top sensor sees the ball (and the bottom sensor also sees ball), then both stop
+    //         if (ballInTop) {
+    //             storage.move(0, 0);
+    //         }
+    //         else {
+    //             storage.move(1,1);
+    //         }
+    //     }
         
-        //if the bottom sensor does NOT see a ball, only the bottom motor will run
-        else 
-        {
-            storage.move(0, 1);
-        }
+    //     //if the bottom sensor does NOT see a ball, only the bottom motor will run
+    //     else 
+    //     {
+    //         storage.move(0, 1);
+    //     }
     }
 
     public void end(boolean interrupted){}

@@ -44,7 +44,7 @@ public class Intake extends SubsystemBase {
     swivelIntakeMotor.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
     swivelController = new PIDController(intakeControllerkP, intakeControllerkI, intakeControllerkD);
     topLimitSwitch = new DigitalInput(kIntakeTopLimit);
-    bottomLimitSwitch = new DigitalInput(kIntakeBottomLimit);
+    // bottomLimitSwitch = new DigitalInput(kIntakeBottomLimit);
 
     pixy = Pixy2.createInstance(Pixy2.LinkType.SPI);
     pixyInit();
@@ -58,11 +58,11 @@ public class Intake extends SubsystemBase {
     spinIntakeMotor.set(VictorSPXControlMode.PercentOutput, speed);
   }
   // Getters
-  public boolean getBottomLimitSwitch() {
-    return bottomLimitSwitch.get();
-  }
+  // public boolean getBottomLimitSwitch() {
+  //   return bottomLimitSwitch.get();
+  // }
   public boolean getTopLimitSwitch() {
-    return topLimitSwitch.get();
+    return !(topLimitSwitch.get());
   }
   //Pixy2 functions
 
@@ -79,7 +79,6 @@ public class Intake extends SubsystemBase {
   }
 
   public int pixyInit() {
-    SmartDashboard.putNumber("init", pixy.init(1));
     return pixy.init(1);
   }
 
@@ -110,5 +109,6 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("intake limit", getTopLimitSwitch());
   }
 }

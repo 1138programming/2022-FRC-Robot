@@ -43,12 +43,12 @@ public class Hang extends SubsystemBase {
   private final double kArmMaxReverseLimit = 0; //Encoder should reset everytime it hits the arm limit switches
 
   public Hang() {
-    leftArmMotor = new TalonFX(KLeftHangMotor);
-    rightArmMotor = new TalonFX(KRightHangMotor);
-    levelHangMotor = new CANSparkMax(KLevelHangMotor, MotorType.kBrushless);
+    leftArmMotor = new TalonFX(KLeftHangFalcon);
+    rightArmMotor = new TalonFX(KRightHangFalcon);
+    levelHangMotor = new CANSparkMax(KLevelHangNeo, MotorType.kBrushless);
 
-    leftArmMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-    rightArmMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    leftArmMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    rightArmMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     levelEncoder = levelHangMotor.getEncoder();
 
     leftArmMotor.setNeutralMode(NeutralMode.Brake);
@@ -71,11 +71,11 @@ public class Hang extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // SmartDashboard.putBoolean("hangLimit", getHangLimit());
-    // SmartDashboard.putBoolean("LeftArmLimit", getLeftArmLimit());
-    // SmartDashboard.putBoolean("rightArmLimit", getRightArmLimit());
-    // SmartDashboard.putNumber("leftArmEncoder", getLeftArmEncoder());
-    // SmartDashboard.putNumber("rightArmEncoder", getRightArmEncoder());
+    SmartDashboard.putBoolean("hangLimit", getHangLimit());
+    SmartDashboard.putBoolean("LeftArmLimit", getLeftArmLimit());
+    SmartDashboard.putBoolean("rightArmLimit", getRightArmLimit());
+    SmartDashboard.putNumber("leftArmEncoder", getLeftArmEncoder());
+    SmartDashboard.putNumber("rightArmEncoder", getRightArmEncoder());
   }
 
   //Left Arm positive speed goes back, right arm positive speed goes forward

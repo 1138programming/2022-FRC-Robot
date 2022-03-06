@@ -63,11 +63,11 @@ public class DriveToPose extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("rotP", rotP);
-    SmartDashboard.putNumber("rotI", rotI);
-    SmartDashboard.putNumber("rotD", rotD);
+    // SmartDashboard.putNumber("rotP", rotP);
+    // SmartDashboard.putNumber("rotI", rotI);
+    // SmartDashboard.putNumber("rotD", rotD);
 
-    SmartDashboard.putString("targetPose", targetPose.toString());
+    // SmartDashboard.putString("targetPose", targetPose.toString());
   }
 
   @Override

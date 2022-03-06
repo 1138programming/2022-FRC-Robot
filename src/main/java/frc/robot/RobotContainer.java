@@ -81,6 +81,7 @@ import frc.robot.commands.Intake.HuntMode;
 import frc.robot.commands.Intake.IntakeMoveSwivel;
 import frc.robot.commands.Intake.StowedMode;
 import frc.robot.commands.Storage.StorageStop;
+import frc.robot.commands.Storage.BottomStorageOut;
 import frc.robot.commands.Storage.BottomStorageIn;
 import frc.robot.commands.Storage.TopStorageOut;
 import frc.robot.commands.Storage.TopStorageIn;
@@ -143,6 +144,7 @@ public class RobotContainer {
   // Storage
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
+  private final BottomStorageOut bottomStorageOut = new BottomStorageOut(storage);
   private final BottomStorageIn bottomStorageIn = new BottomStorageIn(storage);
   private final TopStorageOut topStorageOut = new TopStorageOut(storage);
   private final TopStorageIn topStorageIn = new TopStorageIn(storage);
@@ -259,16 +261,16 @@ public class RobotContainer {
     // logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
-    // logitechBtnA.whenHeld(moveClawIn);
-    // logitechBtnB.whenHeld(moveClawOut);
-    // logitechBtnX.whenHeld(moveHangDown);
-    // logitechBtnY.whenHeld(moveHangUp);
-    // logitechBtnLB.whenHeld(moveArmForward);
-    // logitechBtnRB.whenHeld(moveArmBackward);
+    logitechBtnA.whenHeld(moveClawIn);
+    logitechBtnB.whenHeld(moveClawOut);
+    logitechBtnX.whenHeld(moveHangDown);
+    logitechBtnY.whenHeld(moveHangUp);
+    logitechBtnLB.whenHeld(moveArmForward);
+    logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
-    xboxBtnA.whenHeld(intakeSpinBackward);
-    xboxBtnB.whenHeld(intakeSpinForward);
+    xboxBtnA.toggleWhenActive(flywheelSpin);//out
+    xboxBtnB.whenHeld(intakeSpinForward);//in
     xboxBtnX.whenHeld(swivelDown);
     xboxBtnY.whenHeld(swivelUp);
 
@@ -276,8 +278,7 @@ public class RobotContainer {
     // xboxBtnY.toggleWhenActive(flywheelSpinWithLimelight);
     xboxBtnRB.whenHeld(topStorageIn);
     xboxBtnLB.whenHeld(bottomStorageIn);
-    xboxBtnLT.whenHeld(flywheelSpin);
-    // xboxBtnB.toggleWhenActive(flywheelSpin);
+    // xboxBtn.toggleWhenActive(flywheelSpin);
     // xboxBtnY.toggleWhenActive(ledOn);
     // xboxBtnX.whenHeld(huntMode);
   }

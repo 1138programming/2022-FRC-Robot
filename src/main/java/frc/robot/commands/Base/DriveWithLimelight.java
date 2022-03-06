@@ -22,7 +22,7 @@ public class DriveWithLimelight extends CommandBase {
   private Camera camera;
   private NeoBase base;
   private PIDController rotationController;
-  private final double kLimglightP = 0.8;
+  private final double kLimglightP = 1;
   private final double kLimglightI = 0;
   private final double kLimglightD = 0;
 

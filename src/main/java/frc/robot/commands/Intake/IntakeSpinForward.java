@@ -25,7 +25,7 @@ public class IntakeSpinForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.moveSpin(0.9);
+    intake.moveSpin(KIntakeSpinPWM);
   }
 
   // Called once the command ends or is interrupted.

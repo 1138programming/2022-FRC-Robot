@@ -6,6 +6,7 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
+import static frc.robot.Constants.*;
 
 public class IntakeMoveSwivel extends CommandBase {
   private Intake intake;
@@ -25,10 +26,10 @@ public class IntakeMoveSwivel extends CommandBase {
   @Override
   public void execute() {
     if (direction) {
-      intake.moveSwivel(0.1);
+      intake.moveSwivel(-KIntakeSwivelPWM);
     }
     else {
-      intake.moveSwivel(-0.1);
+      intake.moveSwivel(KIntakeSwivelPWM);
     }
   }
 

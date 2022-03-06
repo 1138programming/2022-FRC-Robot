@@ -32,9 +32,9 @@ public class Flywheel extends SubsystemBase {
     flywheelMotor.config_kI(0, flywheelControllerKI);
     flywheelMotor.config_kD(0, flywheelControllerKD);
 
-    SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
-    SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
-    SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
+    // SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
+    // SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
+    // SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
   }
   
   // public void move(double speedInEncoderUnits) {
