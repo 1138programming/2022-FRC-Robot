@@ -81,7 +81,7 @@ public final class Constants {
     public static final double KIntakeSwivelPWM = 0.5;
     
     //FlyWheel
-    public static final double KFlywheelSpeed = 0.3;
+    public static final double KFlywheelSpeed = 0.2;
     public static final double kYOffsetDeadzone = 10;
     public static final double kXOffsetDeadzone = 10;
 
@@ -90,7 +90,7 @@ public final class Constants {
 
     //Hang 
     public static final double KArmPWM = 0.4; //Left Arm positive goes back, right arm positive goes forward
-    public static final double KLevelHangSpeed = 0.8; //Negative is up.
+    public static final double KLevelHangSpeed = 0.4; //Negative is up.
     
     //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second

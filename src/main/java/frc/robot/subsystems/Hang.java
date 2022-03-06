@@ -47,6 +47,8 @@ public class Hang extends SubsystemBase {
     rightArmMotor = new TalonFX(KRightHangFalcon);
     levelHangMotor = new CANSparkMax(KLevelHangNeo, MotorType.kBrushless);
 
+    levelHangMotor.setInverted(true);
+
     leftArmMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     rightArmMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     levelEncoder = levelHangMotor.getEncoder();
