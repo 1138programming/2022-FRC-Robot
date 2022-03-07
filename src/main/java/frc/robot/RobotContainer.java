@@ -7,8 +7,6 @@ package frc.robot;
 import java.lang.reflect.Array;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.cfg.MapperConfigBase;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -95,6 +93,8 @@ import frc.robot.commands.Hang.MoveHangUp;
 import frc.robot.commands.Hang.MoveLevelHangTo;
 // import frc.robot.commands.Hang.MoveRachetIn;
 import io.github.pseudoresonance.pixy2api.*;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 
 
 /**
@@ -187,14 +187,16 @@ public class RobotContainer {
   public static final int KXboxRightBumper = 6; 
   public static final int KXboxSelectButton = 7; 
   public static final int KXboxStartButton = 8; 
-  public static final int KXboxLeftTrigger = 9; 
-  public static final int KXboxRightTrigger = 10; 
+  public static final int KXboxLeftTrigger = 2; 
+  public static final int KXboxRightTrigger = 3; 
 
   //Game Controllers
   public static Joystick logitech;
   public static XboxController xbox; 
   public JoystickButton logitechBtnX, logitechBtnA, logitechBtnB, logitechBtnY, logitechBtnLB, logitechBtnRB, logitechBtnLT, logitechBtnRT; //Logitech Button
-  public JoystickButton xboxBtnA, xboxBtnB, xboxBtnX, xboxBtnY, xboxBtnLB, xboxBtnRB, xboxBtnStrt, xboxBtnSelect, xboxBtnLT, xboxBtnRT;
+  public JoystickButton xboxBtnA, xboxBtnB, xboxBtnX, xboxBtnY, xboxBtnLB, xboxBtnRB, xboxBtnStrt, xboxBtnSelect;
+  public Trigger xboxBtnRT, xboxBtnLT;
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -232,9 +234,9 @@ public class RobotContainer {
     xboxBtnRB = new JoystickButton(xbox, KXboxRightBumper);
     xboxBtnSelect = new JoystickButton(xbox, KXboxSelectButton);
 		xboxBtnStrt = new JoystickButton(xbox, KXboxStartButton);
-		xboxBtnLT = new JoystickButton(xbox, KXboxLeftTrigger);
-    xboxBtnRT = new JoystickButton(xbox, KXboxRightTrigger);
-
+    xboxBtnLT = new Trigger(() -> (joystickThreshold(xbox.getRawAxis(KXboxLeftTrigger))));
+    xboxBtnRT = new Trigger(() -> (joystickThreshold(xbox.getRawAxis(KXboxRightTrigger))));
+    
     // Configure the button bindings
     configureButtonBindings();
 
@@ -277,7 +279,7 @@ public class RobotContainer {
     //FLywheel Controls
     // xboxBtnY.toggleWhenActive(flywheelSpinWithLimelight);
     xboxBtnRB.whenHeld(topStorageIn);
-    xboxBtnLB.whenHeld(bottomStorageIn);
+    xboxBtnRT.whenActive(bottomStorageIn);
     // xboxBtn.toggleWhenActive(flywheelSpin);
     // xboxBtnY.toggleWhenActive(ledOn);
     // xboxBtnX.whenHeld(huntMode);
@@ -482,5 +484,11 @@ public class RobotContainer {
       return -Y;
     else
       return 0;
+  }
+public boolean joystickThreshold(double triggerValue) {
+    if (Math.abs(triggerValue) < .09) 
+      return false;
+    else 
+      return true;
   }
 }
