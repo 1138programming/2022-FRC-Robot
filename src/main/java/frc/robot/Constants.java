@@ -52,8 +52,8 @@ public final class Constants {
     public static final int backRightMagEncoderId = 3;
     
     //Storage
-    public static final int KStorageSensorTop = 9;
-    public static final int KBallSensorBottom = 7;
+    public static final int KStorageSensorTop = 7;
+    public static final int KBallSensorBottom = 9;
     
     //Intake
     public static final int kIntakeTopLimit = 6;  

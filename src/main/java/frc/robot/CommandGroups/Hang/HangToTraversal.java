@@ -21,7 +21,6 @@ public class HangToTraversal extends SequentialCommandGroup {
       new MoveLevelHangTo(hang, 0),
       new MoveClawOut(hang),
       new HangToNextBar(hang),
-      new HangToNextBar(hang),
       new HangToNextBar(hang)
     );
   }
