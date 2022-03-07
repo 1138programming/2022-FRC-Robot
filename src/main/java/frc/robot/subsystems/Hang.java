@@ -192,10 +192,10 @@ public class Hang extends SubsystemBase {
   }
 
   public double getLeftArmEncoder() {
-    return leftArmMotor.getSelectedSensorPosition();
+    return leftArmMotor.getSelectedSensorPosition() * (45.0/256.0);
   }
   public double getRightArmEncoder() {
-    return rightArmMotor.getSelectedSensorPosition();
+    return rightArmMotor.getSelectedSensorPosition() * (45.0/256.0);
   }
   public double getLevelHangEncoder() {
     return levelEncoder.getPosition();

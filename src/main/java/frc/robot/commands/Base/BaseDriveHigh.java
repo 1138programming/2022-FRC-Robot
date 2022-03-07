@@ -23,8 +23,7 @@ public class BaseDriveHigh extends CommandBase {
   @Override
   public void initialize() {
     SmartDashboard.putString("Base Drive", "High");
-    base.setMaxDriveSpeedPercent(kBaseDriveMediumSpeed); //set to medium for testing
-    // base.setMaxDriveSpeed(kBaseDriveHighSpeed);
+    base.setMaxDriveSpeedPercent(kBaseDriveHighSpeed); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -52,11 +52,10 @@ public final class Constants {
     public static final int backRightMagEncoderId = 3;
     
     //Storage
-    // public static final int KStorageSensorTop = 4;
+    public static final int KStorageSensorTop = 9;
     public static final int KBallSensorBottom = 7;
     
     //Intake
-    // public static final int kIntakeBottomLimit = 6;  
     public static final int kIntakeTopLimit = 6;  
     
     //Hang
@@ -67,14 +66,14 @@ public final class Constants {
     //PWM Ports
     //Hang
     public static final int KLeftClawServo = 0;
-    // public static final int KRatchetServo = 0;
+    // public static final int KRatchetServo = ;
     public static final int KRightClawServo = 1;
     
     // Default PWM Values
     //Base
     public static final double kBaseDriveLowSpeed = 0.4;
-    public static final double kBaseDriveMediumSpeed = 0.8;
-    public static final double kBaseDriveHighSpeed = 1.0; //about 5700 RPM
+    public static final double kBaseDriveHighSpeed = 0.8;
+    public static final double kBaseDriveFullSpeed = 1.0; //about 5700 RPM
     
     //Intake
     public static final double KIntakeSpinPWM = 0.9;

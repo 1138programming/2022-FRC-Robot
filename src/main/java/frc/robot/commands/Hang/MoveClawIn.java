@@ -28,7 +28,6 @@ public class MoveClawIn extends CommandBase {
   @Override
   public void execute() {
     hang.moveClaw(0);
-    SmartDashboard.putBoolean("ClawOut", false);
   }
 
   // Called once the command ends or is interrupted.

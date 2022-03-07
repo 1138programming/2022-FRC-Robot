@@ -43,7 +43,7 @@ public class DriveWithLimelight extends CommandBase {
   public void initialize() {
     base.resetAllRelEncoders(); 
     if (camera.getTargetFound() == 0) {
-      SmartDashboard.putBoolean("Target Found", false);
+      SmartDashboard.putBoolean("Limelight Target Found", false);
     } 
   }
 
