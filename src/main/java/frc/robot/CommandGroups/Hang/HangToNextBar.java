@@ -27,26 +27,17 @@ import static frc.robot.Constants.*;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class HangToNextBar extends SequentialCommandGroup {
-  /** Creates a new HangToNextBar. */
-  public HangToNextBar(Hang hang, NeoBase base) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+  public HangToNextBar(Hang hang) {
     addCommands(
-      new MoveArmsToPosition(hang, -30),  // ALL VALUES ARE RANDOM AND WON'T WORK AND THIS WILL ONLY CLIMB TO HIGH
-      new MoveLevelHangTo(hang, 100),
-      new ResetOdometry(base),
-      new ParallelDeadlineGroup(new DeadlineTimer(500), 
-        new DriveToPose(base, new Pose2d(0.5, 0, new Rotation2d()))
-      ),
-      new MoveArmsToPosition(hang, 0),
-      new MoveClawOut(hang),
-      new MoveLevelHangTo(hang, 50),
-      new MoveArmsToPosition(hang, 45),
+      new MoveLevelHangTo(hang, 40),
+      new MoveArmsToPosition(hang, 80),
       new MoveHangToLimit(hang),
-      new MoveArmsToPosition(hang, 0),
-      new MoveLevelHangTo(hang, 0),
+      new MoveArmsToPosition(hang, 40),
+      new MoveLevelHangTo(hang, 25),
       new MoveClawIn(hang),
-      new MoveArmsToPosition(hang, -30)
+      new MoveLevelHangTo(hang, 0),
+      new MoveArmsToPosition(hang, 0),
+      new MoveClawOut(hang)
     );
   }
 }
