@@ -10,8 +10,11 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.DriveToPose;
+import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Base.ResetOdometry;
+import frc.robot.commands.Base.RotateToHeading;
 import frc.robot.commands.Flywheel.FlywheelSpin;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Intake.HuntMode;
@@ -36,44 +39,61 @@ public class Blue1Auton extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ResetOdometry(base),
-      
-      new ParallelDeadlineGroup(new DeadlineTimer(1000),
-        new FlywheelSpinWithLimelight(flywheel, camera)
-      ),
-      
-      new ParallelDeadlineGroup(new DeadlineTimer(2000), 
-        new FlywheelSpinWithLimelight(flywheel, camera),
-        new TopStorageIn(storage), 
-        new BottomStorageIn(storage)
+      new ParallelRaceGroup(
+        new HuntMode(intake),
+        new StorageCollect(storage),
+        new DriveToPose(base, new Pose2d(2, 0, new Rotation2d()))
       ),
 
       new ParallelRaceGroup(
-        new DriveToPose(base, new Pose2d(1, 0, new Rotation2d())),
-        new HuntMode(intake),
-        new StorageCollect(storage)
-      ),
-      
-      new DriveToPose(base, new Pose2d(0, 0, new Rotation2d())),
-      
-      new ParallelDeadlineGroup(new DeadlineTimer(2000), 
-        new FlywheelSpinWithLimelight(flywheel, camera),
-        new TopStorageIn(storage), 
-        new BottomStorageIn(storage)
+        new FlywheelSpin(flywheel),
+        new RotateToHeading(base, 180)
       ),
 
       new ParallelRaceGroup(
-        new DriveToPose(base, new Pose2d(1, 0, new Rotation2d())),
-        new HuntMode(intake),
-        new StorageCollect(storage)
+        new AimWithLimelight(base, camera),
+        new FlywheelSpin(flywheel)
       ),
 
-      new DriveToPose(base, new Pose2d(0, 0, new Rotation2d())),
-      
-      new ParallelDeadlineGroup(new DeadlineTimer(2000), 
+      new ParallelDeadlineGroup(new DeadlineTimer(5000), 
         new FlywheelSpinWithLimelight(flywheel, camera),
-        new TopStorageIn(storage), 
+        new TopStorageIn(storage),
         new BottomStorageIn(storage)
       )
+      
+      // new ParallelDeadlineGroup(new DeadlineTimer(2000), 
+      //   new FlywheelSpinWithLimelight(flywheel, camera),
+      //   new TopStorageIn(storage), 
+      //   new BottomStorageIn(storage)
+      // ),
+
+      // new ParallelRaceGroup(
+      //   new DriveToPose(base, new Pose2d(1, 0, new Rotation2d())),
+      //   new HuntMode(intake),
+      //   new StorageCollect(storage)
+      // ),
+      
+      // new DriveToPose(base, new Pose2d(0, 0, new Rotation2d())),
+      
+      // new ParallelDeadlineGroup(new DeadlineTimer(2000), 
+      //   new FlywheelSpinWithLimelight(flywheel, camera),
+      //   new TopStorageIn(storage), 
+      //   new BottomStorageIn(storage)
+      // ),
+
+      // new ParallelRaceGroup(
+      //   new DriveToPose(base, new Pose2d(1, 0, new Rotation2d())),
+      //   new HuntMode(intake),
+      //   new StorageCollect(storage)
+      // ),
+
+      // new DriveToPose(base, new Pose2d(0, 0, new Rotation2d())),
+      
+      // new ParallelDeadlineGroup(new DeadlineTimer(2000), 
+      //   new FlywheelSpinWithLimelight(flywheel, camera),
+      //   new TopStorageIn(storage), 
+      //   new BottomStorageIn(storage)
+      // )
     );
   }
 }
