@@ -12,10 +12,10 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class MoveRachetIn extends CommandBase {
+public class MoveRachetOut extends CommandBase {
   private Hang hang;
   /** Creates a new MoveClawOut. */
-  public MoveRachetIn(Hang hang) {
+  public MoveRachetOut(Hang hang) {
     this.hang = hang;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -27,7 +27,7 @@ public class MoveRachetIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.moveHangRatchetServo(0);
+    hang.moveHangRatchetServo(kHangRatchetDistance);
   }
 
   // Called once the command ends or is interrupted.

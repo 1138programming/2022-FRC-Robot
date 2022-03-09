@@ -95,6 +95,8 @@ import frc.robot.commands.Hang.MoveClawOut;
 import frc.robot.commands.Hang.MoveHangDown;
 import frc.robot.commands.Hang.MoveHangUp;
 import frc.robot.commands.Hang.MoveLevelHangTo;
+import frc.robot.commands.Hang.MoveRachetIn;
+import frc.robot.commands.Hang.MoveRachetOut;
 
 import frc.robot.CommandGroups.CollectAndIndexBalls;
 // import frc.robot.commands.Hang.MoveRachetIn;
@@ -137,7 +139,8 @@ public class RobotContainer {
   private final MoveClawOut moveClawOut = new MoveClawOut(hang);
   private final MoveHangDown moveHangDown = new MoveHangDown(hang);
   private final MoveHangUp moveHangUp = new MoveHangUp(hang);
-  // private final MoveRachetIn moveRachetIn = new MoveRachetIn(hang);
+  private final MoveRachetIn moveRachetIn = new MoveRachetIn(hang);
+  private final MoveRachetOut moveRachetOut = new MoveRachetOut(hang);
 
   // Intake
   private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);  
@@ -273,10 +276,13 @@ public class RobotContainer {
     logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
-    // logitechBtnA.whenHeld(moveClawIn);
-    // logitechBtnB.whenHeld(moveClawOut);
+    logitechBtnA.whenHeld(moveClawIn);
+    logitechBtnB.whenHeld(moveClawOut);
     // logitechBtnX.whenHeld(moveHangDown);
     // logitechBtnY.whenHeld(moveHangUp);
+    logitechBtnX.whenHeld(moveRachetIn);
+    logitechBtnY.whenHeld(moveRachetOut);
+    
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
     

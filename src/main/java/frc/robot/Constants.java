@@ -66,13 +66,13 @@ public final class Constants {
     //PWM Ports
     //Hang
     public static final int KLeftClawServo = 0;
-    // public static final int KRatchetServo = ;
+    public static final int KRatchetServo = 2;
     public static final int KRightClawServo = 1;
     
     // Default PWM Values
     //Base
     public static final double kBaseDriveLowSpeed = 0.4;
-    public static final double kBaseDriveHighSpeed = 0.8;
+    public static final double kBaseDriveHighSpeed = 0.65;
     public static final double kBaseDriveFullSpeed = 1.0; //about 5700 RPM
     
     //Intake
@@ -121,4 +121,7 @@ public final class Constants {
     public static final double kDesiredXOffset = 1;
     public static final double kLimelightXOffsetDeadzone = 0.05;
     // public static final double kYOffsetDeadzone = 10; //not implemented yet
+
+    //Hang Constants
+    public static final double kHangRatchetDistance = 0.3;
 }

@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.DriveToPose;
@@ -18,6 +19,9 @@ import frc.robot.commands.Base.RotateToHeading;
 import frc.robot.commands.Flywheel.FlywheelSpin;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Intake.HuntMode;
+import frc.robot.commands.Intake.IntakeSpinForward;
+import frc.robot.commands.Intake.IntakeStop;
+import frc.robot.commands.Intake.IntakeSwivelDown;
 import frc.robot.commands.Miscellaneous.DeadlineTimer;
 import frc.robot.commands.Storage.BottomStorageIn;
 import frc.robot.commands.Storage.StorageCollect;
@@ -38,28 +42,35 @@ public class Blue1Auton extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      
       new ResetOdometry(base),
-      new ParallelRaceGroup(
-        new HuntMode(intake),
-        new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(2, 0, new Rotation2d()))
+      
+      new ParallelCommandGroup(
+        new ParallelDeadlineGroup(new DeadlineTimer(1500),
+          new IntakeSwivelDown(intake)
+        ),
+        new ParallelDeadlineGroup(new DeadlineTimer(2500),
+          // new HuntMode(intake),
+          new IntakeSpinForward(intake),
+          new StorageCollect(storage),
+          new DriveToPose(base, new Pose2d(2, 0, new Rotation2d()))
+        )
       ),
-
-      new ParallelRaceGroup(
-        new FlywheelSpin(flywheel),
-        new RotateToHeading(base, 180)
-      ),
-
+      
+      new RotateToHeading(base, 180),
+      
       new ParallelRaceGroup(
         new AimWithLimelight(base, camera),
-        new FlywheelSpin(flywheel)
-      ),
-
-      new ParallelDeadlineGroup(new DeadlineTimer(5000), 
         new FlywheelSpinWithLimelight(flywheel, camera),
-        new TopStorageIn(storage),
-        new BottomStorageIn(storage)
+        new SequentialCommandGroup(
+          new DeadlineTimer(1000), 
+          new ParallelDeadlineGroup(new DeadlineTimer(5000),
+            new TopStorageIn(storage),
+            new BottomStorageIn(storage)
+          )
+        )
       )
+        
       
       // new ParallelDeadlineGroup(new DeadlineTimer(2000), 
       //   new FlywheelSpinWithLimelight(flywheel, camera),

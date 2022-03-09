@@ -31,7 +31,7 @@ public class Hang extends SubsystemBase {
   private Servo rightClawServo;
   private Servo leftClawServo;
   private RelativeEncoder levelEncoder;
-  // private Servo ratchetServo;
+  private Servo ratchetServo;
 
   private DigitalInput leftArmLimit;
   private DigitalInput rightArmLimit;
@@ -59,11 +59,11 @@ public class Hang extends SubsystemBase {
     
     leftClawServo = new Servo(KLeftClawServo);
     rightClawServo = new Servo(KRightClawServo);
-    // ratchetServo = new Servo(KRatchetServo);
+    ratchetServo = new Servo(KRatchetServo);
 
     leftClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     rightClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
-    // ratchetServo.setBounds(2.5, 1.8, 1.5, 1.2, 0.5);
+    ratchetServo.setBounds(2.5, 1.8, 1.5, 1.2, 0.5);
     
     leftArmLimit = new DigitalInput(KLeftArmLimit);
     rightArmLimit = new DigitalInput(KRightArmLimit);
@@ -144,13 +144,16 @@ public class Hang extends SubsystemBase {
   //Negative speed is up
   public void moveLevelHangSpeed(double speed) {
     if (speed > 0 && getHangLimit()) {
+      ratchetServo.set(kHangRatchetDistance);
       levelHangMotor.set(speed);
       resetLevelHangEncoder();
     }
     else if (speed < 0 && (getLevelHangEncoder() > kHangEncoderLimitPos)) {
+      ratchetServo.set(0);
       levelHangMotor.set(0);
     }
     else {
+      ratchetServo.set(kHangRatchetDistance);
       levelHangMotor.set(-speed);
     }
   }
@@ -172,9 +175,13 @@ public class Hang extends SubsystemBase {
   
   //BAD!!! Hang mvoement in this function is unrestricted, can crush the bot
   public void moveLeveHangUnrestricted(double speed) {
+    ratchetServo.set(kHangRatchetDistance);
     levelHangMotor.set(-speed);
   }
   
+  public void moveHangRatchetServo(double pos) {
+    ratchetServo.set(pos);
+  }
 
   public void moveLevelToPosition(double position) {
     PIDController speedController = new PIDController(1, 0, 0);
