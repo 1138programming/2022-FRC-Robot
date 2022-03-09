@@ -43,7 +43,7 @@ public class FlywheelSpinWithLimelight extends CommandBase {
     distanceFromHub = camera.getDistance();
 
     if (distanceFromHub > 60) {
-      flywheelOutput = 1950 + distanceFromHub * 4.077;
+      flywheelOutput = 2000 + distanceFromHub * 4.077;
     }
     else {
       flywheelOutput = 0;

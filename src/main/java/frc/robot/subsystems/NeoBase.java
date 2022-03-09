@@ -179,7 +179,6 @@ public class NeoBase extends SubsystemBase {
       SwerveX module = modules[i];
       SwerveModuleState state = states[i];
       module.setDesiredState(state);
-      SmartDashboard.putString("state" + i, states[i].toString());
     }
 }
 

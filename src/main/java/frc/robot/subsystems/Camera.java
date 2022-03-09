@@ -18,11 +18,11 @@ import edu.wpi.first.cscore.CvSource;
 import static frc.robot.Constants.*;
 
 public class Camera extends SubsystemBase {
-  NetworkTable table;
-  double targetFound;
-  double x;
-  double y;
-  double area;
+  private NetworkTable table;
+  private double targetFound;
+  private double x;
+  private double y;
+  private double area;
   
   public Camera() {
     //setting up networktable
@@ -37,6 +37,9 @@ public class Camera extends SubsystemBase {
 
   // Creates the CvSink and connects it to the UsbCamera
   CvSink cvSink = CameraServer.getVideo();
+
+  // Creates the CvSource and MjpegServer [2] and connects them
+  CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
 
   }
   

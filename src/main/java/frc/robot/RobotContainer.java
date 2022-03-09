@@ -95,6 +95,8 @@ import frc.robot.commands.Hang.MoveClawOut;
 import frc.robot.commands.Hang.MoveHangDown;
 import frc.robot.commands.Hang.MoveHangUp;
 import frc.robot.commands.Hang.MoveLevelHangTo;
+
+import frc.robot.CommandGroups.CollectAndIndexBalls;
 // import frc.robot.commands.Hang.MoveRachetIn;
 import io.github.pseudoresonance.pixy2api.*;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -163,6 +165,7 @@ public class RobotContainer {
   
   //Auton
   private final Red1Auton red1Auton = new Red1Auton(base);
+  private final CollectAndIndexBalls collectAndIndexBalls = new CollectAndIndexBalls(intake, storage);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -216,7 +219,7 @@ public class RobotContainer {
     flywheel.setDefaultCommand(flywheelStop);
     // intake.setDefaultCommand(stowedMode);
     intake.setDefaultCommand(intakeStop);
-    storage.setDefaultCommand(storageCollect);
+    storage.setDefaultCommand(storageStop);
     camera.setDefaultCommand(ledOff);
 
     //Game controllers
@@ -274,8 +277,8 @@ public class RobotContainer {
     // logitechBtnB.whenHeld(moveClawOut);
     // logitechBtnX.whenHeld(moveHangDown);
     // logitechBtnY.whenHeld(moveHangUp);
-    // logitechBtnLB.whenHeld(moveArmForward);
-    // logitechBtnRB.whenHeld(moveArmBackward);
+    logitechBtnLB.whenHeld(moveArmForward);
+    logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
     xboxBtnX.toggleWhenActive(flywheelSpinWithLimelight);
@@ -283,13 +286,13 @@ public class RobotContainer {
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
 
-    xboxBtnLB.whenHeld(intakeSpinForward);
-    xboxBtnLT.whenActive(intakeSpinBackward);
-    xboxBtnLT.whenInactive(intakeStop);
+    xboxBtnLB.whenHeld(collectAndIndexBalls);
+    xboxBtnLT.whileActiveContinuous(intakeSpinBackward);
+    // xboxBtnLT.whenInactive(intakeStop);
     
     xboxBtnRB.whenHeld(storageOut);
-    xboxBtnRT.whenActive(intakeSpinBackward);
-    xboxBtnRT.whenInactive(intakeStop);
+    xboxBtnRT.whileActiveContinuous(intakeSpinBackward);
+    // xboxBtnRT.whenInactive(intakeStop);
     
   }
 
