@@ -216,7 +216,7 @@ public class RobotContainer {
     flywheel.setDefaultCommand(flywheelStop);
     // intake.setDefaultCommand(stowedMode);
     intake.setDefaultCommand(intakeStop);
-    storage.setDefaultCommand(storageStop);
+    storage.setDefaultCommand(storageCollect);
     camera.setDefaultCommand(ledOff);
 
     //Game controllers
@@ -278,26 +278,19 @@ public class RobotContainer {
     // logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
-    xboxBtnA.toggleWhenActive(flywheelSpinWithLimelight);
-    xboxBtnB.whenHeld(intakeSpinForward);
-    xboxBtnX.whenHeld(swivelDown);
+    xboxBtnX.toggleWhenActive(flywheelSpinWithLimelight);
+    xboxBtnB.whenHeld(storageSpinIntoFlyWheel);
     xboxBtnY.whenHeld(swivelUp);
+    xboxBtnA.whenHeld(swivelDown);
+
+    xboxBtnLB.whenHeld(intakeSpinForward);
     xboxBtnLT.whenActive(intakeSpinBackward);
     xboxBtnLT.whenInactive(intakeStop);
-    xboxBtnRT.whenActive(storageSpinIntoFlyWheel);
-    xboxBtnRT.whenInactive(storageStop);
-
-
-    //FLywheel Controls
-    // xboxBtnY.toggleWhenActive(flywheelSpinWithLimelight);
-    // xboxBtnRB.whenHeld(topStorageIn);
-    // xboxBtnRT.whenActive(bottomStorageIn);
-    // xboxBtnRT.whenInactive(bottomStorageStop);
-    xboxBtnRB.whenHeld(storageCollect);
-    xboxBtnLB.whenHeld(storageOut);
-    // xboxBtn.toggleWhenActive(flywheelSpin);
-    // xboxBtnY.toggleWhenActive(ledOn);
-    // xboxBtnX.whenHeld(huntMode);
+    
+    xboxBtnRB.whenHeld(storageOut);
+    xboxBtnRT.whenActive(intakeSpinBackward);
+    xboxBtnRT.whenInactive(intakeStop);
+    
   }
 
   public Command getAutonomousCommand() {
