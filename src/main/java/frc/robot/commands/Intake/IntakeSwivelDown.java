@@ -8,13 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import static frc.robot.Constants.*;
 
-public class IntakeMoveSwivel extends CommandBase {
+public class IntakeSwivelDown extends CommandBase {
   private Intake intake;
-  private boolean direction;
   /** Creates a new IntakeSwivelDown. */
-  public IntakeMoveSwivel(Intake intake, boolean direction) {
+  public IntakeSwivelDown(Intake intake) {
     this.intake = intake;
-    this.direction = direction;
     addRequirements(intake);
   }
 
@@ -25,12 +23,7 @@ public class IntakeMoveSwivel extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (direction) {
-      intake.moveSwivel(-KIntakeSwivelPWM);
-    }
-    else {
-      intake.moveSwivel(KIntakeSwivelPWM);
-    }
+    intake.moveSwivel(-KIntakeSwivelPWM);
   }
 
   // Called once the command ends or is interrupted.

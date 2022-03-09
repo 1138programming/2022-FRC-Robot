@@ -78,6 +78,7 @@ public class Hang extends SubsystemBase {
     SmartDashboard.putBoolean("rightArmLimit", getRightArmLimit());
     SmartDashboard.putNumber("leftArmEncoder", getLeftArmEncoder());
     SmartDashboard.putNumber("rightArmEncoder", getRightArmEncoder());
+    SmartDashboard.putNumber("LevelHangEncoder", getLevelHangEncoder());
   }
 
   //Left Arm positive speed goes back, right arm positive speed goes forward
@@ -192,10 +193,10 @@ public class Hang extends SubsystemBase {
   }
 
   public double getLeftArmEncoder() {
-    return leftArmMotor.getSelectedSensorPosition() * (45.0/256.0);
+    return leftArmMotor.getSelectedSensorPosition();
   }
   public double getRightArmEncoder() {
-    return rightArmMotor.getSelectedSensorPosition() * (45.0/256.0);
+    return rightArmMotor.getSelectedSensorPosition();
   }
   public double getLevelHangEncoder() {
     return levelEncoder.getPosition();

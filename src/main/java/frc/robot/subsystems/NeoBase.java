@@ -170,15 +170,16 @@ public class NeoBase extends SubsystemBase {
     SwerveModuleState[] states =
       kinematics.toSwerveModuleStates(
         fieldRelative
-          ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-gyro.getAngle()))
+          ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(gyro.getAngle()))
+          // ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-gyro.getAngle()))//for testbed
           : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(states, kPhysicalMaxDriveSpeedMPS);
-    
     //setting module states, aka moving the motors
     for (int i = 0; i < states.length; i++) {
       SwerveX module = modules[i];
       SwerveModuleState state = states[i];
       module.setDesiredState(state);
+      SmartDashboard.putString("state" + i, states[i].toString());
     }
 }
 
@@ -193,6 +194,7 @@ public class NeoBase extends SubsystemBase {
     SmartDashboard.putNumber("Module 1 Raw Angle", modules[1].getAngleDegRaw());
     SmartDashboard.putNumber("Module 2 Raw Angle", modules[2].getAngleDegRaw());
     SmartDashboard.putNumber("Module 3 Raw Angle", modules[3].getAngleDegRaw());
+
 
     //used for testing pid
     // setAllModuleGains();
@@ -264,7 +266,8 @@ public class NeoBase extends SubsystemBase {
   }
   
   public double getHeadingDeg() {
-    return (-gyro.getAngle());
+    return (gyro.getAngle());
+    // return (-gyro.getAngle()); //for testbed
   }
 
   public Rotation2d getHeading() {
@@ -331,7 +334,7 @@ public class NeoBase extends SubsystemBase {
   }
 
   class SwerveX {
-    private final double KAngleP = 0.0045;
+    private final double KAngleP = 0.006;
     private final double KAngleI = 0;
     private final double KAngleD = 0;
 

@@ -33,7 +33,7 @@ public class Camera extends SubsystemBase {
     area = 0;
 
   // Creates UsbCamera and MjpegServer [1] and connects them
-  CameraServer.startAutomaticCapture();
+  CameraServer.startAutomaticCapture(0);
 
   // Creates the CvSink and connects it to the UsbCamera
   CvSink cvSink = CameraServer.getVideo();

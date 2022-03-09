@@ -19,8 +19,6 @@ public class Storage extends SubsystemBase {
   private DigitalInput ballSensorBottom;
   private DigitalInput ballSensorTop;
 
-  private boolean isMoving = false;
-
   //Constructor is constructing
   public Storage(){
     //set the motor
@@ -46,11 +44,9 @@ public class Storage extends SubsystemBase {
   }
   public void moveTop(double speed) {
     topStorageMotor.set(VictorSPXControlMode.PercentOutput, speed);
-    isMoving = true;
   }
   public void moveBottom(double speed) {
     bottomStorageMotor.set(VictorSPXControlMode.PercentOutput, speed);
-    isMoving = true;
   }
   public boolean getBallSensorTop(){
     return ballSensorTop.get();

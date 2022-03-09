@@ -70,18 +70,23 @@ import frc.robot.commands.Base.BaseStop;
 import frc.robot.commands.Base.DriveToPose;
 import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Intake.IntakeStop;
+import frc.robot.commands.Intake.IntakeSwivelDown;
+import frc.robot.commands.Intake.IntakeSwivelUp;
 import frc.robot.commands.Intake.IntakeSpinBackward;
 import frc.robot.commands.Intake.IntakeSpinForward;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeSpinBackward;
 import frc.robot.commands.Intake.HuntMode;
-import frc.robot.commands.Intake.IntakeMoveSwivel;
 import frc.robot.commands.Intake.StowedMode;
 import frc.robot.commands.Storage.StorageStop;
 import frc.robot.commands.Storage.BottomStorageOut;
 import frc.robot.commands.Storage.BottomStorageIn;
+import frc.robot.commands.Storage.BottomStorageStop;
+import frc.robot.commands.Storage.StorageSpinIntoFlywheel;
+import frc.robot.commands.Storage.StorageCollect;
 import frc.robot.commands.Storage.TopStorageOut;
 import frc.robot.commands.Storage.TopStorageIn;
+import frc.robot.commands.Storage.StorageOut;
 import frc.robot.commands.Hang.HangStop;
 import frc.robot.commands.Hang.MoveArmBackward;
 import frc.robot.commands.Hang.MoveArmForward;
@@ -138,15 +143,19 @@ public class RobotContainer {
   private final IntakeStop intakeStop = new IntakeStop(intake);
   private final HuntMode huntMode = new HuntMode(intake);
   private final StowedMode stowedMode = new StowedMode(intake);
-  private final IntakeMoveSwivel swivelDown = new IntakeMoveSwivel(intake, true);
-  private final IntakeMoveSwivel swivelUp = new IntakeMoveSwivel(intake, false);
+  private final IntakeSwivelDown swivelDown = new IntakeSwivelDown(intake);
+  private final IntakeSwivelUp swivelUp = new IntakeSwivelUp(intake);
   // Storage
   private final StorageStop storageStop= new StorageStop(storage);
   private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
   private final BottomStorageOut bottomStorageOut = new BottomStorageOut(storage);
   private final BottomStorageIn bottomStorageIn = new BottomStorageIn(storage);
+  private final BottomStorageStop bottomStorageStop = new BottomStorageStop(storage);
   private final TopStorageOut topStorageOut = new TopStorageOut(storage);
   private final TopStorageIn topStorageIn = new TopStorageIn(storage);
+  private final StorageOut storageOut = new StorageOut(storage);
+  private final StorageCollect storageCollect = new StorageCollect(storage);
+  private final StorageSpinIntoFlywheel storageSpinIntoFlyWheel = new StorageSpinIntoFlywheel(storage);
   
   //Camera
   private final LEDOff ledOff = new LEDOff(camera);
@@ -252,33 +261,40 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //Drive Controls
-    // logitechBtnA.whenHeld(aimWithLimelight);
-    // logitechBtnRT.whileHeld(driveWithLimelight);
+    logitechBtnRT.whileHeld(driveWithLimelight);
     // logitechBtnRT.whenPressed(new DriveToPose(base, new Pose2d()), false);
     // logitechBtnLT.whenPressed(baseDriveHigh);
     // logitechBtnLT.whenReleased(baseDriveLow);
-    // logitechBtnY.whenPressed(resetGyro);
+    logitechBtnY.whenPressed(resetGyro);
     // logitechBtnY.whileHeld(new ResetWheels(base));
-    // logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
+    logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
-    logitechBtnA.whenHeld(moveClawIn);
-    logitechBtnB.whenHeld(moveClawOut);
-    logitechBtnX.whenHeld(moveHangDown);
-    logitechBtnY.whenHeld(moveHangUp);
-    logitechBtnLB.whenHeld(moveArmForward);
-    logitechBtnRB.whenHeld(moveArmBackward);
+    // logitechBtnA.whenHeld(moveClawIn);
+    // logitechBtnB.whenHeld(moveClawOut);
+    // logitechBtnX.whenHeld(moveHangDown);
+    // logitechBtnY.whenHeld(moveHangUp);
+    // logitechBtnLB.whenHeld(moveArmForward);
+    // logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
-    xboxBtnA.toggleWhenActive(flywheelSpin);//out
-    xboxBtnB.whenHeld(intakeSpinForward);//in
+    xboxBtnA.toggleWhenActive(flywheelSpinWithLimelight);
+    xboxBtnB.whenHeld(intakeSpinForward);
     xboxBtnX.whenHeld(swivelDown);
     xboxBtnY.whenHeld(swivelUp);
+    xboxBtnLT.whenActive(intakeSpinBackward);
+    xboxBtnLT.whenInactive(intakeStop);
+    xboxBtnRT.whenActive(storageSpinIntoFlyWheel);
+    xboxBtnRT.whenInactive(storageStop);
+
 
     //FLywheel Controls
     // xboxBtnY.toggleWhenActive(flywheelSpinWithLimelight);
-    xboxBtnRB.whenHeld(topStorageIn);
-    xboxBtnRT.whenActive(bottomStorageIn);
+    // xboxBtnRB.whenHeld(topStorageIn);
+    // xboxBtnRT.whenActive(bottomStorageIn);
+    // xboxBtnRT.whenInactive(bottomStorageStop);
+    xboxBtnRB.whenHeld(storageCollect);
+    xboxBtnLB.whenHeld(storageOut);
     // xboxBtn.toggleWhenActive(flywheelSpin);
     // xboxBtnY.toggleWhenActive(ledOn);
     // xboxBtnX.whenHeld(huntMode);

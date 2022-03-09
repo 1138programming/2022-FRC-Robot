@@ -88,7 +88,7 @@ public final class Constants {
     public static final double kStoragePWM = 0.5;
 
     //Hang 
-    public static final double KArmPWM = 0.4; //Left Arm positive goes back, right arm positive goes forward
+    public static final double KArmPWM = 0.2; //Left Arm positive goes back, right arm positive goes forward
     public static final double KLevelHangSpeed = 0.4; //Negative is up.
     
     //Base Constants

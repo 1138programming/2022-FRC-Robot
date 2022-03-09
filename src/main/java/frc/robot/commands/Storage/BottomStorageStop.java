@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import static frc.robot.Constants.*;
 
-public class BottomStorageOut extends CommandBase {
+public class BottomStorageStop extends CommandBase {
     private Storage storage;
 
-    public BottomStorageOut(Storage storage){
+    public BottomStorageStop(Storage storage){
         this.storage = storage;
         
         addRequirements(storage);
@@ -20,7 +20,7 @@ public class BottomStorageOut extends CommandBase {
     }
 
     public void execute(){
-        storage.moveBottom(-kStoragePWM);
+        storage.moveBottom(0);
     }
 
     public void end(boolean interrupted){}

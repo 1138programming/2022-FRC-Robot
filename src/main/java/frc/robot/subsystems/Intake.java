@@ -70,6 +70,10 @@ public class Intake extends SubsystemBase {
     // swivelMagEncoder.reset();
     swivelIntakeMotor.setSelectedSensorPosition(0);
   }
+  public double getIntakeEncoderRaw() {
+    // return (swivelMagEncoder.get() % 360);
+    return swivelIntakeMotor.getSelectedSensorPosition();
+  }
   public double getIntakeEncoderDeg() {
     // return (swivelMagEncoder.get() % 360);
     return (swivelIntakeMotor.getSelectedSensorPosition() % 360);
@@ -105,10 +109,10 @@ public class Intake extends SubsystemBase {
     return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG2);
   }
 
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("intake limit", getTopLimitSwitch());
+    SmartDashboard.putNumber("intake Encoder raw", getIntakeEncoderRaw());
   }
 }
