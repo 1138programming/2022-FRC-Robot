@@ -15,7 +15,6 @@ public class IntakeSpinForward extends CommandBase {
   /** Creates a new IntakeUp. */
   public IntakeSpinForward(Intake intake) {
     this.intake = intake;
-    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.

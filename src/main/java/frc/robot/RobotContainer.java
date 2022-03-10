@@ -223,7 +223,8 @@ public class RobotContainer {
     // intake.setDefaultCommand(stowedMode);
     intake.setDefaultCommand(intakeStop);
     storage.setDefaultCommand(storageStop);
-    camera.setDefaultCommand(ledOff);
+    // camera.setDefaultCommand(ledOff);
+    camera.setDefaultCommand(ledOn);
 
     //Game controllers
     logitech = new Joystick(KLogitechPort); //Logitech Dual Action
@@ -269,8 +270,8 @@ public class RobotContainer {
     //Drive Controls
     logitechBtnRT.whileHeld(driveWithLimelight);
     // logitechBtnRT.whenPressed(new DriveToPose(base, new Pose2d()), false);
-    // logitechBtnLT.whenPressed(baseDriveHigh);
-    // logitechBtnLT.whenReleased(baseDriveLow);
+    logitechBtnLT.whenPressed(baseDriveHigh);
+    logitechBtnLT.whenReleased(baseDriveLow);
     logitechBtnY.whenPressed(resetGyro);
     // logitechBtnY.whileHeld(new ResetWheels(base));
     logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
@@ -280,8 +281,8 @@ public class RobotContainer {
     logitechBtnB.whenHeld(moveClawOut);
     // logitechBtnX.whenHeld(moveHangDown);
     // logitechBtnY.whenHeld(moveHangUp);
-    logitechBtnX.whenHeld(moveRachetIn);
-    logitechBtnY.whenHeld(moveRachetOut);
+    logitechBtnX.whenPressed(moveRachetIn);
+    logitechBtnY.whenPressed(moveRachetOut);
     
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
@@ -291,8 +292,10 @@ public class RobotContainer {
     xboxBtnB.whenHeld(storageSpinIntoFlyWheel);
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
+    // xboxBtnA.whenHeld(huntMode);
 
     xboxBtnLB.whenHeld(collectAndIndexBalls);
+    // xboxBtnLB.whenHeld(huntMode);
     xboxBtnLT.whileActiveContinuous(intakeSpinBackward);
     // xboxBtnLT.whenInactive(intakeStop);
     

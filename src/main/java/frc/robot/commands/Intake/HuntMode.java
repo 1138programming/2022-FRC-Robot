@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Intake;
 
+import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
@@ -34,14 +35,15 @@ public class HuntMode extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.swivelToPos(KIntakeAngle); // Sets the intake to hunt mode.
-    intake.setLamp();
-	  }
-
+  }
+  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {  
+    intake.swivelToPos(KIntakePos); // Sets the intake to hunt mode.
 
+    // intake.moveSpin(KIntakeSpinPWM);
+    
   //   if (!isCamera) {
   //     state = intake.pixyInit(); // if no camera present, try to initialize  
   //     isCamera = (state >= 0);
@@ -89,11 +91,14 @@ public class HuntMode extends CommandBase {
   }
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    // return (Math.abs(intake.getIntakeEncoderRaw() - 1000) < 50);
+    return (Math.abs(intake.getIntakeEncoderRaw() - KIntakePos) < 100);
+    // return false;
   }
 }

@@ -35,11 +35,13 @@ public class Intake extends SubsystemBase {
   private DigitalInput topLimitSwitch;
   private DutyCycleEncoder swivelMagEncoder;
   private PIDController swivelController;
-  private double intakeControllerkP, intakeControllerkI, intakeControllerkD;
+  private double intakeControllerkP = 0.0005;
+  private double intakeControllerkI = 0;
+  private double  intakeControllerkD = 0;
   private final Pixy2 pixy;
   
   public Intake() {
-    swivelIntakeMotor = new TalonSRX(KSwivelIntakeTalon);
+    swivelIntakeMotor = new TalonSRX(KSwivelIntakeTalon); //watch out for data port limit https://docs.ctre-phoenix.com/en/stable/ch13_MC.html#limit-switches
     spinIntakeMotor = new VictorSPX(KSpinIntakeVictor);
     swivelIntakeMotor.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
     swivelController = new PIDController(intakeControllerkP, intakeControllerkI, intakeControllerkD);
@@ -51,11 +53,28 @@ public class Intake extends SubsystemBase {
   }
   //Talon
   public void moveSwivel(double speed) {
-    swivelIntakeMotor.set(ControlMode.PercentOutput, speed);
+    if (getTopLimitSwitch()) {
+      if (speed > 0) {
+        swivelIntakeMotor.set(ControlMode.PercentOutput, 0);
+        swivelIntakeMotor.setSelectedSensorPosition(0);
+      }
+      else {
+        swivelIntakeMotor.set(ControlMode.PercentOutput, speed);
+        swivelIntakeMotor.setSelectedSensorPosition(0);
+      }
+    }
+    else {
+      swivelIntakeMotor.set(ControlMode.PercentOutput, speed);
+    }
   }
   
   public void moveSpin(double speed) {
-    spinIntakeMotor.set(VictorSPXControlMode.PercentOutput, speed);
+    if (getTopLimitSwitch()) {
+      spinIntakeMotor.set(VictorSPXControlMode.PercentOutput, 0);
+    }
+    else {
+      spinIntakeMotor.set(VictorSPXControlMode.PercentOutput, speed);
+    }
   }
   // Getters
   // public boolean getBottomLimitSwitch() {
@@ -63,6 +82,10 @@ public class Intake extends SubsystemBase {
   // }
   public boolean getTopLimitSwitch() {
     return !(topLimitSwitch.get());
+  }
+
+  public void swivelToPos(double setPoint) {  
+    moveSwivel(-swivelController.calculate(getIntakeEncoderRaw(), setPoint));
   }
   //Pixy2 functions
 
@@ -74,13 +97,10 @@ public class Intake extends SubsystemBase {
     // return (swivelMagEncoder.get() % 360);
     return swivelIntakeMotor.getSelectedSensorPosition();
   }
-  public double getIntakeEncoderDeg() {
+  // public double getIntakeEncoderDeg() {
     // return (swivelMagEncoder.get() % 360);
-    return (swivelIntakeMotor.getSelectedSensorPosition() % 360);
-  }
-  public void swivelToPos(double setPoint) {
-    swivelIntakeMotor.set(TalonSRXControlMode.PercentOutput, swivelController.calculate(getIntakeEncoderDeg(), setPoint));
-  }
+    // return (swivelIntakeMotor.getSelectedSensorPosition() % 360);
+    // }
 
   public int pixyInit() {
     return pixy.init(1);

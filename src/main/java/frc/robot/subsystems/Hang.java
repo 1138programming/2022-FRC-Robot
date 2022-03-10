@@ -7,7 +7,9 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.*;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -19,6 +21,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -30,8 +33,8 @@ public class Hang extends SubsystemBase {
   private CANSparkMax levelHangMotor;
   private Servo rightClawServo;
   private Servo leftClawServo;
-  private RelativeEncoder levelEncoder;
   private Servo ratchetServo;
+  private RelativeEncoder levelEncoder;
 
   private DigitalInput leftArmLimit;
   private DigitalInput rightArmLimit;
@@ -42,32 +45,44 @@ public class Hang extends SubsystemBase {
   private final double kArmMaxForwardLimit = 6.9; //Change When Testing
   private final double kArmMaxReverseLimit = 0; //Encoder should reset everytime it hits the arm limit switches
 
+  private TalonFXConfiguration tFxConfiguration;
+
   public Hang() {
+    tFxConfiguration = new TalonFXConfiguration();
+    tFxConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
+    
+
     leftArmMotor = new TalonFX(KLeftHangFalcon);
     rightArmMotor = new TalonFX(KRightHangFalcon);
     levelHangMotor = new CANSparkMax(KLevelHangNeo, MotorType.kBrushless);
+
+    leftArmMotor.configAllSettings(tFxConfiguration);
 
     levelHangMotor.setInverted(true);
 
     leftArmMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     rightArmMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    
     levelEncoder = levelHangMotor.getEncoder();
 
     leftArmMotor.setNeutralMode(NeutralMode.Brake);
     rightArmMotor.setNeutralMode(NeutralMode.Brake);
     levelHangMotor.setIdleMode(IdleMode.kBrake);
-    
+
     leftClawServo = new Servo(KLeftClawServo);
     rightClawServo = new Servo(KRightClawServo);
     ratchetServo = new Servo(KRatchetServo);
 
     leftClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     rightClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
-    ratchetServo.setBounds(2.5, 1.8, 1.5, 1.2, 0.5);
+    ratchetServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     
     leftArmLimit = new DigitalInput(KLeftArmLimit);
     rightArmLimit = new DigitalInput(KRightArmLimit);
     hangLimit = new DigitalInput(KHangLimit);
+
+    leftArmMotor.configAllSettings(tFxConfiguration);
+    rightArmMotor.configAllSettings(tFxConfiguration);
   }
 
   @Override
