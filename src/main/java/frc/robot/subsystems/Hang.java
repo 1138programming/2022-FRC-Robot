@@ -156,20 +156,19 @@ public class Hang extends SubsystemBase {
     }
   }
 
-  //Negative speed is up
+  //Negative raw speed is up
   public void moveLevelHangSpeed(double speed) {
-    if (speed > 0 && getHangLimit()) {
-      ratchetServo.set(kHangRatchetDistance);
+    speed = -speed;
+    if (!getHangLimit()) {
       levelHangMotor.set(speed);
-      resetLevelHangEncoder();
     }
-    else if (speed < 0 && (getLevelHangEncoder() > kHangEncoderLimitPos)) {
-      ratchetServo.set(0);
-      levelHangMotor.set(0);
+    else if (speed < 0)
+    {
+      levelHangMotor.set(speed);
     }
     else {
-      ratchetServo.set(kHangRatchetDistance);
-      levelHangMotor.set(-speed);
+      resetLevelHangEncoder();
+      levelHangMotor.set(0);
     }
   }
   
@@ -190,7 +189,7 @@ public class Hang extends SubsystemBase {
   
   //BAD!!! Hang mvoement in this function is unrestricted, can crush the bot
   public void moveLeveHangUnrestricted(double speed) {
-    ratchetServo.set(kHangRatchetDistance);
+    // ratchetServo.set(kHangRatchetDistance);
     levelHangMotor.set(-speed);
   }
   

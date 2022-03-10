@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Miscellaneous;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DeadlineTimer extends CommandBase {
@@ -23,6 +24,8 @@ public class DeadlineTimer extends CommandBase {
   @Override
   public void execute() {
     currentTime += (System.currentTimeMillis() - currentTime);
+    SmartDashboard.putNumber("current time", currentTime);
+    SmartDashboard.putNumber("length", length);
   }
 
   // Called once the command ends or is interrupted.

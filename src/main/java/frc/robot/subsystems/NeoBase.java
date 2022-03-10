@@ -372,6 +372,8 @@ public class NeoBase extends SubsystemBase {
       //Sets the motor break mode to either kBreak or kCoast.
       angleMotor.setIdleMode(IdleMode.kBrake);
       driveMotor.setIdleMode(IdleMode.kBrake); 
+      // angleMotor.setIdleMode(IdleMode.kCoast);
+      // driveMotor.setIdleMode(IdleMode.kCoast); 
       
       driveEncoder = driveMotor.getEncoder();
       angleEncoder = angleMotor.getEncoder();

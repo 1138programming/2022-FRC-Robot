@@ -85,11 +85,11 @@ public final class Constants {
     public static final double kXOffsetDeadzone = 10;
 
     //storage
-    public static final double kStoragePWM = 0.5;
+    public static final double kStoragePWM = 0.75;
 
     //Hang 
     public static final double KArmPWM = 0.4; //Left Arm positive goes back, right arm positive goes forward
-    public static final double KLevelHangSpeed = 0.3; //Negative is up.
+    public static final double KLevelHangSpeed = 0.35; //Negative is up.
     
     //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second
@@ -112,7 +112,7 @@ public final class Constants {
     public static final int kStowedPos = 150; //all the way down (encoder units)
 
     // Limelight Constants
-    public static final double KLimelightHeight = 35; // inches
+    public static final double KLimelightHeight = 37.5; // inches
     public static final double KHubHeight = 104; // inches
     public static final double KHeightDifference = KHubHeight - KLimelightHeight; // inches
     public static final double KLimelightAngle = 45;
@@ -123,5 +123,5 @@ public final class Constants {
     // public static final double kYOffsetDeadzone = 10; //not implemented yet
 
     //Hang Constants
-    public static final double kHangRatchetDistance = 0.25;
+    public static final double kHangRatchetDistance = 0.28;
 }

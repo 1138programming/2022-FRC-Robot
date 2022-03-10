@@ -81,6 +81,6 @@ public class Camera extends SubsystemBase {
 
   public double getDistance() {
     double distance = KHeightDifference / Math.tan(Math.toRadians(KLimelightAngle + y));
-    return distance + 20; //constant offset
+    return distance + 8; //constant offset
   }
 }

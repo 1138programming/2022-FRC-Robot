@@ -20,14 +20,14 @@ public class HangStop extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     hang.moveArmsSpeed(0);
     hang.moveLevelHangSpeed(0);
-    hang.moveHangRatchetServo(0);
   }
 
   // Called once the command ends or is interrupted.

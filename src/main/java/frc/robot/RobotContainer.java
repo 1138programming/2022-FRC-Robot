@@ -63,6 +63,8 @@ import frc.robot.commands.Camera.LEDOff;
 import frc.robot.commands.Camera.LEDOn;
 import frc.robot.CommandGroups.Auton.Red1Auton;
 import frc.robot.CommandGroups.Auton.TestAuton;
+import frc.robot.CommandGroups.Hang.HangDown;
+import frc.robot.CommandGroups.Hang.HangUp;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
@@ -137,8 +139,8 @@ public class RobotContainer {
   private final MoveArmForward moveArmForward = new MoveArmForward(hang);
   private final MoveClawIn moveClawIn  = new MoveClawIn(hang);
   private final MoveClawOut moveClawOut = new MoveClawOut(hang);
-  private final MoveHangDown moveHangDown = new MoveHangDown(hang);
-  private final MoveHangUp moveHangUp = new MoveHangUp(hang);
+  private final HangDown HangDown = new HangDown(hang);
+  private final HangUp hangUp = new HangUp(hang);
   private final MoveRachetIn moveRachetIn = new MoveRachetIn(hang);
   private final MoveRachetOut moveRachetOut = new MoveRachetOut(hang);
 
@@ -279,10 +281,12 @@ public class RobotContainer {
     //Hang Controls
     logitechBtnA.whenHeld(moveClawIn);
     logitechBtnB.whenHeld(moveClawOut);
-    // logitechBtnX.whenHeld(moveHangDown);
-    // logitechBtnY.whenHeld(moveHangUp);
-    logitechBtnX.whenPressed(moveRachetIn);
-    logitechBtnY.whenPressed(moveRachetOut);
+    logitechBtnX.whenHeld(HangDown);
+    logitechBtnX.whenReleased(moveRachetIn);
+    logitechBtnY.whenHeld(hangUp);
+    logitechBtnY.whenReleased(moveRachetIn);
+    // logitechBtnX.whenPressed(moveRachetIn);
+    // logitechBtnY.whenPressed(moveRachetOut);
     
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
