@@ -61,7 +61,7 @@ import frc.robot.commands.Base.ResetWheels;
 import frc.robot.commands.Base.RotateToHeading;
 import frc.robot.commands.Camera.LEDOff;
 import frc.robot.commands.Camera.LEDOn;
-import frc.robot.CommandGroups.Auton.Red1Auton;
+import frc.robot.CommandGroups.Auton.DriveBackAndShoot;
 import frc.robot.CommandGroups.Auton.TestAuton;
 import frc.robot.CommandGroups.Hang.HangDown;
 import frc.robot.CommandGroups.Hang.HangUp;
@@ -101,6 +101,7 @@ import frc.robot.commands.Hang.MoveRachetIn;
 import frc.robot.commands.Hang.MoveRachetOut;
 
 import frc.robot.CommandGroups.CollectAndIndexBalls;
+import frc.robot.CommandGroups.FeedShot;
 // import frc.robot.commands.Hang.MoveRachetIn;
 import io.github.pseudoresonance.pixy2api.*;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -139,7 +140,7 @@ public class RobotContainer {
   private final MoveArmForward moveArmForward = new MoveArmForward(hang);
   private final MoveClawIn moveClawIn  = new MoveClawIn(hang);
   private final MoveClawOut moveClawOut = new MoveClawOut(hang);
-  private final HangDown HangDown = new HangDown(hang);
+  private final HangDown hangDown = new HangDown(hang);
   private final HangUp hangUp = new HangUp(hang);
   private final MoveRachetIn moveRachetIn = new MoveRachetIn(hang);
   private final MoveRachetOut moveRachetOut = new MoveRachetOut(hang);
@@ -163,13 +164,14 @@ public class RobotContainer {
   private final StorageOut storageOut = new StorageOut(storage);
   private final StorageCollect storageCollect = new StorageCollect(storage);
   private final StorageSpinIntoFlywheel storageSpinIntoFlyWheel = new StorageSpinIntoFlywheel(storage);
+  private final FeedShot feedShot = new FeedShot(storage);
   
   //Camera
   private final LEDOff ledOff = new LEDOff(camera);
   private final LEDOn ledOn = new LEDOn(camera);
   
   //Auton
-  private final Red1Auton red1Auton = new Red1Auton(base);
+  private final DriveBackAndShoot driveBackAndShoot = new DriveBackAndShoot(base, camera, storage, intake, flywheel);
   private final CollectAndIndexBalls collectAndIndexBalls = new CollectAndIndexBalls(intake, storage);
 
   //Controller Ports
@@ -271,6 +273,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //Drive Controls
     logitechBtnRT.whileHeld(driveWithLimelight);
+    // logitechBtnRT.whileHeld(aimWithLimelight);
     // logitechBtnRT.whenPressed(new DriveToPose(base, new Pose2d()), false);
     logitechBtnLT.whenPressed(baseDriveHigh);
     logitechBtnLT.whenReleased(baseDriveLow);
@@ -281,10 +284,10 @@ public class RobotContainer {
     //Hang Controls
     logitechBtnA.whenHeld(moveClawIn);
     logitechBtnB.whenHeld(moveClawOut);
-    logitechBtnX.whenHeld(HangDown);
-    logitechBtnX.whenReleased(moveRachetIn);
+    logitechBtnX.whenHeld(hangDown);
+    logitechBtnX.whenReleased(moveRachetOut);
     logitechBtnY.whenHeld(hangUp);
-    logitechBtnY.whenReleased(moveRachetIn);
+    logitechBtnY.whenReleased(moveRachetOut);
     // logitechBtnX.whenPressed(moveRachetIn);
     // logitechBtnY.whenPressed(moveRachetOut);
     
@@ -293,7 +296,9 @@ public class RobotContainer {
     
     //Intake Controls
     xboxBtnX.toggleWhenActive(flywheelSpinWithLimelight);
-    xboxBtnB.whenHeld(storageSpinIntoFlyWheel);
+    // xboxBtnX.toggleWhenActive(flywheelSpin);
+    // xboxBtnB.whenHeld(storageSpinIntoFlyWheel);
+    xboxBtnB.whenHeld(feedShot);
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
     // xboxBtnA.whenHeld(huntMode);
@@ -306,130 +311,15 @@ public class RobotContainer {
     xboxBtnRB.whenHeld(storageOut);
     xboxBtnRT.whileActiveContinuous(intakeSpinBackward);
     // xboxBtnRT.whenInactive(intakeStop);
-    
   }
 
   public Command getAutonomousCommand() {
-    // TrajectoryConfig config1 = new TrajectoryConfig(kAutonMaxDriveVelocity, kAutonMaxAccel);
-    // TrajectoryConfig config2 = new TrajectoryConfig(kAutonMaxDriveVelocity, kAutonMaxAccel);
-    // // config.setKinematics(base.getKinematics());
-    // // config2.setKinematics(base.getKinematics());
-    // // config.setEndVelocity(1);
-    // // config2.setStartVelocity(1);
-    // config1.setReversed(false);
-    // config2.setReversed(true);
+    return driveBackAndShoot;
 
-    // Trajectory trajectory1;
-    // Trajectory trajectory2;
-    PathPlannerTrajectory part1 = PathPlanner.loadPath("Blue 1 Part 1", kAutonMaxDriveVelocity, kAutonMaxAccel);
-    PPSwerveControllerCommand part1Command;
-    PathPlannerTrajectory part2 = PathPlanner.loadPath("Blue 1 Part 2", kAutonMaxDriveVelocity, kAutonMaxAccel);
-    PPSwerveControllerCommand part2Command;
+  }
 
-    // SwerveControllerCommand command1;
-    // SwerveControllerCommand command2;
-    // SwerveControllerCommand concatTrajCommand;
-
-    PIDController xController = new PIDController(0.45, 0, 0);
-    PIDController yController = new PIDController(0.4, 0, 0);
-    ProfiledPIDController thetaController = new ProfiledPIDController(
-      0.8, 0, 0, new TrapezoidProfile.Constraints(kAutonMaxAngularVelocity, kAutonMaxAngularAccel));
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    // trajectory1 = TrajectoryGenerator.generateTrajectory(
-    //   new Pose2d(0, 0, new Rotation2d(0)),
-    //   List.of(
-    //     new Translation2d(2, 0)
-    //   ),
-    //   new Pose2d(2, 0, new Rotation2d(0)),
-    //   config1
-    // );
-
-    
-    // trajectory2 = TrajectoryGenerator.generateTrajectory(
-    //   new Pose2d(0, 0, new Rotation2d(0)),
-    //   List.of(
-    //     new Translation2d(-2, 0)
-    //   ),
-    //   new Pose2d(-2, 0, new Rotation2d(0)),
-    //   config2
-    // );
-
-    // var concatTraj = trajectory1.concatenate(trajectory2);
-    
-    // command1 = new SwerveControllerCommand(
-    //   trajectory1,
-    //   base::getPose,
-    //   base.getKinematics(),
-    //   xController,
-    //   yController,
-    //   thetaController,
-    //   base::setModuleStates,
-    //   base
-    //   );
-      
-    // command2 = new SwerveControllerCommand(
-    //   trajectory2,
-    //   base::getPose,
-    //   base.getKinematics(),
-    //   xController,
-    //   yController,
-    //   thetaController,
-    //   base::setModuleStates,
-    //   base
-    //   );
-      
-    // concatTrajCommand = new SwerveControllerCommand(
-    //   concatTraj,
-    //   base::getPose,
-    //   base.getKinematics(),
-    //   xController,
-    //   yController,
-    //   thetaController,
-    //   base::setModuleStates,
-    //   base
-    //   );
-        
-    part1Command = new PPSwerveControllerCommand(
-      part1, 
-      base::getPose, 
-      base.getKinematics(), 
-      xController,
-      yController,
-      thetaController,
-      base::setModuleStates,
-      base
-      );
-
-    part2Command = new PPSwerveControllerCommand(
-      part2,
-      base::getPose, 
-      base.getKinematics(), 
-      xController,
-      yController,
-      thetaController,
-      base::setModuleStates,
-      base
-    );
-
-    return new TestAuton(base);
-        
-    //   // base.resetOdometry(trajectory1.getInitialPose());
-      
-    //   // trajectory1 = trajectory1.concatenate(trajectory2);
-    //   // base.resetOdometry(red1.getInitialPose());
-    //   // return command1;
-    // return new SequentialCommandGroup(
-    //   // new InstantCommand(() -> base.resetOdometry(trajectory1.getInitialPose())),
-    //     // command1,
-    //     // concatTrajCommand,
-    //   // new InstantCommand(() -> base.resetOdometry(trajectory2.getInitialPose())),
-    //   //   command2,
-    //   new InstantCommand(() -> base.resetOdometry(part1.getInitialPose())),
-    //     part1Command,
-    //     part2Command,
-    //   new InstantCommand(() -> base.drive(0,0,0,true)));
-    // // return command1.andThen(command2);
+  public void moveHangRatchetIn() {
+    hang.moveHangRatchetServo(kHangRatchetInPos);
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {

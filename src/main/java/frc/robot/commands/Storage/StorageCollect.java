@@ -35,7 +35,10 @@ public class StorageCollect extends CommandBase {
         }
     }
 
-    public void end(boolean interrupted){}
+    public void end(boolean interrupted){
+        storage.moveTop(0);
+        storage.moveBottom(0);
+    }
 
     //stops return value
     public boolean isFinished(){

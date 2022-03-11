@@ -26,10 +26,14 @@ public class StorageSpinIntoFlywheel extends CommandBase {
     storage.moveTop(kStoragePWM);
     storage.moveBottom(kStoragePWM);
   }
-
+  
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    storage.moveTop(0);
+    storage.moveBottom(0);
+
+  }
 
   // Returns true when the command should end.
   @Override

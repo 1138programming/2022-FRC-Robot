@@ -270,14 +270,14 @@ public class NeoBase extends SubsystemBase {
   }
 
   public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(-gyro.getAngle());
+    return Rotation2d.fromDegrees(gyro.getAngle());
   }
 
   public SwerveModuleState[] getSpeeds() {
     SwerveModuleState[] states = new SwerveModuleState[4];
 
-    states[0] = new SwerveModuleState(modules[0].getDriveEncoderVel(), modules[0].getAngleR2D());
-    states[1] = new SwerveModuleState(modules[1].getDriveEncoderVel(), modules[1].getAngleR2D());
+    states[0] = new SwerveModuleState(-modules[0].getDriveEncoderVel(), modules[0].getAngleR2D());
+    states[1] = new SwerveModuleState(-modules[1].getDriveEncoderVel(), modules[1].getAngleR2D());
     states[2] = new SwerveModuleState(-modules[2].getDriveEncoderVel(), modules[2].getAngleR2D());
     states[3] = new SwerveModuleState(-modules[3].getDriveEncoderVel(), modules[3].getAngleR2D());
 

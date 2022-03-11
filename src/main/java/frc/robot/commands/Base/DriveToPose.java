@@ -44,13 +44,13 @@ public class DriveToPose extends CommandBase {
     this.targetPose = targetPose;
 
     // this.targetPose = new Pose2d(SmartDashboard.getNumber("new x", 0), SmartDashboard.getNumber("new y", 0), new Rotation2d());
-    SmartDashboard.putString("targetPose", this.targetPose.toString());
+    // SmartDashboard.putString("targetPose", this.targetPose.toString());
     
 
     currentPose = base.getPose();
 
-    fbController = new PIDController(1, 0, 0);
-    lrController = new PIDController(1, 0, 0);
+    fbController = new PIDController(0.85, 0, 0);
+    lrController = new PIDController(0.85, 0, 0);
     rotController = new PIDController(rotP, rotI, rotD);
 
     fbSpeedLimiter = new SlewRateLimiter(2);
@@ -68,12 +68,14 @@ public class DriveToPose extends CommandBase {
     // SmartDashboard.putNumber("rotD", rotD);
 
     // SmartDashboard.putString("targetPose", targetPose.toString());
+    base.resetGyro();
+    base.resetAllRelEncoders();  
   }
 
   @Override
   public void execute() {
 
-    rotController.setPID(SmartDashboard.getNumber("rotP", 0), SmartDashboard.getNumber("rotI", 0), SmartDashboard.getNumber("rotD", 0));
+    // rotController.setPID(SmartDashboard.getNumber("rotP", 0), SmartDashboard.getNumber("rotI", 0), SmartDashboard.getNumber("rotD", 0));
 
     currentPose = base.getPose();
     fbOffset = targetPose.getX() - currentPose.getX();
@@ -83,25 +85,23 @@ public class DriveToPose extends CommandBase {
     fbSpeed = fbController.calculate(currentPose.getX(), targetPose.getX());
     lrSpeed = lrController.calculate(currentPose.getY(), targetPose.getY());
 
+    fbSpeed = fbSpeedLimiter.calculate(fbSpeed);
+    lrSpeed = lrSpeedLimiter.calculate(lrSpeed);
     rotSpeed = rotController.calculate(currentPose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
-
     // fbSpeed = MathUtil.clamp(fbSpeed, -2, 2);
     // lrSpeed = MathUtil.clamp(lrSpeed, -2, 2);
     rotSpeed = MathUtil.clamp(rotSpeed, -2, 2);
-
-    fbSpeed = fbSpeedLimiter.calculate(fbSpeed);
-    lrSpeed = lrSpeedLimiter.calculate(lrSpeed);
 
     base.drive(-fbSpeed, -lrSpeed, rotSpeed, true);
   }
 
   @Override
   public void end(boolean interrupted) {
-    
+    base.drive(0, 0, 0, true);
   }
 
   @Override
   public boolean isFinished() {
-    return Math.abs(fbOffset) < 0.05 && Math.abs(lrOffset) < 0.05 && Math.abs(headingOffset) < 0.05;
+    return Math.abs(fbOffset) < 0.06 && Math.abs(lrOffset) < 0.06 && Math.abs(headingOffset) < 0.06;
   }
 }

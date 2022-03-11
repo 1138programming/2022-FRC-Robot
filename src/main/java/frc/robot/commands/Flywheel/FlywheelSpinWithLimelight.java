@@ -33,6 +33,7 @@ public class FlywheelSpinWithLimelight extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    SmartDashboard.putNumber("manual dist", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,9 +42,18 @@ public class FlywheelSpinWithLimelight extends CommandBase {
     //nolan testing data: 202 in. is 85% (2602 rpm), 60 in.(closest we can get to hub) is 65% flywheel speed (1950 rpm)
     //assume linear relationship between distance and RPM required to score, (2462-1883)/(202-60) = 4.077
     distanceFromHub = camera.getDistance();
+    // distanceFromHub = SmartDashboard.getNumber("manual dist", 0);
 
     if (distanceFromHub > 60) {
-      flywheelOutput = 2300 + distanceFromHub * 4.077;
+      if (distanceFromHub < 100) {
+        flywheelOutput = 1700 + distanceFromHub * 4.077;
+      }
+      else if (distanceFromHub < 150) {
+        flywheelOutput = 2100 + distanceFromHub * 4.077;
+      }
+      else {
+        flywheelOutput = 2450 + distanceFromHub * 4.077;
+      }
     }
     else {
       flywheelOutput = 0;

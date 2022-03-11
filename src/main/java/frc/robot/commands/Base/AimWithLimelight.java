@@ -17,7 +17,7 @@ public class AimWithLimelight extends CommandBase {
   private NeoBase base;
   private PIDController rotationController;
   private double rot;
-  private final double kLimglightP = 0.9;
+  private final double kLimglightP = 1;
   private final double kLimglightI = 0;
   private final double kLimglightD = 0;  
 
@@ -52,9 +52,6 @@ public class AimWithLimelight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // if (camera.getXOffset() < kXOffsetDeadzone && camera.getXOffset() > -kXOffsetDeadzone) {
-    //   return true;
-    // }
-    return false;
+    return (camera.getXOffset() < kXOffsetDeadzone && camera.getXOffset() > -kXOffsetDeadzone);
   }
 }

@@ -38,7 +38,7 @@ public class Hang extends SubsystemBase {
 
   private DigitalInput leftArmLimit;
   private DigitalInput rightArmLimit;
-  private DigitalInput hangLimit;
+  private DigitalInput hangLimitBottom;
 
   private final double kHangEncoderLimitPos = 6.9; //Change When Testing
 
@@ -79,7 +79,7 @@ public class Hang extends SubsystemBase {
     
     leftArmLimit = new DigitalInput(KLeftArmLimit);
     rightArmLimit = new DigitalInput(KRightArmLimit);
-    hangLimit = new DigitalInput(KHangLimit);
+    hangLimitBottom = new DigitalInput(KHangLimitBottom);
 
     leftArmMotor.configAllSettings(tFxConfiguration);
     rightArmMotor.configAllSettings(tFxConfiguration);
@@ -88,12 +88,12 @@ public class Hang extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("hangLimit", getHangLimit());
+    SmartDashboard.putBoolean("hangLimitBottom", getHangLimitBottom());
     SmartDashboard.putBoolean("LeftArmLimit", getLeftArmLimit());
     SmartDashboard.putBoolean("rightArmLimit", getRightArmLimit());
-    SmartDashboard.putNumber("leftArmEncoder", getLeftArmEncoder());
-    SmartDashboard.putNumber("rightArmEncoder", getRightArmEncoder());
-    SmartDashboard.putNumber("LevelHangEncoder", getLevelHangEncoder());
+    // SmartDashboard.putNumber("leftArmEncoder", getLeftArmEncoder());
+    // SmartDashboard.putNumber("rightArmEncoder", getRightArmEncoder());
+    // SmartDashboard.putNumber("LevelHangEncoder", getLevelHangEncoder());
   }
 
   //Left Arm positive speed goes back, right arm positive speed goes forward
@@ -159,16 +159,15 @@ public class Hang extends SubsystemBase {
   //Negative raw speed is up
   public void moveLevelHangSpeed(double speed) {
     speed = -speed;
-    if (!getHangLimit()) {
+    if (!getHangLimitBottom()) {
       levelHangMotor.set(speed);
     }
-    else if (speed < 0)
+    else if (getHangLimitBottom() && speed > 0)
     {
-      levelHangMotor.set(speed);
+      levelHangMotor.set(0);
     }
     else {
-      resetLevelHangEncoder();
-      levelHangMotor.set(0);
+      levelHangMotor.set(speed);
     }
   }
   
@@ -203,8 +202,8 @@ public class Hang extends SubsystemBase {
     levelHangMotor.set(speedController.calculate(getLevelHangEncoder(), position));
   }
 
-  public boolean getHangLimit() {
-    return hangLimit.get();
+  public boolean getHangLimitBottom() {
+    return !(hangLimitBottom.get());
   }
   public boolean getLeftArmLimit() {
     return leftArmLimit.get();

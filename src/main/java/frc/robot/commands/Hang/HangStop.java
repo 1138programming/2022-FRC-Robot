@@ -28,6 +28,7 @@ public class HangStop extends CommandBase {
   public void execute() {
     hang.moveArmsSpeed(0);
     hang.moveLevelHangSpeed(0);
+    // hang.moveHangRatchetServo(0);
   }
 
   // Called once the command ends or is interrupted.

@@ -12,10 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
-public class MoveHangDown extends CommandBase {
+public class MoveHangDownFor extends CommandBase {
   private Hang hang;
-  /** Creates a new MoveHangDown. */
-  public MoveHangDown(Hang hang) {
+  private double currentTime;
+  private double length;
+  /** Creates a new MoveHangDownFor. */
+  public MoveHangDownFor(Hang hang, double timerLength) {
+    length = timerLength + System.currentTimeMillis();
+    currentTime = System.currentTimeMillis();
     this.hang = hang;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -38,6 +42,7 @@ public class MoveHangDown extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    // return false;
+    return currentTime >= length;
   }
 }

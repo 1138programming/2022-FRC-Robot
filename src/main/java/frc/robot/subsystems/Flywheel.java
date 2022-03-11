@@ -31,6 +31,8 @@ public class Flywheel extends SubsystemBase {
     flywheelMotor.config_kP(0, flywheelControllerKP);
     flywheelMotor.config_kI(0, flywheelControllerKI);
     flywheelMotor.config_kD(0, flywheelControllerKD);
+    
+    SmartDashboard.putBoolean("Flywheel Spinning", false);
 
     // SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
     // SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
@@ -40,12 +42,24 @@ public class Flywheel extends SubsystemBase {
   // public void move(double speedInEncoderUnits) {
   public void move(double output) {
     // double pidOutput = flywheelController.calculate(getRawVelocity(), speedInEncoderUnits); //somehow doesnt reach setpoint
+    if (output != 0) {
+      SmartDashboard.putBoolean("Flywheel Spinning", true);
+    }
+    else {
+      SmartDashboard.putBoolean("Flywheel Spinning", false);
+    }
     flywheelMotor.set(ControlMode.PercentOutput, output);
-
+    
     // flywheelMotor.set(ControlMode.Velocity, speedInEncoderUnits);
   }
   
   public void moveRawPercent(double speed) {
+    if (speed != 0) {
+      SmartDashboard.putBoolean("Flywheel Spinning", true);
+    }
+    else {
+      SmartDashboard.putBoolean("Flywheel Spinning", false);
+    }
     flywheelMotor.set(ControlMode.PercentOutput, speed);
   }
   

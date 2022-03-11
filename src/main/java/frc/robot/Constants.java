@@ -42,7 +42,7 @@ public final class Constants {
     public static final int KLeftHangFalcon = 14;
     public static final int KRightHangFalcon = 15;
     public static final int KLevelHangNeo = 16;
-    
+
     
     //Digital IO Ports
     //Base
@@ -61,7 +61,7 @@ public final class Constants {
     //Hang
     public static final int KLeftArmLimit = 5;
     public static final int KRightArmLimit = 8;
-    public static final int KHangLimit = 0; 
+    public static final int KHangLimitBottom = 0; 
     
     //PWM Ports
     //Hang
@@ -82,14 +82,14 @@ public final class Constants {
     //FlyWheel
     public static final double KFlywheelSpeed = 0.2;
     public static final double kYOffsetDeadzone = 10;
-    public static final double kXOffsetDeadzone = 10;
+    public static final double kXOffsetDeadzone = 2;
 
     //storage
     public static final double kStoragePWM = 0.75;
 
     //Hang 
     public static final double KArmPWM = 0.4; //Left Arm positive goes back, right arm positive goes forward
-    public static final double KLevelHangSpeed = 0.35; //Negative is up.
+    public static final double KLevelHangSpeed = 0.45; //Negative is up.
     
     //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second
@@ -123,5 +123,6 @@ public final class Constants {
     // public static final double kYOffsetDeadzone = 10; //not implemented yet
 
     //Hang Constants
-    public static final double kHangRatchetDistance = 0.28;
+    public static final double kHangRatchetDistance = 0.55;
+    public static final double kHangRatchetInPos = 0.25;
 }
