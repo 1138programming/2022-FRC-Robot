@@ -54,6 +54,7 @@ import frc.robot.subsystems.Storage;
 // Commands
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
+import frc.robot.commands.Flywheel.FlywheelAutoSpinUp;
 import frc.robot.commands.Flywheel.FlywheelSpin;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Flywheel.FlywheelStop; 
@@ -134,6 +135,7 @@ public class RobotContainer {
   private final FlywheelSpin flywheelSpin = new FlywheelSpin(flywheel);
   private final FlywheelStop flywheelStop = new FlywheelStop(flywheel);
   private final FlywheelSpinWithLimelight flywheelSpinWithLimelight = new FlywheelSpinWithLimelight(flywheel, camera);
+  private final FlywheelAutoSpinUp flywheelAutoSpinUp = new FlywheelAutoSpinUp(flywheel, camera, storage);
   // Hang
   private final HangStop hangStop = new HangStop(hang);
   private final MoveArmBackward moveArmBackward = new MoveArmBackward(hang);
@@ -226,7 +228,8 @@ public class RobotContainer {
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
     intake.setDefaultCommand(intakeStop);
-    flywheel.setDefaultCommand(flywheelStop);
+    // flywheel.setDefaultCommand(flywheelStop);
+    flywheel.setDefaultCommand(flywheelAutoSpinUp);
     // intake.setDefaultCommand(stowedMode);
     intake.setDefaultCommand(intakeStop);
     storage.setDefaultCommand(storageStop);
@@ -298,9 +301,9 @@ public class RobotContainer {
     logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
+    // xboxBtnX.whenHeld(flywheelAutoSpinUp);
     xboxBtnX.toggleWhenActive(flywheelSpinWithLimelight);
     // xboxBtnX.toggleWhenActive(flywheelSpin);
-    // xboxBtnB.whenHeld(storageSpinIntoFlyWheel);
     xboxBtnB.whenHeld(feedShot);
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);

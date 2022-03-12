@@ -30,7 +30,7 @@ public class AimWithLimelight extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (camera.getTargetFound() == 0) {
+    if (camera.getTargetFound() == false) {
       SmartDashboard.putBoolean("Limelight Target Found", false);
     }
   }

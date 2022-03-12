@@ -51,8 +51,11 @@ public class FlywheelSpinWithLimelight extends CommandBase {
     // distanceFromHub = SmartDashboard.getNumber("manual dist", 0);
 
     if (distanceFromHub > 60) {
-      if (distanceFromHub < 100) {
+      if (distanceFromHub < 95) {
         flywheelOutput = 1700 + distanceFromHub * 4.077;
+      }
+      else if (distanceFromHub < 100) {
+        flywheelOutput = 1450 + distanceFromHub * 4.077;
       }
       else if (distanceFromHub < 150) {
         flywheelOutput = 2100 + distanceFromHub * 4.077;

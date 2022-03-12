@@ -42,7 +42,7 @@ public class DriveWithLimelight extends CommandBase {
   @Override
   public void initialize() {
     base.resetAllRelEncoders(); 
-    if (camera.getTargetFound() == 0) {
+    if (camera.getTargetFound() == false) {
       SmartDashboard.putBoolean("Limelight Target Found", false);
     } 
   }
@@ -63,7 +63,7 @@ public class DriveWithLimelight extends CommandBase {
     rot -= rotationController.calculate(camera.getXOffset()/KLimelightRange, 0);
     
     base.drive(fbSpeed, lrSpeed, rot, true);
-    SmartDashboard.putNumber("Limelight Target Found", camera.getTargetFound());
+    SmartDashboard.putBoolean("Limelight Target Found", camera.getTargetFound());
     
   }
 

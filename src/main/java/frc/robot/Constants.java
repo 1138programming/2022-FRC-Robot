@@ -53,7 +53,7 @@ public final class Constants {
     
     //Storage
     public static final int KStorageSensorTop = 7;
-    public static final int KStorageSensorMid = 8;
+    public static final int KStorageSensorMid = 5;
     public static final int KStorageSensorBottom = 9;
     
     //Intake
@@ -77,11 +77,11 @@ public final class Constants {
     public static final double kBaseDriveFullSpeed = 1.0; //about 5700 RPM
     
     //Intake
-    public static final double KIntakeSpinPWM = 0.9;
+    public static final double KIntakeSpinPWM = 0.4;
     public static final double KIntakeSwivelPWM = 0.4;
     
     //FlyWheel
-    public static final double KFlywheelSpeed = 0.2;
+    public static final double KFlywheelSpeed = 0.3;
     public static final double kYOffsetDeadzone = 10;
     public static final double kXOffsetDeadzone = 2;
 

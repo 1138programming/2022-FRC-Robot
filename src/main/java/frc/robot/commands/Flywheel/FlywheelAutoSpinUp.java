@@ -53,11 +53,14 @@ public class FlywheelAutoSpinUp extends CommandBase {
     // distanceFromHub = SmartDashboard.getNumber("manual dist", 0);
 
     if (distanceFromHub > 60) {
-      if (distanceFromHub < 100) {
+      if (distanceFromHub < 95) {
         flywheelOutput = 1700 + distanceFromHub * 4.077;
       }
+      else if (distanceFromHub < 100) {
+        flywheelOutput = 1350 + distanceFromHub * 4.077;
+      }
       else if (distanceFromHub < 150) {
-        flywheelOutput = 2100 + distanceFromHub * 4.077;
+        flywheelOutput = 2200 + distanceFromHub * 4.077;
       }
       else {
         flywheelOutput = 2450 + distanceFromHub * 4.077;
@@ -72,8 +75,10 @@ public class FlywheelAutoSpinUp extends CommandBase {
     // encoderUnitOutput = flywheelOutput * (512.0 / 75.0);
     // SmartDashboard.putNumber("flywheel output (u/100ms)", encoderUnitOutput);
     // SmartDashboard.putNumber("flywheel output (Percent)", flywheelOutput);
-    if (storage.getBallSensorMid() || storage.getBallSensorTop()) {
+    // if (storage.getBallSensorMid() || storage.getBallSensorTop()) {
+    if (storage.getBallSensorTop()) {
       flywheel.move(flywheelOutputPercent); 
+      // flywheel.move(KFlywheelSpeed); 
     }
     else {
       flywheel.move(0);

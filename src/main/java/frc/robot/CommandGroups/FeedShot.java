@@ -25,7 +25,7 @@ public class FeedShot extends SequentialCommandGroup {
         new WaitCommand(0.3),
         new StorageSpinIntoFlywheel(storage)
       ),
-      new WaitCommand(0.5),
+      new WaitCommand(0.8),
 
       new ParallelRaceGroup(
         new WaitCommand(0.8),

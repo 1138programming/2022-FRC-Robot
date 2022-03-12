@@ -50,6 +50,7 @@ public class Camera extends SubsystemBase {
     x = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     y = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
     area = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
+    SmartDashboard.putBoolean("Limelight Target Found", getTargetFound());
     
     // SmartDashboard.putNumber("LimelightX", x);
     // SmartDashboard.putNumber("LimelightY", y);
@@ -67,8 +68,17 @@ public class Camera extends SubsystemBase {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(2); //(blinks limelight) For Testing only
   }
   
-  public double getTargetFound() {
-    return targetFound;
+  public boolean getTargetFound() {
+    if (targetFound == 0)
+    {
+      return false;
+    }
+    else if (targetFound == 1) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
   public double getYOffset() {
