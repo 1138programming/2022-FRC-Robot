@@ -53,14 +53,15 @@ public final class Constants {
     
     //Storage
     public static final int KStorageSensorTop = 7;
-    public static final int KBallSensorBottom = 9;
+    public static final int KStorageSensorMid = 8;
+    public static final int KStorageSensorBottom = 9;
     
     //Intake
     public static final int kIntakeTopLimit = 6;  
     
     //Hang
-    public static final int KLeftArmLimit = 5;
-    public static final int KRightArmLimit = 8;
+    // public static final int KLeftArmLimit = 5;
+    // public static final int KRightArmLimit = 8;
     public static final int KHangLimitBottom = 0; 
     
     //PWM Ports
@@ -71,7 +72,7 @@ public final class Constants {
     
     // Default PWM Values
     //Base
-    public static final double kBaseDriveLowSpeed = 0.4;
+    public static final double kBaseDriveLowSpeed = 0.5;
     public static final double kBaseDriveHighSpeed = 0.7;
     public static final double kBaseDriveFullSpeed = 1.0; //about 5700 RPM
     

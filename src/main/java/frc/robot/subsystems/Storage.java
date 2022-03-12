@@ -17,6 +17,7 @@ public class Storage extends SubsystemBase {
   private VictorSPX topStorageMotor;
   //Defining encoders
   private DigitalInput ballSensorBottom;
+  private DigitalInput ballSensorMid;
   private DigitalInput ballSensorTop;
 
   //Constructor is constructing
@@ -24,7 +25,8 @@ public class Storage extends SubsystemBase {
     //set the motor
     bottomStorageMotor = new VictorSPX(KBottomStorageVictor);
     topStorageMotor = new VictorSPX(KTopStorageVictor);
-    ballSensorBottom = new DigitalInput(KBallSensorBottom);
+    ballSensorBottom = new DigitalInput(KStorageSensorBottom);
+    ballSensorMid = new DigitalInput(KStorageSensorMid);
     ballSensorTop = new DigitalInput(KStorageSensorTop);
 
     bottomStorageMotor.setInverted(true);
@@ -34,6 +36,7 @@ public class Storage extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("storage top limit", getBallSensorTop());
+    SmartDashboard.putBoolean("storage mid limit", getBallSensorMid());
     SmartDashboard.putBoolean("storage bott limit", getBallSensorBottom());
   }
 
@@ -50,6 +53,9 @@ public class Storage extends SubsystemBase {
   }
   public boolean getBallSensorTop(){
     return ballSensorTop.get();
+  }
+  public boolean getBallSensorMid(){
+    return ballSensorMid.get();
   }
   public boolean getBallSensorBottom(){
     return ballSensorBottom.get();

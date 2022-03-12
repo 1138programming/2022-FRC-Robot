@@ -10,23 +10,25 @@ import pabeles.concurrency.IntOperatorTask.Max;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.Storage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 
 import static frc.robot.Constants.*;
 
-public class FlywheelSpinWithLimelight extends CommandBase {
+public class FlywheelAutoSpinUp extends CommandBase {
   private final Flywheel flywheel;
   private final Camera camera;
+  private final Storage storage;
   private double flywheelOutput;
-  // private double encoderUnitOutput;
+  private double encoderUnitOutput;
   private double distanceFromHub;
-  private boolean ballInBottomStorage, ballInTopStorage;
-  /** Creates a new FlywheelSpinWithLimelight. */
-  public FlywheelSpinWithLimelight(Flywheel flywheel, Camera camera) {
+  /** Creates a new FlywheelAutoSpinUp. */
+  public FlywheelAutoSpinUp(Flywheel flywheel, Camera camera, Storage storage) {
     this.flywheel = flywheel;
     this.camera = camera;
+    this.storage = storage;
     flywheelOutput = 0;
     distanceFromHub = 0;
     // ballInBottomStorage = Robot.robotContainer.getStorageBottomSensor();
@@ -70,12 +72,12 @@ public class FlywheelSpinWithLimelight extends CommandBase {
     // encoderUnitOutput = flywheelOutput * (512.0 / 75.0);
     // SmartDashboard.putNumber("flywheel output (u/100ms)", encoderUnitOutput);
     // SmartDashboard.putNumber("flywheel output (Percent)", flywheelOutput);
-    // if (ballInTopStorage || ballInBottomStorage) {
+    if (storage.getBallSensorMid() || storage.getBallSensorTop()) {
       flywheel.move(flywheelOutputPercent); 
-    // }
-    // else {
-    //   flywheel.move(0);
-    // }
+    }
+    else {
+      flywheel.move(0);
+    }
   }
 
   // Called once the command ends or is interrupted.

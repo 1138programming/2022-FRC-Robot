@@ -36,8 +36,8 @@ public class Hang extends SubsystemBase {
   private Servo ratchetServo;
   private RelativeEncoder levelEncoder;
 
-  private DigitalInput leftArmLimit;
-  private DigitalInput rightArmLimit;
+  // private DigitalInput leftArmLimit;
+  // private DigitalInput rightArmLimit;
   private DigitalInput hangLimitBottom;
 
   private final double kHangEncoderLimitPos = 6.9; //Change When Testing
@@ -77,8 +77,8 @@ public class Hang extends SubsystemBase {
     rightClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     ratchetServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     
-    leftArmLimit = new DigitalInput(KLeftArmLimit);
-    rightArmLimit = new DigitalInput(KRightArmLimit);
+    // leftArmLimit = new DigitalInput(KLeftArmLimit);
+    // rightArmLimit = new DigitalInput(KRightArmLimit);
     hangLimitBottom = new DigitalInput(KHangLimitBottom);
 
     leftArmMotor.configAllSettings(tFxConfiguration);
@@ -89,8 +89,8 @@ public class Hang extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("hangLimitBottom", getHangLimitBottom());
-    SmartDashboard.putBoolean("LeftArmLimit", getLeftArmLimit());
-    SmartDashboard.putBoolean("rightArmLimit", getRightArmLimit());
+    // SmartDashboard.putBoolean("LeftArmLimit", getLeftArmLimit());
+    // SmartDashboard.putBoolean("rightArmLimit", getRightArmLimit());
     // SmartDashboard.putNumber("leftArmEncoder", getLeftArmEncoder());
     // SmartDashboard.putNumber("rightArmEncoder", getRightArmEncoder());
     // SmartDashboard.putNumber("LevelHangEncoder", getLevelHangEncoder());
@@ -98,62 +98,62 @@ public class Hang extends SubsystemBase {
 
   //Left Arm positive speed goes back, right arm positive speed goes forward
   public void moveArmsSpeed(double speed) {
-    if (speed < 0){
-      if(leftArmLimit.get()){
-        leftArmMotor.set(ControlMode.PercentOutput, 0);
-        resetLeftArmEncoder();
-      }
-      else {
-        leftArmMotor.set(ControlMode.PercentOutput, speed);
-      }
-    }
-    else {
-      if (getLeftArmEncoder() <= kArmMaxForwardLimit) {
-        leftArmMotor.set(ControlMode.PercentOutput, speed);
-      }
-      else {
-        leftArmMotor.set(ControlMode.PercentOutput, 0);
-      }
-    }
+  //   if (speed < 0){
+  //     if(leftArmLimit.get()){
+  //       leftArmMotor.set(ControlMode.PercentOutput, 0);
+  //       resetLeftArmEncoder();
+  //     }
+  //     else {
+  //       leftArmMotor.set(ControlMode.PercentOutput, speed);
+  //     }
+  //   }
+  //   else {
+  //     if (getLeftArmEncoder() <= kArmMaxForwardLimit) {
+  //       leftArmMotor.set(ControlMode.PercentOutput, speed);
+  //     }
+  //     else {
+  //       leftArmMotor.set(ControlMode.PercentOutput, 0);
+  //     }
+  //   }
 
-    if (speed < 0){
-      if(rightArmLimit.get()){
-        rightArmMotor.set(ControlMode.PercentOutput, 0);
-        resetLeftArmEncoder();
-      }
-      else {
-        rightArmMotor.set(ControlMode.PercentOutput, -speed);
-      }
-    }
-    else {
-      if (getRightArmEncoder() <= kArmMaxForwardLimit) {
-        rightArmMotor.set(ControlMode.PercentOutput, -speed);
-      }
-      else {
-        rightArmMotor.set(ControlMode.PercentOutput, 0);
-      }
-    }
+  //   if (speed < 0){
+  //     if(rightArmLimit.get()){
+  //       rightArmMotor.set(ControlMode.PercentOutput, 0);
+  //       resetLeftArmEncoder();
+  //     }
+  //     else {
+  //       rightArmMotor.set(ControlMode.PercentOutput, -speed);
+  //     }
+  //   }
+  //   else {
+  //     if (getRightArmEncoder() <= kArmMaxForwardLimit) {
+  //       rightArmMotor.set(ControlMode.PercentOutput, -speed);
+  //     }
+  //     else {
+  //       rightArmMotor.set(ControlMode.PercentOutput, 0);
+  //     }
+  //   }
   }
   
   public void moveArmsToPosition(double position) {
-    if(leftArmLimit.get()){
-      resetLeftArmEncoder();
-    }
-    if(rightArmLimit.get()){
-      resetRightArmEncoder();
-    }
-    if (position > kArmMaxForwardLimit) {
-      leftArmMotor.set(ControlMode.Position, kArmMaxForwardLimit);
-      rightArmMotor.set(ControlMode.Position, kArmMaxForwardLimit);
-    }
-    else if (position < kArmMaxReverseLimit) {
-      leftArmMotor.set(ControlMode.Position, kArmMaxReverseLimit);
-      rightArmMotor.set(ControlMode.Position, kArmMaxReverseLimit);
-    }
-    else {
-      leftArmMotor.set(ControlMode.Position, position);
-      rightArmMotor.set(ControlMode.Position, position);
-    }
+  //   if(leftArmLimit.get()){
+  //     resetLeftArmEncoder();
+  //   }
+  //   if(rightArmLimit.get()){
+  //     resetRightArmEncoder();
+  //   }
+  //   if (position > kArmMaxForwardLimit) {
+  //     leftArmMotor.set(ControlMode.Position, kArmMaxForwardLimit);
+  //     rightArmMotor.set(ControlMode.Position, kArmMaxForwardLimit);
+  //   }
+  //   else if (position < kArmMaxReverseLimit) {
+  //     leftArmMotor.set(ControlMode.Position, kArmMaxReverseLimit);
+  //     rightArmMotor.set(ControlMode.Position, kArmMaxReverseLimit);
+  //   }
+  //   else {
+  //     leftArmMotor.set(ControlMode.Position, position);
+  //     rightArmMotor.set(ControlMode.Position, position);
+  //   }
   }
 
   //Negative raw speed is up
@@ -205,12 +205,12 @@ public class Hang extends SubsystemBase {
   public boolean getHangLimitBottom() {
     return !(hangLimitBottom.get());
   }
-  public boolean getLeftArmLimit() {
-    return leftArmLimit.get();
-  }
-  public boolean getRightArmLimit() {
-    return rightArmLimit.get();
-  }
+  // public boolean getLeftArmLimit() {
+  //   return leftArmLimit.get();
+  // }
+  // public boolean getRightArmLimit() {
+  //   return rightArmLimit.get();
+  // }
 
   public double getLeftArmEncoder() {
     return leftArmMotor.getSelectedSensorPosition();

@@ -215,6 +215,9 @@ public class RobotContainer {
   public JoystickButton xboxBtnA, xboxBtnB, xboxBtnX, xboxBtnY, xboxBtnLB, xboxBtnRB, xboxBtnStrt, xboxBtnSelect;
   public Trigger xboxBtnRT, xboxBtnLT;
 
+  //Misc.
+  public static boolean storageBottomLimit = false;
+  public static boolean storageTopLimit = false;  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -315,11 +318,16 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return driveBackAndShoot;
-
   }
 
   public void moveHangRatchetIn() {
     hang.moveHangRatchetServo(kHangRatchetInPos);
+  }
+  public boolean getStorageBottomSensor() {
+    return storage.getBallSensorBottom();
+  }
+  public boolean getStorageTopSensor() {
+    return storage.getBallSensorTop();
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {
