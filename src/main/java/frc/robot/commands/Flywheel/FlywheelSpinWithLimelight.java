@@ -22,15 +22,12 @@ public class FlywheelSpinWithLimelight extends CommandBase {
   private double flywheelOutput;
   // private double encoderUnitOutput;
   private double distanceFromHub;
-  private boolean ballInBottomStorage, ballInTopStorage;
   /** Creates a new FlywheelSpinWithLimelight. */
   public FlywheelSpinWithLimelight(Flywheel flywheel, Camera camera) {
     this.flywheel = flywheel;
     this.camera = camera;
     flywheelOutput = 0;
     distanceFromHub = 0;
-    // ballInBottomStorage = Robot.robotContainer.getStorageBottomSensor();
-    // ballInTopStorage = Robot.robotContainer.getStorageTopSensor();
     addRequirements(flywheel);
   }
   
@@ -43,8 +40,6 @@ public class FlywheelSpinWithLimelight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // ballInBottomStorage = Robot.robotContainer.getStorageBottomSensor();
-    // ballInTopStorage = Robot.robotContainer.getStorageTopSensor();
     //nolan testing data: 202 in. is 85% (2602 rpm), 60 in.(closest we can get to hub) is 65% flywheel speed (1950 rpm)
     //assume linear relationship between distance and RPM required to score, (2462-1883)/(202-60) = 4.077
     distanceFromHub = camera.getDistance();

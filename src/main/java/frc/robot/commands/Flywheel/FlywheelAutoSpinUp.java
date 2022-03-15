@@ -31,8 +31,6 @@ public class FlywheelAutoSpinUp extends CommandBase {
     this.storage = storage;
     flywheelOutput = 0;
     distanceFromHub = 0;
-    // ballInBottomStorage = Robot.robotContainer.getStorageBottomSensor();
-    // ballInTopStorage = Robot.robotContainer.getStorageTopSensor();
     addRequirements(flywheel);
   }
   
@@ -45,8 +43,6 @@ public class FlywheelAutoSpinUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // ballInBottomStorage = Robot.robotContainer.getStorageBottomSensor();
-    // ballInTopStorage = Robot.robotContainer.getStorageTopSensor();
     //nolan testing data: 202 in. is 85% (2602 rpm), 60 in.(closest we can get to hub) is 65% flywheel speed (1950 rpm)
     //assume linear relationship between distance and RPM required to score, (2462-1883)/(202-60) = 4.077
     distanceFromHub = camera.getDistance();

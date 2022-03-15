@@ -141,9 +141,6 @@ public class NeoBase extends SubsystemBase {
 
     rotController = new PIDController(10, 0, 0);
 
-    // SmartDashboard.putNumber("new x", 0);
-    // SmartDashboard.putNumber("new y", 0);
-    // SmartDashboard.putNumber("new rotation", 0);
 
     xTrajectoryController = new PIDController(0.047116, 0, 0);
     yTrajectoryController = new PIDController(0.047116, 0, 0);
@@ -372,8 +369,6 @@ public class NeoBase extends SubsystemBase {
       //Sets the motor break mode to either kBreak or kCoast.
       angleMotor.setIdleMode(IdleMode.kBrake);
       driveMotor.setIdleMode(IdleMode.kBrake); 
-      // angleMotor.setIdleMode(IdleMode.kCoast);
-      // driveMotor.setIdleMode(IdleMode.kCoast); 
       
       driveEncoder = driveMotor.getEncoder();
       angleEncoder = angleMotor.getEncoder();

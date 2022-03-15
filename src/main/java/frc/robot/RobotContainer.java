@@ -128,6 +128,7 @@ public class RobotContainer {
   // Base
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
   private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
+  private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
   private final BaseDriveLow baseDriveLow = new BaseDriveLow(base);
   private final BaseDriveHigh baseDriveHigh = new BaseDriveHigh(base);
   private final ResetGyro resetGyro = new ResetGyro(base);
@@ -155,9 +156,9 @@ public class RobotContainer {
   private final StowedMode stowedMode = new StowedMode(intake);
   private final IntakeSwivelDown swivelDown = new IntakeSwivelDown(intake);
   private final IntakeSwivelUp swivelUp = new IntakeSwivelUp(intake);
+  private final CollectAndIndexBalls collectAndIndexBalls = new CollectAndIndexBalls(intake, storage);
   // Storage
   private final StorageStop storageStop= new StorageStop(storage);
-  private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
   private final BottomStorageOut bottomStorageOut = new BottomStorageOut(storage);
   private final BottomStorageIn bottomStorageIn = new BottomStorageIn(storage);
   private final BottomStorageStop bottomStorageStop = new BottomStorageStop(storage);
@@ -174,7 +175,6 @@ public class RobotContainer {
   
   //Auton
   private final DriveBackAndShoot driveBackAndShoot = new DriveBackAndShoot(base, camera, storage, intake, flywheel);
-  private final CollectAndIndexBalls collectAndIndexBalls = new CollectAndIndexBalls(intake, storage);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -279,7 +279,6 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //Drive Controls
     logitechBtnRT.whileHeld(driveWithLimelight);
-    // logitechBtnRT.whileHeld(aimWithLimelight);
     // logitechBtnRT.whenPressed(new DriveToPose(base, new Pose2d()), false);
     logitechBtnLT.whenPressed(baseDriveHigh);
     logitechBtnLT.whenReleased(baseDriveLow);
@@ -294,29 +293,22 @@ public class RobotContainer {
     logitechBtnX.whenReleased(moveRachetOut);
     logitechBtnY.whenHeld(hangUp);
     logitechBtnY.whenReleased(moveRachetOut);
-    // logitechBtnX.whenPressed(moveRachetIn);
-    // logitechBtnY.whenPressed(moveRachetOut);
     
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
-    // xboxBtnX.whenHeld(flywheelAutoSpinUp);
     xboxBtnX.toggleWhenActive(flywheelSpinWithLimelight);
-    // xboxBtnX.toggleWhenActive(flywheelSpin);
     xboxBtnB.whenHeld(feedShot);
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
-    // xboxBtnA.whenHeld(huntMode);
 
     xboxBtnLB.whenHeld(collectAndIndexBalls);
     // xboxBtnLB.whenHeld(huntMode);
     xboxBtnLT.whileActiveContinuous(intakeSpinBackward);
-    // xboxBtnLT.whenInactive(intakeStop);
     
     xboxBtnRB.whenHeld(storageOut);
     xboxBtnRT.whileActiveContinuous(intakeSpinBackward);
-    // xboxBtnRT.whenInactive(intakeStop);
   }
 
   public Command getAutonomousCommand() {
@@ -325,12 +317,6 @@ public class RobotContainer {
 
   public void moveHangRatchetIn() {
     hang.moveHangRatchetServo(kHangRatchetInPos);
-  }
-  public boolean getStorageBottomSensor() {
-    return storage.getBallSensorBottom();
-  }
-  public boolean getStorageTopSensor() {
-    return storage.getBallSensorTop();
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {

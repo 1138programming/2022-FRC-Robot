@@ -89,11 +89,6 @@ public class Hang extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("hangLimitBottom", getHangLimitBottom());
-    // SmartDashboard.putBoolean("LeftArmLimit", getLeftArmLimit());
-    // SmartDashboard.putBoolean("rightArmLimit", getRightArmLimit());
-    // SmartDashboard.putNumber("leftArmEncoder", getLeftArmEncoder());
-    // SmartDashboard.putNumber("rightArmEncoder", getRightArmEncoder());
-    // SmartDashboard.putNumber("LevelHangEncoder", getLevelHangEncoder());
   }
 
   //Left Arm positive speed goes back, right arm positive speed goes forward
@@ -176,9 +171,6 @@ public class Hang extends SubsystemBase {
     rightClawServo.set(pos);
 
   }
-  // public void moveRachet(double pos) {
-    // ratchetServo.set(pos);
-  // }
   
   //BAD!!! Arm mvoement in this function is unrestricted, can crush the bot
   public void moveArmsUnrestricted(double speed) {
