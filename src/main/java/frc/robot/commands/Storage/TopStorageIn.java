@@ -20,7 +20,7 @@ public class TopStorageIn extends CommandBase {
     }
 
     public void execute(){
-        storage.moveTop(kStoragePWM);
+        storage.moveTop(kTopStoragePWM);
     }
 
     public void end(boolean interrupted){}

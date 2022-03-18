@@ -22,12 +22,12 @@ public class StorageCollect extends CommandBase {
         //logik loop
         if (!ballInTop) {   // if the top sensor doesn't see a ball, both motors run
             // storage.move(kStoragePWM, kStoragePWM);
-            storage.moveTop(kStoragePWM);
-            storage.moveBottom(kStoragePWM);
+            storage.moveTop(kTopStoragePWM);
+            storage.moveBottom(kBottomStoragePWM);
         }
         else if (!ballInBottom) {   // if the bottom sensor doesn't see a ball, only the bottom motor will run
             storage.moveTop(0);
-            storage.moveBottom(kStoragePWM);
+            storage.moveBottom(kBottomStoragePWM);
         }
         else {  // if both sensors see a ball, neither motor will run
             storage.moveBottom(0);

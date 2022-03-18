@@ -26,7 +26,7 @@ public class HangUp extends SequentialCommandGroup {
     addCommands(
       new MoveRachetIn(hang),
       new ParallelRaceGroup(
-        new WaitCommand(0.1),
+        new WaitCommand(0.05),
         new MoveHangDown(hang)
         // new MoveRachetIn(hang)
       ),

@@ -16,7 +16,7 @@ public class TopStorageOut extends CommandBase {
     public void intialize(){}
     
     public void execute(){
-        storage.moveTop(-kStoragePWM);
+        storage.moveTop(-kTopStoragePWM);
     }
 
     public void end(boolean interrupted){}

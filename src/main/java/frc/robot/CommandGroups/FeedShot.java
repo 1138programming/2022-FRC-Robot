@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Miscellaneous.DeadlineTimer;
+import frc.robot.commands.Storage.StorageCollect;
 import frc.robot.commands.Storage.StorageSpinIntoFlywheel;
 import frc.robot.subsystems.Storage;
 
@@ -25,8 +26,10 @@ public class FeedShot extends SequentialCommandGroup {
         new WaitCommand(0.3),
         new StorageSpinIntoFlywheel(storage)
       ),
-      new WaitCommand(0.8),
-
+      new ParallelRaceGroup(
+        new WaitCommand(0.8),
+        new StorageCollect(storage)
+      ),
       new ParallelRaceGroup(
         new WaitCommand(0.8),
         new StorageSpinIntoFlywheel(storage)

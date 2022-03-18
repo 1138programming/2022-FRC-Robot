@@ -35,7 +35,7 @@ public class Intake extends SubsystemBase {
   private DigitalInput topLimitSwitch;
   private DutyCycleEncoder swivelMagEncoder;
   private PIDController swivelController;
-  private double intakeControllerkP = 0.0005;
+  private double intakeControllerkP = 0.001;
   private double intakeControllerkI = 0;
   private double  intakeControllerkD = 0;
   private final Pixy2 pixy;

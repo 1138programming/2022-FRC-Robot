@@ -191,6 +191,11 @@ public class NeoBase extends SubsystemBase {
     SmartDashboard.putNumber("Module 2 Raw Angle", modules[2].getAngleDegRaw());
     SmartDashboard.putNumber("Module 3 Raw Angle", modules[3].getAngleDegRaw());
 
+    SmartDashboard.putNumber("Module 0 Drive Speed", modules[0].getDriveEncoderVel());
+    SmartDashboard.putNumber("Module 1 Drive Speed", modules[1].getDriveEncoderVel());
+    SmartDashboard.putNumber("Module 2 Drive Speed", modules[2].getDriveEncoderVel());
+    SmartDashboard.putNumber("Module 3 Drive Speed", modules[3].getDriveEncoderVel());
+
 
     //used for testing pid
     // setAllModuleGains();

@@ -27,7 +27,7 @@ public class MoveClawIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.moveClaw(0);
+    hang.moveClaw(kArmClawInPos);
   }
 
   // Called once the command ends or is interrupted.

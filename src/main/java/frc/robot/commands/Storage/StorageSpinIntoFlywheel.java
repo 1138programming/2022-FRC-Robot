@@ -23,8 +23,8 @@ public class StorageSpinIntoFlywheel extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    storage.moveTop(kStoragePWM);
-    storage.moveBottom(kStoragePWM);
+    storage.moveTop(kTopStoragePWM);
+    storage.moveBottom(kBottomStoragePWM);
   }
   
   // Called once the command ends or is interrupted.

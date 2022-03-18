@@ -72,12 +72,12 @@ public final class Constants {
     
     // Default PWM Values
     //Base
-    public static final double kBaseDriveLowSpeed = 0.5;
-    public static final double kBaseDriveHighSpeed = 0.7;
+    public static final double kBaseDriveLowSpeed = 0.55;
+    public static final double kBaseDriveHighSpeed = 0.8;
     public static final double kBaseDriveFullSpeed = 1.0; //about 5700 RPM
     
     //Intake
-    public static final double KIntakeSpinPWM = 0.4;
+    public static final double KIntakeSpinPWM = 0.9;
     public static final double KIntakeSwivelPWM = 0.4;
     
     //FlyWheel
@@ -86,11 +86,12 @@ public final class Constants {
     public static final double kXOffsetDeadzone = 2;
 
     //storage
-    public static final double kStoragePWM = 0.75;
+    public static final double kTopStoragePWM = 0.5;
+    public static final double kBottomStoragePWM = 0.7;
 
     //Hang 
     public static final double KArmPWM = 0.4; //Left Arm positive goes back, right arm positive goes forward
-    public static final double KLevelHangSpeed = 0.45; //Negative is up.
+    public static final double KLevelHangSpeed = 0.85; //Negative is up.
     
     //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second
@@ -110,7 +111,7 @@ public final class Constants {
 
     //Intake Constants
     public static final int KIntakePos = 3350; //all the way down (encoder units)
-    public static final int kStowedPos = 150; //all the way down (encoder units)
+    public static final int kStowedPos = 500; //all the way down (encoder units)
 
     // Limelight Constants
     public static final double KLimelightHeight = 37.5; // inches
@@ -126,4 +127,6 @@ public final class Constants {
     //Hang Constants
     public static final double kHangRatchetDistance = 0.55;
     public static final double kHangRatchetInPos = 0.25;
+    public static final double kArmClawInPos = 0.1;
+    public static final double kArmClawOutPos = 0.9;
 }

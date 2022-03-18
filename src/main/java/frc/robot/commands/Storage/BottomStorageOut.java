@@ -20,7 +20,7 @@ public class BottomStorageOut extends CommandBase {
     }
 
     public void execute(){
-        storage.moveBottom(-kStoragePWM);
+        storage.moveBottom(-kBottomStoragePWM);
     }
 
     public void end(boolean interrupted){}

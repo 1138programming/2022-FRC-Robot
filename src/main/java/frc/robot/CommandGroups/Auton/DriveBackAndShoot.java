@@ -15,6 +15,7 @@ import frc.robot.CommandGroups.FeedShot;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.DriveToPose;
 import frc.robot.commands.Base.ResetGyro;
+import frc.robot.commands.Base.ResetOdometry;
 import frc.robot.commands.Base.RotateToHeading;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Intake.IntakeSpinForward;
@@ -39,16 +40,21 @@ public class DriveBackAndShoot extends SequentialCommandGroup {
       //   new IntakeSpinForward(intake),
       //   new StorageCollect(storage)
       // ),
+      
+      
       new ParallelRaceGroup(new WaitCommand(0.3),
         new IntakeSwivelDown(intake)
       ),
       new ParallelRaceGroup(
-        new WaitCommand(6),
-        new FlywheelSpinWithLimelight(flywheel, camera),
-        new AutonFeedShot(storage)
-      ),
+          new WaitCommand(6),
+          new FlywheelSpinWithLimelight(flywheel, camera),
+          new AutonFeedShot(storage)
+        ),
+      new ResetOdometry(base),
       new ResetGyro(base),
       new DriveToPose(base, new Pose2d(-1.5, 0, new Rotation2d()))
+
+
       // new AimWithLimelight(base, camera),
     );
   }

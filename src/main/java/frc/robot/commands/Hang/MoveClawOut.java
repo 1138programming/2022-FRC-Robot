@@ -26,7 +26,7 @@ public class MoveClawOut extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.moveClaw(1);
+    hang.moveClaw(kArmClawOutPos);
   }
 
   // Called once the command ends or is interrupted.
