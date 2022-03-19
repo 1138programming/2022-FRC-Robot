@@ -37,7 +37,7 @@ public class FlywheelAutoSpinUp extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("manual dist", 0);
+    // SmartDashboard.putNumber("manual dist", 0);
   }
   
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,36 +48,18 @@ public class FlywheelAutoSpinUp extends CommandBase {
     distanceFromHub = camera.getDistance();
     // distanceFromHub = SmartDashboard.getNumber("manual dist", 0);
 
-    if (distanceFromHub > 60) {
-      if (distanceFromHub < 95) {
-        flywheelOutput = 1800 + distanceFromHub * 4.077;
-      }
-      else if (distanceFromHub < 100) {
-        flywheelOutput = 1500 + distanceFromHub * 4.077;
-      }
-      else if (distanceFromHub < 130) {
-        flywheelOutput = 1850 + distanceFromHub * 4.077;
-      }
-      else if (distanceFromHub < 150) {
-        flywheelOutput = 2200 + distanceFromHub * 4.077;
-      }
-      else {
-        flywheelOutput = 2450 + distanceFromHub * 4.077;
-      }
-    }
-    else {
-      flywheelOutput = 0;
-    }
-    SmartDashboard.putNumber("flywheel output (RPM)", flywheelOutput);
-    double flywheelOutputPercent = RobotContainer.scaleBetween(flywheelOutput, -1, 1, -kFlywheelMaxRPM, kFlywheelMaxRPM);
+    flywheelOutput = flywheel.calculateFlywheelSpeedFromDist(distanceFromHub);
+
+    // SmartDashboard.putNumber("flywheel output (RPM)", flywheelOutput);
+    // double flywheelOutputPercent = RobotContainer.scaleBetween(flywheelOutput, -1, 1, -kFlywheelMaxRPM, kFlywheelMaxRPM);
     // SmartDashboard.putNumber("flywheel output (percent)", flywheelOutput);
     // encoderUnitOutput = flywheelOutput * (512.0 / 75.0);
     // SmartDashboard.putNumber("flywheel output (u/100ms)", encoderUnitOutput);
     // SmartDashboard.putNumber("flywheel output (Percent)", flywheelOutput);
     // if (storage.getBallSensorMid() || storage.getBallSensorTop()) {
     if (storage.getBallSensorTop()) {
-      flywheel.move(flywheelOutputPercent); 
-      // flywheel.move(KFlywheelSpeed); 
+      // flywheel.move(flywheelOutputPercent); 
+      flywheel.move(flywheelOutput); 
     }
     else {
       flywheel.move(0);

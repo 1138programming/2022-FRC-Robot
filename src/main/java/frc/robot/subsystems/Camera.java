@@ -17,6 +17,8 @@ import edu.wpi.first.cscore.CvSource;
 
 import static frc.robot.Constants.*;
 
+import org.ejml.dense.row.misc.RrefGaussJordanRowPivot_DDRM;
+
 public class Camera extends SubsystemBase {
   private NetworkTable table;
   private double targetFound;
@@ -90,7 +92,12 @@ public class Camera extends SubsystemBase {
   }
 
   public double getDistance() {
-    double distance = KHeightDifference / Math.tan(Math.toRadians(KLimelightAngle + y));
-    return distance + 8; //constant offset
+    if (getTargetFound()) {
+      double distance = KHeightDifference / Math.tan(Math.toRadians(KLimelightAngle + y));
+      return distance + 8; //constant offset
+    }
+    else {
+      return 46.0;
+    }
   }
 }

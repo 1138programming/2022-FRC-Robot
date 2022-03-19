@@ -45,31 +45,18 @@ public class FlywheelSpinWithLimelight extends CommandBase {
     distanceFromHub = camera.getDistance();
     // distanceFromHub = SmartDashboard.getNumber("manual dist", 0);
 
-    if (distanceFromHub > 60) {
-      if (distanceFromHub < 95) {
-        flywheelOutput = 1700 + distanceFromHub * 4.077;
-      }
-      else if (distanceFromHub < 100) {
-        flywheelOutput = 1450 + distanceFromHub * 4.077;
-      }
-      else if (distanceFromHub < 150) {
-        flywheelOutput = 2100 + distanceFromHub * 4.077;
-      }
-      else {
-        flywheelOutput = 2450 + distanceFromHub * 4.077;
-      }
-    }
-    else {
-      flywheelOutput = 0;
-    }
-    SmartDashboard.putNumber("flywheel output (RPM)", flywheelOutput);
-    double flywheelOutputPercent = RobotContainer.scaleBetween(flywheelOutput, -1, 1, -kFlywheelMaxRPM, kFlywheelMaxRPM);
+    flywheelOutput = flywheel.calculateFlywheelSpeedFromDist(distanceFromHub);
+
+    flywheel.move(flywheelOutput);
+
+    // SmartDashboard.putNumber("flywheel output (RPM)", flywheelOutput);
+    // double flywheelOutputPercent = RobotContainer.scaleBetween(flywheelOutput, -1, 1, -kFlywheelMaxRPM, kFlywheelMaxRPM);
     // SmartDashboard.putNumber("flywheel output (percent)", flywheelOutput);
     // encoderUnitOutput = flywheelOutput * (512.0 / 75.0);
     // SmartDashboard.putNumber("flywheel output (u/100ms)", encoderUnitOutput);
     // SmartDashboard.putNumber("flywheel output (Percent)", flywheelOutput);
     // if (ballInTopStorage || ballInBottomStorage) {
-      flywheel.move(flywheelOutputPercent); 
+      // flywheel.move(flywheelOutputPercent); 
     // }
     // else {
     //   flywheel.move(0);

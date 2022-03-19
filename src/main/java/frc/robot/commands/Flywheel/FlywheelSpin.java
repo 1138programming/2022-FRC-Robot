@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Flywheel;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheel;
 import static frc.robot.Constants.*;
@@ -18,13 +19,15 @@ public class FlywheelSpin extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     flywheel.moveRawPercent(KFlywheelSpeed);
-    // flywheel.move(KFlywheelSpeed);
+
   }
 
   // Called once the command ends or is interrupted.

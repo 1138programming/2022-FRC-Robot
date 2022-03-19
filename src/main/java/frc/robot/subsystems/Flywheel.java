@@ -16,8 +16,8 @@ public class Flywheel extends SubsystemBase {
 
   private TalonFX flywheelMotor;
   private PIDController flywheelController;
-  private double flywheelControllerKP = 0.1;
-  private double flywheelControllerKI = 0;
+  private double flywheelControllerKP = 0.16;
+  private double flywheelControllerKI = 0.001;
   private double flywheelControllerKD = 0;
   private boolean isMoving = false;
 
@@ -34,23 +34,28 @@ public class Flywheel extends SubsystemBase {
     
     SmartDashboard.putBoolean("Flywheel Spinning", false);
 
-    // SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
-    // SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
-    // SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
+    SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
+    SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
+    SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
+    
+    SmartDashboard.putNumber("flywheel Target RPM", 0);
+    SmartDashboard.putNumber("flywheel Target Encoder Unit", 0);
+    SmartDashboard.putNumber("flywheel Current Encoder Unit", 0);
   }
   
-  // public void move(double speedInEncoderUnits) {
+  //requires input in RPM!
   public void move(double output) {
-    // double pidOutput = flywheelController.calculate(getRawVelocity(), speedInEncoderUnits); //somehow doesnt reach setpoint
+    output *= (512.0 / 75.0); //convert to encoder unit 
     if (output != 0) {
       SmartDashboard.putBoolean("Flywheel Spinning", true);
+      flywheelMotor.set(ControlMode.Velocity, output);
     }
     else {
       SmartDashboard.putBoolean("Flywheel Spinning", false);
+      flywheelMotor.set(ControlMode.PercentOutput, 0);
     }
-    flywheelMotor.set(ControlMode.PercentOutput, output);
+    // flywheelMotor.set(ControlMode.PercentOutput, output);
     
-    // flywheelMotor.set(ControlMode.Velocity, speedInEncoderUnits);
   }
   
   public void moveRawPercent(double speed) {
@@ -70,7 +75,7 @@ public class Flywheel extends SubsystemBase {
   }
 
   public double getRawVelocity() {
-    return flywheelMotor.getSelectedSensorPosition();
+    return flywheelMotor.getSelectedSensorVelocity();
   }
   
   public void setFlywheelGains(double kP, double kI, double kD){
@@ -79,12 +84,39 @@ public class Flywheel extends SubsystemBase {
       flywheelMotor.config_kI(0, kI);
       flywheelMotor.config_kD(0, kD);
   }
+
+  public double calculateFlywheelSpeedFromDist(double distanceFromHub) {
+    double flywheelOutput;
+    if (distanceFromHub > 60) {
+      if (distanceFromHub < 95) {
+        flywheelOutput = 1750 + distanceFromHub * 4.077;
+      }
+      else if (distanceFromHub < 100) {
+        flywheelOutput = 1500 + distanceFromHub * 4.077;
+      }
+      else if (distanceFromHub < 130) {
+        flywheelOutput = 1850 + distanceFromHub * 4.077;
+      }
+      else if (distanceFromHub < 150) {
+        flywheelOutput = 2200 + distanceFromHub * 4.077;
+      }
+      else {
+        flywheelOutput = 2450 + distanceFromHub * 4.077;
+      }
+    }
+    else {
+      flywheelOutput = 0;
+    }
+    return flywheelOutput;
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0), 
       SmartDashboard.getNumber("Flywheel kI", 0.0), 
       SmartDashboard.getNumber("Flywheel kD", 0.0));
+
     SmartDashboard.putNumber("Flywheel Current RPM", getVelocity());
+    SmartDashboard.putNumber("flywheel Current Encoder Unit", getRawVelocity());
   }
 }

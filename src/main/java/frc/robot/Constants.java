@@ -81,7 +81,7 @@ public final class Constants {
     public static final double KIntakeSwivelPWM = 0.4;
     
     //FlyWheel
-    public static final double KFlywheelSpeed = 0.3;
+    public static final double KFlywheelSpeed = 0.6;
     public static final double kYOffsetDeadzone = 10;
     public static final double kXOffsetDeadzone = 2;
 
