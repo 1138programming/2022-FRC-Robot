@@ -46,13 +46,27 @@ public class DriveBackAndShoot extends SequentialCommandGroup {
         new IntakeSwivelDown(intake)
       ),
       new ParallelRaceGroup(
-          new WaitCommand(6),
+          new WaitCommand(3),
           new AutonFeedShot(storage),
           new FlywheelSpinWithLimelight(flywheel, camera)
         ),
       new ResetOdometry(base),
       new ResetGyro(base),
-      new DriveToPose(base, new Pose2d(-1.5, 0, new Rotation2d()))
+      new DriveToPose(base, new Pose2d(-1.5, 0, new Rotation2d(180))),
+      new ResetGyro(base),
+      new ParallelRaceGroup(
+        new WaitCommand(2),
+        new DriveToPose(base, new Pose2d(1.5, 0, new Rotation2d())),
+        new IntakeSpinForward(intake)
+      ),
+      new ResetGyro(base),
+      new DriveToPose(base, new Pose2d(3, 0, new Rotation2d(180))),
+      new ParallelRaceGroup(
+        new WaitCommand(2),
+        new AutonFeedShot(storage),
+        new FlywheelSpinWithLimelight(flywheel, camera)
+      ),
+      new DriveToPose(base, new Pose2d(-3,0, new Rotation2d()))
       // new AimWithLimelight(base, camera),
     );
   }
