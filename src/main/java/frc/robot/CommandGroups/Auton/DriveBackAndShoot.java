@@ -33,41 +33,54 @@ import frc.robot.subsystems.Storage;
 public class DriveBackAndShoot extends SequentialCommandGroup {
   public DriveBackAndShoot(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(
-      // new ParallelRaceGroup(new WaitCommand(0.8),
-      //   new IntakeSwivelDown(intake)
-      // ),
-      // new ParallelRaceGroup(new WaitCommand(0.8),
-      //   new IntakeSpinForward(intake),
-      //   new StorageCollect(storage)
-      // ),
-      
-      
+
+      //move intake slightly down to avoid contact with flywheel
       new ParallelRaceGroup(new WaitCommand(0.3),
         new IntakeSwivelDown(intake)
       ),
+      //flywheel spinup and shoot for 3 secs
       new ParallelRaceGroup(
           new WaitCommand(3),
           new AutonFeedShot(storage),
           new FlywheelSpinWithLimelight(flywheel, camera)
         ),
+
+      //base movement block-Move back 1.5 m and rotate 180 deg
       new ResetOdometry(base),
       new ResetGyro(base),
-      new DriveToPose(base, new Pose2d(-1.5, 0, new Rotation2d(180))),
-      new ResetGyro(base),
+      new ParallelRaceGroup( //timer used to prevent the base from doing somehting really bad if something is wrong
+        new WaitCommand(4),
+        new DriveToPose(base, new Pose2d(-1.5, 0, Rotation2d.fromDegrees((180))))
+      ),
+
+      //intake for 2 secs
       new ParallelRaceGroup(
         new WaitCommand(2),
-        new DriveToPose(base, new Pose2d(1.5, 0, new Rotation2d())),
         new IntakeSpinForward(intake)
-      ),
+        ),
+
+      //base movement block-Move rotate 180 deg
+      new ResetOdometry(base),
       new ResetGyro(base),
-      new DriveToPose(base, new Pose2d(3, 0, new Rotation2d(180))),
+      new ParallelRaceGroup( //timer used to prevent the base from doing somehting really bad if something is wrong
+        new WaitCommand(4),
+        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees((180))))
+      ),
+
+      //feed and shoot for 2 secs
       new ParallelRaceGroup(
         new WaitCommand(2),
         new AutonFeedShot(storage),
         new FlywheelSpinWithLimelight(flywheel, camera)
-      ),
-      new DriveToPose(base, new Pose2d(-3,0, new Rotation2d()))
-      // new AimWithLimelight(base, camera),
+      )
+
+      // //base movement block-move to position of the 2nd ball on the floor
+      // new ResetOdometry(base),
+      // new ResetGyro(base),
+      // new ParallelRaceGroup( //timer used to prevent the base from doing somehting really bad if something is wrong
+      //   new WaitCommand(4),
+      //   new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees((180))))
+      // ),
     );
   }
 }
