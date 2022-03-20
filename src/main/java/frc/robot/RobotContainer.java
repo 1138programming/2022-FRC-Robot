@@ -157,6 +157,7 @@ public class RobotContainer {
   private final IntakeSwivelDown swivelDown = new IntakeSwivelDown(intake);
   private final IntakeSwivelUp swivelUp = new IntakeSwivelUp(intake);
   private final CollectAndIndexBalls collectAndIndexBalls = new CollectAndIndexBalls(intake, storage);
+
   // Storage
   private final StorageStop storageStop= new StorageStop(storage);
   private final BottomStorageOut bottomStorageOut = new BottomStorageOut(storage);
@@ -287,15 +288,15 @@ public class RobotContainer {
     logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
-    logitechBtnA.whenHeld(moveClawIn);
-    logitechBtnB.whenHeld(moveClawOut);
-    logitechBtnX.whenHeld(hangDown);
-    logitechBtnX.whenReleased(moveRachetOut);
-    logitechBtnY.whenHeld(hangUp);
-    logitechBtnY.whenReleased(moveRachetOut);
+    // logitechBtnA.whenHeld(moveClawIn);
+    // logitechBtnB.whenHeld(moveClawOut);
+    // logitechBtnX.whenHeld(hangDown);
+    // logitechBtnX.whenReleased(moveRachetOut);
+    // logitechBtnY.whenHeld(hangUp);
+    // logitechBtnY.whenReleased(moveRachetOut);
     
-    logitechBtnLB.whenHeld(moveArmForward);
-    logitechBtnRB.whenHeld(moveArmBackward);
+    // logitechBtnLB.whenHeld(moveArmForward);
+    // logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
     xboxBtnX.toggleWhenActive(flywheelSpinWithLimelight);
@@ -306,6 +307,7 @@ public class RobotContainer {
     xboxBtnA.whenHeld(swivelDown);
 
     xboxBtnLB.whenHeld(collectAndIndexBalls);
+    // xboxBtnLB.whenReleased(stowedMode);
     // xboxBtnLB.whenHeld(huntMode);
     xboxBtnLT.whileActiveContinuous(intakeSpinBackward);
     

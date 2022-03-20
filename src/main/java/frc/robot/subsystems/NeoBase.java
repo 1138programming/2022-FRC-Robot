@@ -307,16 +307,6 @@ public class NeoBase extends SubsystemBase {
       modules[2].setDesiredState(desiredStates[2]);
       modules[3].setDesiredState(desiredStates[3]);
   }
-
-  private HolonomicDriveController holonomicDriveController = new HolonomicDriveController(
-    xTrajectoryController,
-    yTrajectoryController,
-    rotTrajectoryController
-  );
-
-  public HolonomicDriveController getHolonomicDriveController() {
-    return holonomicDriveController;
-  }
   
   public SwerveDriveKinematics getKinematics() {
     return kinematics;
@@ -330,7 +320,7 @@ public class NeoBase extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d pose) {
-    Rotation2d gyroR2D = Rotation2d.fromDegrees(-gyro.getAngle());
+    Rotation2d gyroR2D = Rotation2d.fromDegrees(gyro.getAngle());
     odometry.resetPosition(pose, gyroR2D);
   }
 

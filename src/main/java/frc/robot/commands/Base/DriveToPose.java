@@ -26,7 +26,7 @@ public class DriveToPose extends CommandBase {
   private double lrSpeed;
   private double rotSpeed;
 
-  private double rotP = 0.05;
+  private double rotP = 5;
   private double rotI = 0;
   private double rotD = 0;
 
@@ -68,7 +68,6 @@ public class DriveToPose extends CommandBase {
     // SmartDashboard.putNumber("rotD", rotD);
 
     // SmartDashboard.putString("targetPose", targetPose.toString());
-    base.resetGyro();
     base.resetAllRelEncoders();  
   }
 
@@ -87,11 +86,13 @@ public class DriveToPose extends CommandBase {
 
     fbSpeed = fbSpeedLimiter.calculate(fbSpeed);
     lrSpeed = lrSpeedLimiter.calculate(lrSpeed);
-    rotSpeed = rotController.calculate(currentPose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
+    rotSpeed = rotController.calculate(currentPose.getRotation().getDegrees()/360, targetPose.getRotation().getDegrees()/360);
     // fbSpeed = MathUtil.clamp(fbSpeed, -2, 2);
     // lrSpeed = MathUtil.clamp(lrSpeed, -2, 2);
-    rotSpeed = MathUtil.clamp(rotSpeed, -2, 2);
-
+    // rotSpeed = MathUtil.clamp(rotSpeed, -2, 2);
+    SmartDashboard.putNumber("currentRot", currentPose.getRotation().getDegrees());
+    SmartDashboard.putNumber("targetRot", targetPose.getRotation().getDegrees());
+    
     base.drive(-fbSpeed, -lrSpeed, rotSpeed, true);
   }
 

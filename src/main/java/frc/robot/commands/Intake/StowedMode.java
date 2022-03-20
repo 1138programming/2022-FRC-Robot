@@ -24,24 +24,18 @@ public class StowedMode extends CommandBase {
   @Override
   public void execute() 
   {
-    if (intake.getTopLimitSwitch() || Math.abs(intake.getIntakeEncoderRaw() - kStowedPos) < 100) {
-      intake.moveSwivel(0);
-      intake.resetEncoder();
-    }
-    else
-    {
-      intake.moveSwivel(-KIntakeSwivelPWM);
-    }
-    intake.moveSpin(0);
+    intake.swivelToPos(kStowedPos);
   }
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.moveSwivel(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (Math.abs(intake.getIntakeEncoderRaw() - kStowedPos) < 100);
   }
 }

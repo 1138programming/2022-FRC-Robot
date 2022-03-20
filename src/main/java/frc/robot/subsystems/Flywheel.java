@@ -89,10 +89,10 @@ public class Flywheel extends SubsystemBase {
     double flywheelOutput;
     if (distanceFromHub > 60) {
       if (distanceFromHub < 95) {
-        flywheelOutput = 1750 + distanceFromHub * 4.077;
+        flywheelOutput = 1800 + distanceFromHub * 4.077;
       }
       else if (distanceFromHub < 100) {
-        flywheelOutput = 1500 + distanceFromHub * 4.077;
+        flywheelOutput = 1550 + distanceFromHub * 4.077;
       }
       else if (distanceFromHub < 130) {
         flywheelOutput = 1850 + distanceFromHub * 4.077;
@@ -105,7 +105,7 @@ public class Flywheel extends SubsystemBase {
       }
     }
     else {
-      flywheelOutput = 0;
+      flywheelOutput = 1900;
     }
     return flywheelOutput;
   }

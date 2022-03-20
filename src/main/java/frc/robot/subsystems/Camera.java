@@ -14,10 +14,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 
-
 import static frc.robot.Constants.*;
-
-import org.ejml.dense.row.misc.RrefGaussJordanRowPivot_DDRM;
 
 public class Camera extends SubsystemBase {
   private NetworkTable table;

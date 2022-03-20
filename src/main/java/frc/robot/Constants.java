@@ -72,8 +72,8 @@ public final class Constants {
     
     // Default PWM Values
     //Base
-    public static final double kBaseDriveLowSpeed = 0.55;
-    public static final double kBaseDriveHighSpeed = 0.8;
+    public static final double kBaseDriveLowSpeed = 0.45;
+    public static final double kBaseDriveHighSpeed = 0.65;
     public static final double kBaseDriveFullSpeed = 1.0; //about 5700 RPM
     
     //Intake

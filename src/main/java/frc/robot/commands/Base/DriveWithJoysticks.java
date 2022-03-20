@@ -70,7 +70,7 @@ public class DriveWithJoysticks extends CommandBase {
       initHeading = base.getHeadingDeg();
     }
     // base.drive(fbSpeed, lrSpeed, rot, true);
-    base.drive(fbSpeed, lrSpeed, rot, false);
+    base.drive(fbSpeed, lrSpeed, rot, true);
     }
 
   // Called once the command ends or is interrupted.
