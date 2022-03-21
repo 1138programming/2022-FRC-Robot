@@ -35,7 +35,7 @@ public class Intake extends SubsystemBase {
   private DigitalInput topLimitSwitch;
   private DutyCycleEncoder swivelMagEncoder;
   private PIDController swivelController;
-  private double intakeControllerkP = 0.001;
+  private double intakeControllerkP = 0.0005;
   private double intakeControllerkI = 0;
   private double  intakeControllerkD = 0;
   private final Pixy2 pixy;
@@ -46,7 +46,7 @@ public class Intake extends SubsystemBase {
     swivelIntakeMotor.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
     swivelController = new PIDController(intakeControllerkP, intakeControllerkI, intakeControllerkD);
     topLimitSwitch = new DigitalInput(kIntakeTopLimit);
-    // bottomLimitSwitch = new DigitalInput(kIntakeBottomLimit);
+    bottomLimitSwitch = new DigitalInput(KIntakeBottomLimit);
 
     pixy = Pixy2.createInstance(Pixy2.LinkType.SPI);
     pixyInit();
@@ -63,6 +63,16 @@ public class Intake extends SubsystemBase {
         swivelIntakeMotor.setSelectedSensorPosition(0);
       }
     }
+    else if (getBottomLimitSwitch()) {
+      if (speed < 0) {
+        swivelIntakeMotor.set(ControlMode.PercentOutput, 0);
+        swivelIntakeMotor.setSelectedSensorPosition(KIntakePos + 200);
+      }
+      else {
+        swivelIntakeMotor.set(ControlMode.PercentOutput, speed);
+        swivelIntakeMotor.setSelectedSensorPosition(KIntakePos + 200);
+      }
+    }
     else {
       swivelIntakeMotor.set(ControlMode.PercentOutput, speed);
     }
@@ -77,9 +87,9 @@ public class Intake extends SubsystemBase {
     }
   }
   // Getters
-  // public boolean getBottomLimitSwitch() {
-  //   return bottomLimitSwitch.get();
-  // }
+  public boolean getBottomLimitSwitch() {
+    return !bottomLimitSwitch.get();
+  }
   public boolean getTopLimitSwitch() {
     return !(topLimitSwitch.get());
   }
@@ -129,11 +139,14 @@ public class Intake extends SubsystemBase {
     return pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG2);
   }
 
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("intake limit", getTopLimitSwitch());
     SmartDashboard.putNumber("intake Encoder raw", getIntakeEncoderRaw());
+    SmartDashboard.putBoolean("intake bottom limit", getBottomLimitSwitch());
     
     if (getTopLimitSwitch()) {
       resetEncoder();

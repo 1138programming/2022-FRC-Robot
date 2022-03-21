@@ -54,7 +54,7 @@ public class HuntMode extends CommandBase {
   @Override
   public boolean isFinished() {
     // return (Math.abs(intake.getIntakeEncoderRaw() - 1000) < 50);
-    return (Math.abs(intake.getIntakeEncoderRaw() - KIntakePos) < 100);
+    return Math.abs(intake.getIntakeEncoderRaw() - KIntakePos) < 100 || intake.getBottomLimitSwitch();
     // return false;
   }
 }

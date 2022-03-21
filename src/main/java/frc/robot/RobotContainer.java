@@ -63,9 +63,6 @@ import frc.robot.commands.Base.RotateToHeading;
 import frc.robot.commands.Camera.LEDOff;
 import frc.robot.commands.Camera.LEDOn;
 import frc.robot.CommandGroups.Auton.DriveBackAndShoot;
-import frc.robot.CommandGroups.Auton.TestAuton;
-import frc.robot.CommandGroups.Hang.HangDown;
-import frc.robot.CommandGroups.Hang.HangUp;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
@@ -143,8 +140,8 @@ public class RobotContainer {
   private final MoveArmForward moveArmForward = new MoveArmForward(hang);
   private final MoveClawIn moveClawIn  = new MoveClawIn(hang);
   private final MoveClawOut moveClawOut = new MoveClawOut(hang);
-  private final HangDown hangDown = new HangDown(hang);
-  private final HangUp hangUp = new HangUp(hang);
+  private final MoveHangDown hangDown = new MoveHangDown(hang);
+  private final MoveHangUp hangUp = new MoveHangUp(hang);
   private final MoveRachetIn moveRachetIn = new MoveRachetIn(hang);
   private final MoveRachetOut moveRachetOut = new MoveRachetOut(hang);
 
@@ -302,9 +299,11 @@ public class RobotContainer {
     xboxBtnX.toggleWhenActive(flywheelSpinWithLimelight);
     // xboxBtnX.toggleWhenActive(flywheelSpin);
     // xboxBtnX.toggleWhenActive(huntMode);
-    xboxBtnB.whenHeld(feedShot);
+    // xboxBtnB.whenHeld(feedShot);
+    xboxBtnB.whenPressed(stowedMode);
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
+
 
     xboxBtnLB.whenHeld(collectAndIndexBalls);
     // xboxBtnLB.whenReleased(stowedMode);

@@ -36,16 +36,11 @@ public class DriveToPose extends CommandBase {
 
   private SlewRateLimiter fbSpeedLimiter;
   private SlewRateLimiter lrSpeedLimiter;
-  private SlewRateLimiter rotSpeedLimiter;
 
   /** Creates a new DriveToPose. */
   public DriveToPose(NeoBase base, Pose2d targetPose) {
     this.base = base;
     this.targetPose = targetPose;
-
-    // this.targetPose = new Pose2d(SmartDashboard.getNumber("new x", 0), SmartDashboard.getNumber("new y", 0), new Rotation2d());
-    // SmartDashboard.putString("targetPose", this.targetPose.toString());
-    
 
     currentPose = base.getPose();
 
@@ -55,7 +50,6 @@ public class DriveToPose extends CommandBase {
 
     fbSpeedLimiter = new SlewRateLimiter(2);
     lrSpeedLimiter = new SlewRateLimiter(2);
-    rotSpeedLimiter = new SlewRateLimiter(2);
 
     addRequirements(base);
   }
@@ -63,11 +57,6 @@ public class DriveToPose extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // SmartDashboard.putNumber("rotP", rotP);
-    // SmartDashboard.putNumber("rotI", rotI);
-    // SmartDashboard.putNumber("rotD", rotD);
-
-    // SmartDashboard.putString("targetPose", targetPose.toString());
     base.resetAllRelEncoders();  
   }
 
@@ -87,11 +76,6 @@ public class DriveToPose extends CommandBase {
     fbSpeed = fbSpeedLimiter.calculate(fbSpeed);
     lrSpeed = lrSpeedLimiter.calculate(lrSpeed);
     rotSpeed = rotController.calculate(currentPose.getRotation().getDegrees()/360, targetPose.getRotation().getDegrees()/360);
-    // fbSpeed = MathUtil.clamp(fbSpeed, -2, 2);
-    // lrSpeed = MathUtil.clamp(lrSpeed, -2, 2);
-    // rotSpeed = MathUtil.clamp(rotSpeed, -2, 2);
-    SmartDashboard.putNumber("currentRot", currentPose.getRotation().getDegrees());
-    SmartDashboard.putNumber("targetRot", targetPose.getRotation().getDegrees());
     
     base.drive(-fbSpeed, -lrSpeed, rotSpeed, true);
   }

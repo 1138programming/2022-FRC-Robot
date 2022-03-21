@@ -9,7 +9,6 @@ import static frc.robot.Constants.*;
 import frc.robot.Robot;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.NeoBase;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.math.controller.PIDController;
@@ -41,7 +40,7 @@ public class DriveWithLimelight extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    base.resetAllRelEncoders(); 
+    base.resetAllRelEncoders();
     if (camera.getTargetFound() == false) {
       SmartDashboard.putBoolean("Limelight Target Found", false);
     } 
@@ -51,13 +50,10 @@ public class DriveWithLimelight extends CommandBase {
   @Override
   public void execute() {
     camera.LEDOn();
-    // fbSpeed = xSpeedLimiter.calculate(Robot.robotContainer.getLogiLeftYAxis());
     fbSpeed = (-Robot.robotContainer.getLogiLeftYAxis());
     
-    // lrSpeed = ySpeedLimiter.calculate(Robot.robotContainer.getLogiLeftXAxis());
     lrSpeed = (Robot.robotContainer.getLogiLeftXAxis());
     
-    // rot = rotLimiter.calculate(Robot.robotContainer.getLogiRightXAxis());
     rot = (-Robot.robotContainer.getLogiRightXAxis());
 
     rot -= rotationController.calculate(camera.getXOffset()/KLimelightRange, 0);

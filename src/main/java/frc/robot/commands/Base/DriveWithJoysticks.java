@@ -19,10 +19,6 @@ public class DriveWithJoysticks extends CommandBase {
   private double lrSpeed; //Speed of the robot in the Y direction (sideways).
   private double rot;
 
-  private SlewRateLimiter xSpeedLimiter;
-  private SlewRateLimiter ySpeedLimiter;
-  private SlewRateLimiter rotLimiter;
-
   private PIDController rotationCorrectionPID;
   private double initHeading;
 
@@ -35,10 +31,6 @@ public class DriveWithJoysticks extends CommandBase {
 
     this.base = base;
   
-    xSpeedLimiter = new SlewRateLimiter(4);
-    ySpeedLimiter = new SlewRateLimiter(4);
-    rotLimiter = new SlewRateLimiter(4);
-
     rotationCorrectionPID = new PIDController(kRotationP, kRotationI, kRotationD);
 
     addRequirements(base);
@@ -54,13 +46,10 @@ public class DriveWithJoysticks extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // fbSpeed = xSpeedLimiter.calculate(Robot.robotContainer.getLogiLeftYAxis());
     fbSpeed = (-Robot.robotContainer.getLogiLeftYAxis());
     
-    // lrSpeed = ySpeedLimiter.calculate(Robot.robotContainer.getLogiLeftXAxis());
     lrSpeed = (Robot.robotContainer.getLogiLeftXAxis());
     
-    // rot = rotLimiter.calculate(Robot.robotContainer.getLogiRightXAxis());
     rot = (-Robot.robotContainer.getLogiRightXAxis());
     
     if (Math.abs(rot) <= 0.01 && (Math.abs(fbSpeed) >= 0.01 || Math.abs(lrSpeed) >= 0.01)){
@@ -69,7 +58,6 @@ public class DriveWithJoysticks extends CommandBase {
     else {
       initHeading = base.getHeadingDeg();
     }
-    // base.drive(fbSpeed, lrSpeed, rot, true);
     base.drive(fbSpeed, lrSpeed, rot, true);
     }
 

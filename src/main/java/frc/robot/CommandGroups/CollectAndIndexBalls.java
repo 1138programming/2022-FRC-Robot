@@ -22,7 +22,7 @@ public class CollectAndIndexBalls extends SequentialCommandGroup {
   /* Creates a new CollectAndIndexBalls. */
   public CollectAndIndexBalls(Intake intake, Storage storage) {
     addCommands(
-      // new HuntMode(intake),
+      new HuntMode(intake),
       new ParallelCommandGroup(
         new IntakeSpinForward(intake),
         new StorageCollect(storage)
