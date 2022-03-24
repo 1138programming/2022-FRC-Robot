@@ -2,9 +2,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
-import java.util.function.DoublePredicate;
-
-//All First FRC imports
+//All WPILib imports
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
@@ -23,6 +21,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 
 //REV Robotics Imports
 import com.revrobotics.CANSparkMax;
@@ -33,12 +36,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.math.controller.HolonomicDriveController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 //Misc Imports
-import edu.wpi.first.math.MathUtil;
 import com.kauailabs.navx.frc.AHRS;
 
 public class NeoBase extends SubsystemBase {
@@ -48,14 +46,7 @@ public class NeoBase extends SubsystemBase {
   private SwerveDriveKinematics kinematics;
   private SwerveDriveOdometry odometry;
 
-  private SwerveDrivePoseEstimator poseEstimator;
-
   private SwerveX[] modules;
-  private SwerveX[] poseModules;
-
-  private PIDController wheelController;
-
-  private SwerveModuleState[] autonStates;
 
   //Base Constants
   private final double kEncoderTicksPerRotation = 4096;
@@ -66,9 +57,6 @@ public class NeoBase extends SubsystemBase {
   private final double kAngleMotorShaftToWheelRatio = 1 / 10.285714; //1/(72/7)
   private final double kAngleEncoderRot2Deg = kAngleMotorShaftToWheelRatio * 360;
   private final double kMagEncoderPeriod = 0.04; //slower than robot code period (0.02s), which makes the mag encoder not suitable 
-  private final double kMaxSpeed = 6.09; // 20 feet per second
-  private final double kMaxMotorOutput = 0.4;
-  private final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
   private final double kticksPerRevolution = 4096;
   private final double kNeoMaxRPM = 5700; //4.62 MPS
 
@@ -78,10 +66,11 @@ public class NeoBase extends SubsystemBase {
   private double backLeftOffset = -183.2; 
   private double backRightOffset = -110.7;
 
-  //Max Speed of Drive Motors, default is set to Low for testing, CHANGE BACK 
+  //Max Speed of Drive Motors, default is set to Low
+  private final double kPhysicalMaxDriveSpeedMPS = kDriveEncoderRPM2MeterPerSec * kNeoMaxRPM; //about 4.63 Meters Per Sec, or 15 ft/s
   private double maxDriveSpeedPercent = kBaseDriveLowSpeed;
-  private double kPhysicalMaxDriveSpeedMPS = kDriveEncoderRPM2MeterPerSec * kNeoMaxRPM;
   private double maxDriveSpeedMPS = maxDriveSpeedPercent * kPhysicalMaxDriveSpeedMPS;
+  private final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
   //distance in inches of a module from the center of mass (we use a square base so only 1 number is needed)
   private double kSwerveModuleLocationFromCoM = 14.5; 
@@ -132,12 +121,8 @@ public class NeoBase extends SubsystemBase {
 
     odometry = new SwerveDriveOdometry(kinematics, new Rotation2d());
 
-    wheelController = new PIDController(1, 0, 0);
-
     //Reset the gyro's heading
     gyro.reset();
-
-    autonStates = new SwerveModuleState[4];
 
     rotController = new PIDController(10, 0, 0);
 
@@ -162,7 +147,7 @@ public class NeoBase extends SubsystemBase {
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     xSpeed *= maxDriveSpeedMPS;
     ySpeed *= maxDriveSpeedMPS;
-    rot *= maxDriveSpeedMPS;
+    rot *= kMaxAngularSpeed;
     //feeding parameter speeds into toSwerveModuleStates to get an array of SwerveModuleState objects
     SwerveModuleState[] states =
       kinematics.toSwerveModuleStates(
@@ -345,7 +330,6 @@ public class NeoBase extends SubsystemBase {
     private double[] pulseWidthAndPeriod = new double[]{1, 1/244}; //pulse width found in mag encoder manual pdf, period is 1/frequency (also found in pdf)
     private double angleMotorOutput;
     private double driveMotorOutput;
-    ;
     
     SwerveX(CANSparkMax driveMotor, CANSparkMax angleMotor, DutyCycleEncoder magEncoder, Rotation2d offset, boolean isInverted) {
       this.driveMotor = driveMotor;
