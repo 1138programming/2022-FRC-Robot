@@ -166,11 +166,12 @@ public class NeoBase extends SubsystemBase {
 
 
   public void resetGyro() {
-    gyro.setAngleAdjustment(0);
     gyro.reset(); //recalibrates gyro offset
+    gyro.setAngleAdjustment(0);
   }
 
   public void resetGyro(double offsetAngle) {
+    gyro.reset();
     gyro.setAngleAdjustment(offsetAngle);
   }
 

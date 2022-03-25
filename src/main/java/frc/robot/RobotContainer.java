@@ -63,6 +63,7 @@ import frc.robot.commands.Base.RotateToHeading;
 import frc.robot.commands.Camera.LEDOff;
 import frc.robot.commands.Camera.LEDOn;
 import frc.robot.CommandGroups.Auton.DriveBackAndShoot;
+import frc.robot.CommandGroups.Auton.ThreeBallAuton;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
@@ -173,6 +174,7 @@ public class RobotContainer {
   
   //Auton
   private final DriveBackAndShoot driveBackAndShoot = new DriveBackAndShoot(base, camera, storage, intake, flywheel);
+  private final ThreeBallAuton threeBallAuton = new ThreeBallAuton(base, camera, storage, intake, flywheel);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -228,8 +230,7 @@ public class RobotContainer {
     intake.setDefaultCommand(intakeStop);
     // flywheel.setDefaultCommand(flywheelStop);
     flywheel.setDefaultCommand(flywheelAutoSpinUp);
-    intake.setDefaultCommand(stowedMode);
-    // intake.setDefaultCommand(intakeStop);
+    intake.setDefaultCommand(intakeStop);
     storage.setDefaultCommand(storageStop);
     // camera.setDefaultCommand(ledOff);
     camera.setDefaultCommand(ledOn);
@@ -305,6 +306,7 @@ public class RobotContainer {
 
 
     xboxBtnLB.whenHeld(collectAndIndexBalls);
+    xboxBtnLB.whenReleased(stowedMode);
     // xboxBtnLB.whenReleased(stowedMode);
     // xboxBtnLB.whenHeld(huntMode);
     xboxBtnLT.whileActiveContinuous(intakeSpinBackward);
@@ -314,7 +316,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return driveBackAndShoot;
+    return threeBallAuton;
   }
 
   public void moveHangRatchetIn() {

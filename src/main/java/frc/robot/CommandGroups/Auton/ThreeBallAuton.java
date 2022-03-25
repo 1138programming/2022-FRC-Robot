@@ -33,33 +33,33 @@ import frc.robot.subsystems.Storage;
 public class ThreeBallAuton extends SequentialCommandGroup {
   public ThreeBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(
-      new ResetGyro(base, 90),
+      new ResetGyro(base, 0),
       new ResetOdometry(base),
-      new ParallelRaceGroup(
-        new WaitCommand(0.3),
-        new IntakeSwivelDown(intake)
-      ),
+      // new ParallelRaceGroup(
+      //   new WaitCommand(1),
+      //   new HuntMode(intake)
+      // ),
       new ParallelRaceGroup(new WaitCommand(6),
         new FlywheelSpinWithLimelight(flywheel, camera),
         new AutonFeedShot(storage)
       ),
       new ParallelRaceGroup(new WaitCommand(2),
-        new RotateToHeading(base, -90)
-      ),
-      new ParallelRaceGroup(new WaitCommand(4),
-        new IntakeSpinForward(intake),
-        new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(-1.2, 0, Rotation2d.fromDegrees(90)))
-      ),
-      new ParallelRaceGroup(new WaitCommand(4),
-        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(-90))),
-        new StorageCollect(storage)
-      ),
-      new ParallelDeadlineGroup((new WaitCommand(6)),
-        new AimWithLimelight(base, camera),
-        new FlywheelSpinWithLimelight(flywheel, camera),
-        new AutonFeedShot(storage)
+        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(180)))
       )
+      // new ParallelRaceGroup(new WaitCommand(4),
+      //   // new IntakeSpinForward(intake),
+      //   // new StorageCollect(storage),
+      //   new DriveToPose(base, new Pose2d(0, 1, Rotation2d.fromDegrees(90)))
+      // ),
+      // new ParallelRaceGroup(new WaitCommand(4),
+      //   new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(-90)))
+      //   // new StorageCollect(storage)
+      // ),
+      // new ParallelDeadlineGroup((new WaitCommand(6)),
+      //   new AimWithLimelight(base, camera)
+      //   // new FlywheelSpinWithLimelight(flywheel, camera),
+      //   // new AutonFeedShot(storage)
+      // )
     );
   }
 }

@@ -35,7 +35,7 @@ public class Intake extends SubsystemBase {
   private DigitalInput topLimitSwitch;
   private DutyCycleEncoder swivelMagEncoder;
   private PIDController swivelController;
-  private double intakeControllerkP = 0.00031;
+  private double intakeControllerkP = 0.00028;
   private double intakeControllerkI = 0.000008;
   private double  intakeControllerkD = 0;
   private final Pixy2 pixy;
@@ -74,7 +74,7 @@ public class Intake extends SubsystemBase {
     }
     swivelIntakeMotor.set(ControlMode.PercentOutput, calcSpeed);
   }
-  
+
   public void moveSpin(double speed) {
     if (getTopLimitSwitch()) {
       spinIntakeMotor.set(VictorSPXControlMode.PercentOutput, 0);
