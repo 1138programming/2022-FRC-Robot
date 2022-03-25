@@ -35,8 +35,8 @@ public class Intake extends SubsystemBase {
   private DigitalInput topLimitSwitch;
   private DutyCycleEncoder swivelMagEncoder;
   private PIDController swivelController;
-  private double intakeControllerkP = 0.0005;
-  private double intakeControllerkI = 0;
+  private double intakeControllerkP = 0.00031;
+  private double intakeControllerkI = 0.000008;
   private double  intakeControllerkD = 0;
   private final Pixy2 pixy;
   
@@ -53,29 +53,26 @@ public class Intake extends SubsystemBase {
   }
   //Talon
   public void moveSwivel(double speed) {
+    double calcSpeed = speed;
     if (getTopLimitSwitch()) {
       if (speed > 0) {
-        swivelIntakeMotor.set(ControlMode.PercentOutput, 0);
+        calcSpeed = 0;
         swivelIntakeMotor.setSelectedSensorPosition(0);
       }
       else {
-        swivelIntakeMotor.set(ControlMode.PercentOutput, speed);
         swivelIntakeMotor.setSelectedSensorPosition(0);
       }
     }
     else if (getBottomLimitSwitch()) {
       if (speed < 0) {
-        swivelIntakeMotor.set(ControlMode.PercentOutput, 0);
-        swivelIntakeMotor.setSelectedSensorPosition(KIntakePos + 200);
+        calcSpeed = 0;
+        swivelIntakeMotor.setSelectedSensorPosition(KIntakePos);
       }
       else {
-        swivelIntakeMotor.set(ControlMode.PercentOutput, speed);
-        swivelIntakeMotor.setSelectedSensorPosition(KIntakePos + 200);
+        swivelIntakeMotor.setSelectedSensorPosition(KIntakePos);
       }
     }
-    else {
-      swivelIntakeMotor.set(ControlMode.PercentOutput, speed);
-    }
+    swivelIntakeMotor.set(ControlMode.PercentOutput, calcSpeed);
   }
   
   public void moveSpin(double speed) {

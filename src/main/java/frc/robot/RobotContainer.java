@@ -228,8 +228,8 @@ public class RobotContainer {
     intake.setDefaultCommand(intakeStop);
     // flywheel.setDefaultCommand(flywheelStop);
     flywheel.setDefaultCommand(flywheelAutoSpinUp);
-    // intake.setDefaultCommand(stowedMode);
-    intake.setDefaultCommand(intakeStop);
+    intake.setDefaultCommand(stowedMode);
+    // intake.setDefaultCommand(intakeStop);
     storage.setDefaultCommand(storageStop);
     // camera.setDefaultCommand(ledOff);
     camera.setDefaultCommand(ledOn);
@@ -296,11 +296,10 @@ public class RobotContainer {
     // logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
-    xboxBtnX.toggleWhenActive(flywheelSpinWithLimelight);
-    // xboxBtnX.toggleWhenActive(flywheelSpin);
+    // xboxBtnX.toggleWhenActive(flywheelSpinWithLimelight);
+    xboxBtnX.toggleWhenActive(flywheelSpin);
     // xboxBtnX.toggleWhenActive(huntMode);
-    // xboxBtnB.whenHeld(feedShot);
-    xboxBtnB.whenPressed(stowedMode);
+    xboxBtnB.whenHeld(feedShot);
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
 

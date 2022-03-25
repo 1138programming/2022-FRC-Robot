@@ -78,7 +78,8 @@ public final class Constants {
     
     //Intake
     public static final double KIntakeSpinPWM = 0.9;
-    public static final double KIntakeSwivelPWM = 0.65;
+    public static final double KIntakeSwivelPWM = 0.45;
+    public static final double KIntakeNearLimit = 0.1;
     
     //FlyWheel
     public static final double KFlywheelSpeed = 0.6;
@@ -110,8 +111,8 @@ public final class Constants {
     public static final double kFlywheelMaxRPM = 3060.0; //Max Flywheel RPM From Testing
 
     //Intake Constants
-    public static final int KIntakePos = 3350; //all the way down (encoder units)
-    public static final int kStowedPos = 500; //all the way down (encoder units)
+    public static final int KIntakePos = 3300; //all the way down (encoder units)
+    public static final int kStowedPos = 850; //not quite all the way up (encoder units)
 
     // Limelight Constants
     public static final double KLimelightHeight = 37.5; // inches
