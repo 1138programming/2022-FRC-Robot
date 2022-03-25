@@ -6,6 +6,7 @@ package frc.robot.CommandGroups.Auton;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -20,6 +21,7 @@ import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Intake.HuntMode;
 import frc.robot.commands.Intake.IntakeSpinForward;
 import frc.robot.commands.Intake.IntakeSwivelDown;
+import frc.robot.commands.Intake.StowedMode;
 import frc.robot.commands.Storage.StorageCollect;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Flywheel;
@@ -33,32 +35,48 @@ import frc.robot.subsystems.Storage;
 public class ThreeBallAuton extends SequentialCommandGroup {
   public ThreeBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(
-      new ResetGyro(base, 0),
-      new ResetOdometry(base),
-      // new ParallelRaceGroup(
-      //   new WaitCommand(1),
-      //   new HuntMode(intake)
-      // ),
-      new ParallelRaceGroup(new WaitCommand(6),
-        new FlywheelSpinWithLimelight(flywheel, camera),
-        new AutonFeedShot(storage)
+      
+      new ParallelRaceGroup(new WaitCommand(0.6),
+      new StowedMode(intake)
       ),
+      
+      new ParallelRaceGroup(new WaitCommand(6),
+      new FlywheelSpinWithLimelight(flywheel, camera),
+      new AutonFeedShot(storage)
+      ),
+      
+      new ResetGyro(base),
+      new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(2),
-        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(180)))
+        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(-160))),
+        new HuntMode(intake)
+      ),
+
+      new ResetGyro(base),
+      new ResetOdometry(base),
+      new ParallelRaceGroup(new WaitCommand(2),
+        new DriveToPose(base, new Pose2d(1.4, 0, Rotation2d.fromDegrees(0))),
+        new StorageCollect(storage),
+        new IntakeSpinForward(intake)
+      ),
+
+      new ResetGyro(base),
+      new ResetOdometry(base),
+      new ParallelRaceGroup(new WaitCommand(2),
+        new StorageCollect(storage),
+        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(160)))
+      ),
+      new AimWithLimelight(base, camera),
+
+      new ParallelRaceGroup(new WaitCommand(6),
+      new FlywheelSpinWithLimelight(flywheel, camera),
+      new AutonFeedShot(storage)
       )
-      // new ParallelRaceGroup(new WaitCommand(4),
-      //   // new IntakeSpinForward(intake),
-      //   // new StorageCollect(storage),
-      //   new DriveToPose(base, new Pose2d(0, 1, Rotation2d.fromDegrees(90)))
-      // ),
-      // new ParallelRaceGroup(new WaitCommand(4),
-      //   new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(-90)))
-      //   // new StorageCollect(storage)
-      // ),
-      // new ParallelDeadlineGroup((new WaitCommand(6)),
-      //   new AimWithLimelight(base, camera)
-      //   // new FlywheelSpinWithLimelight(flywheel, camera),
-      //   // new AutonFeedShot(storage)
+
+      // new ResetGyro(base),
+      // new ResetOdometry(base),
+      // new ParallelRaceGroup(new WaitCommand(3),
+      //   new DriveToPose(base, new Pose2d(2, -2.5, Rotation2d.fromDegrees(-40)))
       // )
     );
   }

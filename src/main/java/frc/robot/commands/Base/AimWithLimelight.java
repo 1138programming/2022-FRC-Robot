@@ -41,6 +41,7 @@ public class AimWithLimelight extends CommandBase {
     camera.LEDOn();
     rot = rotationController.calculate(camera.getXOffset()/KLimelightRange, 0);
     base.drive(0, 0, -rot, false);
+    SmartDashboard.putBoolean("aimingWlimelight", true);
   }
 
   // Called once the command ends or is interrupted.

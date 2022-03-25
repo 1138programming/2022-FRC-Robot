@@ -26,7 +26,7 @@ public class DriveToPose extends CommandBase {
   private double lrSpeed;
   private double rotSpeed;
 
-  private double rotP = 5;
+  private double rotP = 4.5;
   private double rotI = 0;
   private double rotD = 0;
 
