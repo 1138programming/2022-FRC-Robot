@@ -12,17 +12,24 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class ResetGyro extends CommandBase {
 
   private final NeoBase base;
+  private double offsetAngle;
 
   /** Creates a new ResetGyro. */
   public ResetGyro(NeoBase base) {
     this.base = base;
+    offsetAngle = 0;
     // Use addRequirements() here to declare subsystem dependencies.
+  }
+
+  public ResetGyro(NeoBase base, double offsetAngle) {
+    this.base = base;
+    this.offsetAngle = offsetAngle;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    base.resetGyro();
+    base.resetGyro(offsetAngle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

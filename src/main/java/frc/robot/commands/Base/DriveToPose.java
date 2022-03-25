@@ -87,6 +87,6 @@ public class DriveToPose extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return Math.abs(fbOffset) < 0.06 && Math.abs(lrOffset) < 0.06 && Math.abs(headingOffset) < 0.06;
+    return Math.abs(fbOffset) < 0.06 && Math.abs(lrOffset) < 0.06 && Math.abs(headingOffset) < 0.1;
   }
 }
