@@ -112,7 +112,7 @@ public final class Constants {
 
     //Intake Constants
     public static final int KIntakePos = 3300; //all the way down (encoder units)
-    public static final int kStowedPos = 850; //not quite all the way up (encoder units)
+    public static final int kStowedPos = 750; //not quite all the way up (encoder units)
 
     // Limelight Constants
     public static final double KLimelightHeight = 37.5; // inches

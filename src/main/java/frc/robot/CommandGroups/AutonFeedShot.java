@@ -21,12 +21,12 @@ public class AutonFeedShot extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new WaitCommand(1),
+        new WaitCommand(0.6),
       new ParallelRaceGroup(
-        new WaitCommand(0.3),
+        new WaitCommand(0.4),
         new StorageSpinIntoFlywheel(storage)
       ),
-      new WaitCommand(0.5),
+      new WaitCommand(0.8),
 
       new ParallelRaceGroup(
         new WaitCommand(0.8),

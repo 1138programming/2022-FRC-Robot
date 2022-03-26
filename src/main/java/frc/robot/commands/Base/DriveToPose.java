@@ -46,6 +46,8 @@ public class DriveToPose extends CommandBase {
 
     fbController = new PIDController(0.85, 0, 0);
     lrController = new PIDController(0.85, 0, 0);
+    // fbController = new PIDController(0.50, 0.001, 0);
+    // lrController = new PIDController(0.50, 0.001, 0);
     rotController = new PIDController(rotP, rotI, rotD);
 
     fbSpeedLimiter = new SlewRateLimiter(2);
@@ -77,7 +79,7 @@ public class DriveToPose extends CommandBase {
     lrSpeed = lrSpeedLimiter.calculate(lrSpeed);
     rotSpeed = rotController.calculate(currentPose.getRotation().getDegrees()/360, targetPose.getRotation().getDegrees()/360);
     
-    base.drive(-fbSpeed, -lrSpeed, rotSpeed, true);
+    base.autonDrive(-fbSpeed, -lrSpeed, rotSpeed, true);
   }
 
   @Override

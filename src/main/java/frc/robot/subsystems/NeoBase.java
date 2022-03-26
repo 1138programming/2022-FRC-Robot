@@ -72,6 +72,8 @@ public class NeoBase extends SubsystemBase {
   private double maxDriveSpeedMPS = maxDriveSpeedPercent * kPhysicalMaxDriveSpeedMPS;
   private final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
+  private final double KMaxAutonSpeed = 3.5;
+
   //distance in inches of a module from the center of mass (we use a square base so only 1 number is needed)
   private double kSwerveModuleLocationFromCoM = 14.5; 
   private Pose2d pose;
@@ -156,6 +158,34 @@ public class NeoBase extends SubsystemBase {
           // ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-gyro.getAngle()))//for testbed
           : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(states, kPhysicalMaxDriveSpeedMPS);
+    //setting module states, aka moving the motors
+    for (int i = 0; i < states.length; i++) {
+      SwerveX module = modules[i];
+      SwerveModuleState state = states[i];
+      module.setDesiredState(state);
+    }
+}
+  /**
+   * Function to drive the robot using joystick info.
+   *
+   * @param xSpeed Speed of the robot in the x direction (forward).
+   * @param ySpeed Speed of the robot in the y direction (sideways).
+   * @param rot Angular rate of the robot.
+   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+   * @param maxSpeed Max speed for the drive motors (from 0 to 1.0).
+   */
+  public void autonDrive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    xSpeed *= maxDriveSpeedMPS;
+    ySpeed *= maxDriveSpeedMPS;
+    rot *= kMaxAngularSpeed;
+    //feeding parameter speeds into toSwerveModuleStates to get an array of SwerveModuleState objects
+    SwerveModuleState[] states =
+      kinematics.toSwerveModuleStates(
+        fieldRelative
+          ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(gyro.getAngle()))
+          // ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-gyro.getAngle()))//for testbed
+          : new ChassisSpeeds(xSpeed, ySpeed, rot));
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, KMaxAutonSpeed);
     //setting module states, aka moving the motors
     for (int i = 0; i < states.length; i++) {
       SwerveX module = modules[i];

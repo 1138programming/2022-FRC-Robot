@@ -64,6 +64,7 @@ import frc.robot.commands.Camera.LEDOff;
 import frc.robot.commands.Camera.LEDOn;
 import frc.robot.CommandGroups.Auton.DriveBackAndShoot;
 import frc.robot.CommandGroups.Auton.ThreeBallAuton;
+import frc.robot.CommandGroups.Auton.TwoBallAuton;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
@@ -175,6 +176,7 @@ public class RobotContainer {
   //Auton
   private final DriveBackAndShoot driveBackAndShoot = new DriveBackAndShoot(base, camera, storage, intake, flywheel);
   private final ThreeBallAuton threeBallAuton = new ThreeBallAuton(base, camera, storage, intake, flywheel);
+  private final TwoBallAuton twoBallAuton = new TwoBallAuton(base, camera, storage, intake, flywheel);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -316,7 +318,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return threeBallAuton;
+    return threeBallAuton; //right auton
+    // return twoBallAuton; //left/ right assist auton
   }
 
   public void moveHangRatchetIn() {

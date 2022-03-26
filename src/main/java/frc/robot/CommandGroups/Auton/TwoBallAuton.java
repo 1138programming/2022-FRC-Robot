@@ -33,60 +33,34 @@ import frc.robot.subsystems.Storage;
 // NOTE: Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ThreeBallAuton extends SequentialCommandGroup {
-  public ThreeBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
+public class TwoBallAuton extends SequentialCommandGroup {
+  public TwoBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(
       
-      new ParallelRaceGroup(new WaitCommand(0.6),
-        new StowedMode(intake)
-      ),
       
-      new ParallelRaceGroup(new WaitCommand(6),
-        new FlywheelAutonSpin(flywheel, 1900),
-        new AutonFeedShot(storage)
-      ),
-      
-      new ResetGyro(base),
-      new ResetOdometry(base),
-      new ParallelRaceGroup(new WaitCommand(2),
-        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(-155))),
-        new HuntMode(intake)
-      ),
-
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(2),
         new DriveToPose(base, new Pose2d(1.4, 0, Rotation2d.fromDegrees(0))),
+        new HuntMode(intake),
         new StorageCollect(storage),
         new IntakeSpinForward(intake)
       ),
-
-      new ResetGyro(base),
-      new ResetOdometry(base),
-      new ParallelRaceGroup(new WaitCommand(3),
-        new StorageCollect(storage),
-        new IntakeSpinForward(intake),
-        new DriveToPose(base, new Pose2d(0.4, 2.83, Rotation2d.fromDegrees(92)))
-      ),
       
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(1.5),
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(110)))
+        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(180)))
+      ),
+      new ParallelRaceGroup(new WaitCommand(1),
+        new StowedMode(intake),
+        new AimWithLimelight(base, camera)
       ),
 
-      new ParallelRaceGroup(new WaitCommand(1.5),
-        new AimWithLimelight(base, camera),
-        new StorageCollect(storage)
-      ),
-      
-      new ResetGyro(base),
-      new ResetOdometry(base),
-      new ParallelDeadlineGroup(new WaitCommand(6),
-        new DriveToPose(base, new Pose2d(0.4, 0, Rotation2d.fromDegrees(0))),
-        new FlywheelAutonSpin(flywheel, 2200),
+      new ParallelRaceGroup(new WaitCommand(6),
+        new FlywheelAutonSpin(flywheel, 2250),
         new AutonFeedShot(storage)
       )
     );
