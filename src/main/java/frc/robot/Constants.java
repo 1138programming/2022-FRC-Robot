@@ -111,8 +111,8 @@ public final class Constants {
     public static final double kFlywheelMaxRPM = 3060.0; //Max Flywheel RPM From Testing
 
     //Intake Constants
-    public static final int KIntakePos = 3300; //all the way down (encoder units)
-    public static final int kStowedPos = 750; //not quite all the way up (encoder units)
+    public static final int KIntakePos = 3200; //all the way down (encoder units)
+    public static final int kStowedPos = 500; //not quite all the way up (encoder units)
 
     // Limelight Constants
     public static final double KLimelightHeight = 37.5; // inches
@@ -123,7 +123,6 @@ public final class Constants {
     public static final double kDesiredYOffset = 1;
     public static final double kDesiredXOffset = 1;
     public static final double kLimelightXOffsetDeadzone = 0.05;
-    // public static final double kYOffsetDeadzone = 10; //not implemented yet
 
     //Hang Constants
     public static final double kHangRatchetDistance = 0.55;

@@ -141,10 +141,9 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("intake limit", getTopLimitSwitch());
+    SmartDashboard.putBoolean("intake top limit", getTopLimitSwitch());
     SmartDashboard.putNumber("intake Encoder raw", getIntakeEncoderRaw());
     SmartDashboard.putBoolean("intake bottom limit", getBottomLimitSwitch());
-    
     if (getTopLimitSwitch()) {
       resetEncoder();
     }

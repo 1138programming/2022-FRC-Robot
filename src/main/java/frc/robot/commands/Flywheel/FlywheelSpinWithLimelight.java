@@ -34,7 +34,6 @@ public class FlywheelSpinWithLimelight extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("manual dist", 0);
   }
   
   // Called every time the scheduler runs while the command is scheduled.

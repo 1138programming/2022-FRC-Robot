@@ -34,13 +34,14 @@ public class Flywheel extends SubsystemBase {
     
     SmartDashboard.putBoolean("Flywheel Spinning", false);
 
-    SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
-    SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
-    SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
+    // SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
+    // SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
+    // SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
     
-    SmartDashboard.putNumber("flywheel Target RPM", 0);
-    SmartDashboard.putNumber("flywheel Target Encoder Unit", 0);
-    SmartDashboard.putNumber("flywheel Current Encoder Unit", 0);
+    // SmartDashboard.putNumber("95", 1800);
+    // SmartDashboard.putNumber("100", 1650);
+    // SmartDashboard.putNumber("130", 1850);
+    
   }
   
   //requires input in RPM!
@@ -89,13 +90,16 @@ public class Flywheel extends SubsystemBase {
     double flywheelOutput;
     if (distanceFromHub > 60) {
       if (distanceFromHub < 95) {
-        flywheelOutput = 1800 + distanceFromHub * 4.077;
+        flywheelOutput = 1850 + distanceFromHub * 4.077;
+        // flywheelOutput = SmartDashboard.getNumber("95", 1850) + distanceFromHub * 4.077;
       }
       else if (distanceFromHub < 100) {
-        flywheelOutput = 1650 + distanceFromHub * 4.077;
+        flywheelOutput = 1750 + distanceFromHub * 4.077;
+        // flywheelOutput = SmartDashboard.getNumber("100", 1750) + distanceFromHub * 4.077;
       }
       else if (distanceFromHub < 130) {
         flywheelOutput = 1850 + distanceFromHub * 4.077;
+        // flywheelOutput = SmartDashboard.getNumber("130", 1850) + distanceFromHub * 4.077;
       }
       else if (distanceFromHub < 150) {
         flywheelOutput = 2200 + distanceFromHub * 4.077;
@@ -112,11 +116,10 @@ public class Flywheel extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0), 
-      SmartDashboard.getNumber("Flywheel kI", 0.0), 
-      SmartDashboard.getNumber("Flywheel kD", 0.0));
+    // setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0), 
+    //   SmartDashboard.getNumber("Flywheel kI", 0.0), 
+    //   SmartDashboard.getNumber("Flywheel kD", 0.0));
 
     SmartDashboard.putNumber("Flywheel Current RPM", getVelocity());
-    SmartDashboard.putNumber("flywheel Current Encoder Unit", getRawVelocity());
   }
 }

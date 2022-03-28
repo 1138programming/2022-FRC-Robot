@@ -4,33 +4,28 @@
 
 package frc.robot.CommandGroups;
 
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.Flywheel.FlywheelAutonSpin;
+import frc.robot.commands.Storage.BottomStorageIn;
 import frc.robot.commands.Storage.StorageSpinIntoFlywheel;
+import frc.robot.commands.Storage.TopStorageIn;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Storage;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutonFeedShot extends SequentialCommandGroup {
-  /** Creates a new FeedShot. */
-  public AutonFeedShot(Storage storage) {
+public class FlywheelLowGoalShot extends SequentialCommandGroup {
+  /** Creates a new FlywheelLowGoalShot. */
+  public FlywheelLowGoalShot(Flywheel flywheel, Storage storage) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new WaitCommand(0.8),
-      new ParallelRaceGroup(
-        new WaitCommand(0.4),
+      new ParallelCommandGroup(
+        new FlywheelAutonSpin(flywheel, 1150),
         new StorageSpinIntoFlywheel(storage)
-      ),
-      new WaitCommand(0.8),
-
-      new ParallelRaceGroup(
-        new WaitCommand(0.8),
-        new StorageSpinIntoFlywheel(storage)
-      )      
-    );
+      )     
+    );  
   }
 }

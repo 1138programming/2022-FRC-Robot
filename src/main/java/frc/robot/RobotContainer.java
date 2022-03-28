@@ -55,6 +55,7 @@ import frc.robot.subsystems.Storage;
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
 import frc.robot.commands.Flywheel.FlywheelAutoSpinUp;
+import frc.robot.commands.Flywheel.FlywheelAutonSpin;
 import frc.robot.commands.Flywheel.FlywheelSpin;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Flywheel.FlywheelStop; 
@@ -102,6 +103,7 @@ import frc.robot.commands.Hang.MoveRachetOut;
 
 import frc.robot.CommandGroups.CollectAndIndexBalls;
 import frc.robot.CommandGroups.FeedShot;
+import frc.robot.CommandGroups.FlywheelLowGoalShot;
 // import frc.robot.commands.Hang.MoveRachetIn;
 import io.github.pseudoresonance.pixy2api.*;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -134,6 +136,7 @@ public class RobotContainer {
   // Flywheel
   private final FlywheelSpin flywheelSpin = new FlywheelSpin(flywheel);
   private final FlywheelStop flywheelStop = new FlywheelStop(flywheel);
+  private final FlywheelLowGoalShot flywheelLowGoalShot = new FlywheelLowGoalShot(flywheel, storage);
   private final FlywheelSpinWithLimelight flywheelSpinWithLimelight = new FlywheelSpinWithLimelight(flywheel, camera);
   private final FlywheelAutoSpinUp flywheelAutoSpinUp = new FlywheelAutoSpinUp(flywheel, camera, storage);
   // Hang
@@ -288,15 +291,15 @@ public class RobotContainer {
     logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
-    // logitechBtnA.whenHeld(moveClawIn);
-    // logitechBtnB.whenHeld(moveClawOut);
-    // logitechBtnX.whenHeld(hangDown);
+    logitechBtnA.whenHeld(moveClawIn);
+    logitechBtnB.whenHeld(moveClawOut);
+    logitechBtnX.whenHeld(hangDown);
     // logitechBtnX.whenReleased(moveRachetOut);
-    // logitechBtnY.whenHeld(hangUp);
+    logitechBtnY.whenHeld(hangUp);
     // logitechBtnY.whenReleased(moveRachetOut);
     
-    // logitechBtnLB.whenHeld(moveArmForward);
-    // logitechBtnRB.whenHeld(moveArmBackward);
+    logitechBtnLB.whenHeld(moveArmForward);
+    logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
     // xboxBtnX.toggleWhenActive(flywheelSpinWithLimelight);
@@ -311,19 +314,15 @@ public class RobotContainer {
     xboxBtnLB.whenReleased(stowedMode);
     // xboxBtnLB.whenReleased(stowedMode);
     // xboxBtnLB.whenHeld(huntMode);
-    xboxBtnLT.whileActiveContinuous(intakeSpinBackward);
+    xboxBtnLT.whileActiveContinuous(storageCollect);
     
     xboxBtnRB.whenHeld(storageOut);
-    xboxBtnRT.whileActiveContinuous(intakeSpinBackward);
+    xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
   }
 
   public Command getAutonomousCommand() {
-    return threeBallAuton; //right auton
-    // return twoBallAuton; //left/ right assist auton
-  }
-
-  public void moveHangRatchetIn() {
-    hang.moveHangRatchetServo(kHangRatchetInPos);
+    // return threeBallAuton; //right auton
+    return twoBallAuton; //left/ right assist auton
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {

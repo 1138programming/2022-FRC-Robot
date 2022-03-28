@@ -49,46 +49,53 @@ public class ThreeBallAuton extends SequentialCommandGroup {
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(2),
-        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(-155))),
+        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(-168))),
         new HuntMode(intake)
       ),
 
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(2),
-        new DriveToPose(base, new Pose2d(1.4, 0, Rotation2d.fromDegrees(0))),
+        new DriveToPose(base, new Pose2d(1.55, 0, Rotation2d.fromDegrees(0))),
         new StorageCollect(storage),
         new IntakeSpinForward(intake)
       ),
-
+      
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(3),
-        new StorageCollect(storage),
-        new IntakeSpinForward(intake),
-        new DriveToPose(base, new Pose2d(0.4, 2.83, Rotation2d.fromDegrees(92)))
+      new StorageCollect(storage),
+      new IntakeSpinForward(intake),
+      new DriveToPose(base, new Pose2d(0.6, 2.48, Rotation2d.fromDegrees(85)))
       ),
       
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(1.5),
-        new IntakeSpinForward(intake),
-        new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(110)))
+      new IntakeSpinForward(intake),
+      new StorageCollect(storage),
+      new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(113)))
       ),
-
+      
       new ParallelRaceGroup(new WaitCommand(1.5),
-        new AimWithLimelight(base, camera),
-        new StorageCollect(storage)
+      new AimWithLimelight(base, camera),
+      new StorageCollect(storage)
       ),
       
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelDeadlineGroup(new WaitCommand(6),
-        new DriveToPose(base, new Pose2d(0.4, 0, Rotation2d.fromDegrees(0))),
-        new FlywheelAutonSpin(flywheel, 2200),
-        new AutonFeedShot(storage)
+      new DriveToPose(base, new Pose2d(1.3, 0, Rotation2d.fromDegrees(0))),
+      new FlywheelAutonSpin(flywheel, 2100),
+      new AutonFeedShot(storage)
+      ),
+
+      new ResetGyro(base),
+      new ResetOdometry(base),
+      new ParallelRaceGroup(new WaitCommand(2),
+        new DriveToPose(base, new Pose2d(1.5, 0, Rotation2d.fromDegrees(0)))
       )
     );
+    }
   }
-}
+  

@@ -6,12 +6,12 @@ package frc.robot.CommandGroups;
 
 import frc.robot.commands.Intake.HuntMode;
 import frc.robot.commands.Intake.IntakeSpinForward;
-import frc.robot.commands.Miscellaneous.DeadlineTimer;
 import frc.robot.commands.Storage.StorageCollect;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Storage;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
@@ -22,10 +22,14 @@ public class CollectAndIndexBalls extends SequentialCommandGroup {
   /* Creates a new CollectAndIndexBalls. */
   public CollectAndIndexBalls(Intake intake, Storage storage) {
     addCommands(
-      new HuntMode(intake),
       new ParallelCommandGroup(
-        new IntakeSpinForward(intake),
-        new StorageCollect(storage)
+        new HuntMode(intake),
+        new SequentialCommandGroup(new WaitCommand(0.6),
+          new ParallelCommandGroup(
+            new IntakeSpinForward(intake),
+            new StorageCollect(storage)
+          )
+        )
       )
     );
   }

@@ -46,6 +46,11 @@ public class TwoBallAuton extends SequentialCommandGroup {
         new StorageCollect(storage),
         new IntakeSpinForward(intake)
       ),
+
+      new ParallelRaceGroup(new WaitCommand(1),
+        new StorageCollect(storage),
+        new IntakeSpinForward(intake)
+      ),
       
       new ResetGyro(base),
       new ResetOdometry(base),
@@ -59,9 +64,21 @@ public class TwoBallAuton extends SequentialCommandGroup {
         new AimWithLimelight(base, camera)
       ),
 
+      new ResetGyro(base),
+      new ResetOdometry(base),
+      new ParallelRaceGroup(new WaitCommand(1.5),
+        new DriveToPose(base, new Pose2d(1.5, 0, Rotation2d.fromDegrees(0)))
+      ),
+      
       new ParallelRaceGroup(new WaitCommand(6),
-        new FlywheelAutonSpin(flywheel, 2250),
-        new AutonFeedShot(storage)
+      new FlywheelAutonSpin(flywheel, 1950),
+      new AutonFeedShot(storage)
+      ),
+
+      new ResetGyro(base),
+      new ResetOdometry(base),
+      new ParallelRaceGroup(new WaitCommand(1.5),
+        new DriveToPose(base, new Pose2d(-1.5, 0, Rotation2d.fromDegrees(0)))
       )
     );
   }
