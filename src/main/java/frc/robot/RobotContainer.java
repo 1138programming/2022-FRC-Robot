@@ -293,6 +293,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    // return null; //no auton
     return threeBallAuton; //right auton
     // return twoBallAuton; //left / right assist auton
   }

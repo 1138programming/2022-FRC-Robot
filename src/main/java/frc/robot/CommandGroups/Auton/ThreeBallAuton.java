@@ -86,7 +86,7 @@ public class ThreeBallAuton extends SequentialCommandGroup {
       
       new ResetGyro(base),
       new ResetOdometry(base),
-      new ParallelDeadlineGroup(new WaitCommand(6),
+      new ParallelDeadlineGroup(new WaitCommand(4.5),
       new DriveToPose(base, new Pose2d(1.3, 0, Rotation2d.fromDegrees(0))),
       new FlywheelAutonSpin(flywheel, 2100),
       new AutonFeedShot(storage)
@@ -95,7 +95,7 @@ public class ThreeBallAuton extends SequentialCommandGroup {
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(2),
-        new DriveToPose(base, new Pose2d(1.5, 0, Rotation2d.fromDegrees(0)))
+        new DriveToPose(base, new Pose2d(-1.5, 0, Rotation2d.fromDegrees(0)))
       )
     );
     }
