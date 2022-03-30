@@ -25,7 +25,7 @@ public final class Constants {
     public static final int backLeftDriveId = 5; 
     public static final int backLeftSteerId = 6;
     public static final int backRightDriveId = 7; 
-    public static final int backRightSteerId = 8;
+    public static final int backRightSteerId = 8; 
     
     //Storage
     public static final int KBottomStorageVictor = 9;
@@ -112,7 +112,7 @@ public final class Constants {
 
     //Intake Constants
     public static final int KIntakePos = 3200; //all the way down (encoder units)
-    public static final int kStowedPos = 500; //not quite all the way up (encoder units)
+    public static final int kStowedPos = 700; //not quite all the way up (encoder units)
 
     // Limelight Constants
     public static final double KLimelightHeight = 37.5; // inches

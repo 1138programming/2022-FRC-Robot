@@ -64,7 +64,7 @@ public class NeoBase extends SubsystemBase {
   private double frontLeftOffset = -318.3;
   private double frontRightOffset = -71.5;
   private double backLeftOffset = -183.2; 
-  private double backRightOffset = -110.7;
+  private double backRightOffset = -237.2;
 
   //Max Speed of Drive Motors, default is set to Low
   private final double kPhysicalMaxDriveSpeedMPS = kDriveEncoderRPM2MeterPerSec * kNeoMaxRPM; //about 4.63 Meters Per Sec, or 15 ft/s
@@ -114,7 +114,7 @@ public class NeoBase extends SubsystemBase {
       // Back Left
       new SwerveX(new CANSparkMax(backLeftDriveId, MotorType.kBrushless), new CANSparkMax(backLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(backLeftMagEncoderId), Rotation2d.fromDegrees(backLeftOffset), false), 
       // Back Right
-      new SwerveX(new CANSparkMax(backRightDriveId, MotorType.kBrushless), new CANSparkMax(backRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(backRightMagEncoderId), Rotation2d.fromDegrees(backRightOffset), false),
+      new SwerveX(new CANSparkMax(backRightDriveId, MotorType.kBrushless), new CANSparkMax(backRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(backRightMagEncoderId), Rotation2d.fromDegrees(backRightOffset), true),
       // Front Left
       new SwerveX(new CANSparkMax(frontLeftDriveId, MotorType.kBrushless), new CANSparkMax(frontLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontLeftMagEncoderId), Rotation2d.fromDegrees(frontLeftOffset), false), 
       // Front Right
@@ -296,11 +296,12 @@ public class NeoBase extends SubsystemBase {
     return Rotation2d.fromDegrees(gyro.getAngle());
   }
 
+  //return wheel speeds, used to set odometry.  (return negative driveEncoderVel if module is reversed (in SwerveX[] init array), positive if not reversed)
   public SwerveModuleState[] getSpeeds() {
     SwerveModuleState[] states = new SwerveModuleState[4];
 
     states[0] = new SwerveModuleState(-modules[0].getDriveEncoderVel(), modules[0].getAngleR2D());
-    states[1] = new SwerveModuleState(-modules[1].getDriveEncoderVel(), modules[1].getAngleR2D());
+    states[1] = new SwerveModuleState(modules[1].getDriveEncoderVel(), modules[1].getAngleR2D());
     states[2] = new SwerveModuleState(-modules[2].getDriveEncoderVel(), modules[2].getAngleR2D());
     states[3] = new SwerveModuleState(-modules[3].getDriveEncoderVel(), modules[3].getAngleR2D());
 
@@ -311,7 +312,6 @@ public class NeoBase extends SubsystemBase {
     applyModuleStates(desiredStates);
   }  
 
-  //straightfoward commands and definitions, just look at the names and it will be obvious
   public void applyModuleStates(SwerveModuleState[] desiredStates) {
     desiredStates[0].speedMetersPerSecond = -desiredStates[0].speedMetersPerSecond;
     desiredStates[0].angle = new Rotation2d(-desiredStates[0].angle.getRadians());
