@@ -30,9 +30,11 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Storage;
 
-// NOTE: Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/*
+Auton Setup:  Robot should start in far right corner of the tarmac,
+              Line up robot on right tarmac so that it is aimed the goal,
+              robot should be as close to the far right corner as possible while still aimed at the goal.
+*/
 public class ThreeBallAuton extends SequentialCommandGroup {
   public ThreeBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(

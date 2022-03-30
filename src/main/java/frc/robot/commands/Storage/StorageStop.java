@@ -28,7 +28,8 @@ public class StorageStop extends CommandBase {
   @Override
   public void execute() {
     //First number is the top motor, second number is the bottom motor
-    storage.move(0,0);
+    storage.moveTop(0);
+    storage.moveBottom(0);
   }
 
   // Called once the command ends or is interrupted.

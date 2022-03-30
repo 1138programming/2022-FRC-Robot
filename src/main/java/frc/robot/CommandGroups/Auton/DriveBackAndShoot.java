@@ -16,75 +16,42 @@ import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.DriveToPose;
 import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Base.ResetOdometry;
-import frc.robot.commands.Base.RotateToHeading;
+import frc.robot.commands.Flywheel.FlywheelAutonSpin;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
-import frc.robot.commands.Intake.HuntMode;
-import frc.robot.commands.Intake.IntakeSpinForward;
-import frc.robot.commands.Intake.IntakeSwivelDown;
-import frc.robot.commands.Storage.StorageCollect;
+import frc.robot.commands.Intake.StowedMode;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Storage;
 
-// NOTE: Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/*
+Auton Setup:  Robot can be setup anywhere in the tarmac,
+              Robot should be as close to the back line as possible and aimed at the goal. 
+*/
 public class DriveBackAndShoot extends SequentialCommandGroup {
   public DriveBackAndShoot(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(
 
       //move intake slightly down to avoid contact with flywheel
-      // new ParallelRaceGroup(new WaitCommand(0.3),
-      //   new IntakeSwivelDown(intake)
-      // ),
-      //flywheel spinup and shoot for 3 secs
-      // new ParallelRaceGroup(
-      //   new WaitCommand(3),
-      //   new AutonFeedShot(storage),
-      //   new FlywheelSpinWithLimelight(flywheel, camera)
-      // ),
+      new ParallelRaceGroup(new WaitCommand(0.3),
+        new StowedMode(intake)
+      ),
 
-      //base movement block-Move back 1.5 m and rotate 180 deg
+      // flywheel spinup and shoot for 3 secs
+      new ParallelRaceGroup(
+        new WaitCommand(3),
+        new AutonFeedShot(storage),
+        new FlywheelAutonSpin(flywheel, 1950)
+      ),
+
+      //base move back 1.5 m
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup( //timer used to prevent the base from doing somehting really bad if something is wrong
         new WaitCommand(4),
-        new DriveToPose(base, new Pose2d(-1.5, 0, Rotation2d.fromDegrees((180))))
-      ),
-
-      //move intake down to collecting pos
-      // new HuntMode(intake),
-
-      //intake for 2 secs
-      // new ParallelRaceGroup(
-      //   new WaitCommand(2),
-      //   new IntakeSpinForward(intake)
-      // ),
-
-      //base movement block-Move rotate 180 deg
-      // new ResetGyro(base),
-      // new ResetOdometry(base),
-      new ParallelRaceGroup( //timer used to prevent the base from doing somehting really bad if something is wrong
-        new WaitCommand(8),
         new DriveToPose(base, new Pose2d(-1.5, 0, Rotation2d.fromDegrees((0))))
       )
-
-      //feed and shoot for 2 secs
-      // new ParallelRaceGroup(
-      //   new WaitCommand(2),
-      //   new AutonFeedShot(storage),
-      //   new FlywheelSpinWithLimelight(flywheel, camera)
-      // )
-
-      // //base movement block-move to position of the 2nd ball on the floor
-      // new ResetOdometry(base),
-      // new ResetGyro(base),
-      // new ParallelRaceGroup( //timer used to prevent the base from doing somehting really bad if something is wrong
-      //   new WaitCommand(4),
-      //   new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees((180))))
-      // ),
     );
   }
 }

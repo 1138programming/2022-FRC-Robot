@@ -6,44 +6,38 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
+//ctre
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+//rev
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
+//wpilib
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Hang extends SubsystemBase {
-  /** Creates a new Hang. */
   
   private TalonFX leftArmMotor;
   private TalonFX rightArmMotor;
   private CANSparkMax levelHangMotor;
+
   private Servo rightClawServo;
   private Servo leftClawServo;
   private Servo ratchetServo;
+
   private RelativeEncoder levelEncoder;
 
-  // private DigitalInput leftArmLimit;
-  // private DigitalInput rightArmLimit;
   private DigitalInput hangLimitBottom;
-
-  private final double kHangEncoderLimitPos = 6.9; //Change When Testing
-
-  private final double kArmMaxForwardLimit = 6.9; //Change When Testing
-  private final double kArmMaxReverseLimit = 0; //Encoder should reset everytime it hits the arm limit switches
 
   private TalonFXConfiguration tFxConfiguration;
 
@@ -76,9 +70,7 @@ public class Hang extends SubsystemBase {
     leftClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     rightClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     ratchetServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
-    
-    // leftArmLimit = new DigitalInput(KLeftArmLimit);
-    // rightArmLimit = new DigitalInput(KRightArmLimit);
+
     hangLimitBottom = new DigitalInput(KHangLimitBottom);
 
     leftArmMotor.configAllSettings(tFxConfiguration);
@@ -91,65 +83,6 @@ public class Hang extends SubsystemBase {
     SmartDashboard.putBoolean("hangLimitBottom", getHangLimitBottom());
   }
 
-  //Left Arm positive speed goes back, right arm positive speed goes forward
-  public void moveArmsSpeed(double speed) {
-  //   if (speed < 0){
-  //     if(leftArmLimit.get()){
-  //       leftArmMotor.set(ControlMode.PercentOutput, 0);
-  //       resetLeftArmEncoder();
-  //     }
-  //     else {
-  //       leftArmMotor.set(ControlMode.PercentOutput, speed);
-  //     }
-  //   }
-  //   else {
-  //     if (getLeftArmEncoder() <= kArmMaxForwardLimit) {
-  //       leftArmMotor.set(ControlMode.PercentOutput, speed);
-  //     }
-  //     else {
-  //       leftArmMotor.set(ControlMode.PercentOutput, 0);
-  //     }
-  //   }
-
-  //   if (speed < 0){
-  //     if(rightArmLimit.get()){
-  //       rightArmMotor.set(ControlMode.PercentOutput, 0);
-  //       resetLeftArmEncoder();
-  //     }
-  //     else {
-  //       rightArmMotor.set(ControlMode.PercentOutput, -speed);
-  //     }
-  //   }
-  //   else {
-  //     if (getRightArmEncoder() <= kArmMaxForwardLimit) {
-  //       rightArmMotor.set(ControlMode.PercentOutput, -speed);
-  //     }
-  //     else {
-  //       rightArmMotor.set(ControlMode.PercentOutput, 0);
-  //     }
-  //   }
-  }
-  
-  public void moveArmsToPosition(double position) {
-  //   if(leftArmLimit.get()){
-  //     resetLeftArmEncoder();
-  //   }
-  //   if(rightArmLimit.get()){
-  //     resetRightArmEncoder();
-  //   }
-  //   if (position > kArmMaxForwardLimit) {
-  //     leftArmMotor.set(ControlMode.Position, kArmMaxForwardLimit);
-  //     rightArmMotor.set(ControlMode.Position, kArmMaxForwardLimit);
-  //   }
-  //   else if (position < kArmMaxReverseLimit) {
-  //     leftArmMotor.set(ControlMode.Position, kArmMaxReverseLimit);
-  //     rightArmMotor.set(ControlMode.Position, kArmMaxReverseLimit);
-  //   }
-  //   else {
-  //     leftArmMotor.set(ControlMode.Position, position);
-  //     rightArmMotor.set(ControlMode.Position, position);
-  //   }
-  }
 
   //Negative raw speed is up
   public void moveLevelHangSpeed(double speed) {
@@ -172,13 +105,13 @@ public class Hang extends SubsystemBase {
 
   }
   
-  //BAD!!! Arm mvoement in this function is unrestricted, can crush the bot
+  //Arm mvoement in this function is unrestricted, can crush the bot
   public void moveArmsUnrestricted(double speed) {
       leftArmMotor.set(ControlMode.PercentOutput, speed);
       rightArmMotor.set(ControlMode.PercentOutput, -speed);
   }
   
-  //BAD!!! Hang mvoement in this function is unrestricted, can crush the bot
+  //Hang mvoement in this function is unrestricted, can crush the bot
   public void moveLeveHangUnrestricted(double speed) {
     // ratchetServo.set(kHangRatchetDistance);
     levelHangMotor.set(-speed);
@@ -193,16 +126,11 @@ public class Hang extends SubsystemBase {
     
     levelHangMotor.set(speedController.calculate(getLevelHangEncoder(), position));
   }
+    
 
   public boolean getHangLimitBottom() {
     return !(hangLimitBottom.get());
   }
-  // public boolean getLeftArmLimit() {
-  //   return leftArmLimit.get();
-  // }
-  // public boolean getRightArmLimit() {
-  //   return rightArmLimit.get();
-  // }
 
   public double getLeftArmEncoder() {
     return leftArmMotor.getSelectedSensorPosition();

@@ -3,10 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import static frc.robot.Constants.*;
 
 import java.lang.reflect.Array;
 import java.util.List;
-
+//wpilib
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -23,26 +24,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
-import io.github.pseudoresonance.pixy2api.Pixy2;
-import io.github.pseudoresonance.pixy2api.links.Link;
-import io.github.pseudoresonance.pixy2api.Pixy2CCC;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import io.github.pseudoresonance.pixy2api.Pixy2;
-import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
-import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
-import io.github.pseudoresonance.pixy2api.links.SPILink;
-import io.github.pseudoresonance.pixy2api.links.Link;
-
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-
-import static frc.robot.Constants.*;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 // Subsystems:
 import frc.robot.subsystems.Intake;
@@ -51,7 +36,7 @@ import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Storage;
-// Commands
+// Commands:
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
 import frc.robot.commands.Flywheel.FlywheelAutoSpinUp;
@@ -100,13 +85,10 @@ import frc.robot.commands.Hang.MoveHangUp;
 import frc.robot.commands.Hang.MoveLevelHangTo;
 import frc.robot.commands.Hang.MoveRachetIn;
 import frc.robot.commands.Hang.MoveRachetOut;
-
+//Command Groups:
 import frc.robot.CommandGroups.CollectAndIndexBalls;
 import frc.robot.CommandGroups.FeedShot;
 import frc.robot.CommandGroups.FlywheelLowGoalShot;
-// import frc.robot.commands.Hang.MoveRachetIn;
-import io.github.pseudoresonance.pixy2api.*;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 
 
@@ -283,11 +265,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //Drive Controls
     logitechBtnRT.whileHeld(driveWithLimelight);
-    // logitechBtnRT.whenPressed(new DriveToPose(base, new Pose2d()), false);
     logitechBtnLT.whenPressed(baseDriveHigh);
     logitechBtnLT.whenReleased(baseDriveLow);
     logitechBtnY.whenPressed(resetGyro);
-    // logitechBtnY.whileHeld(new ResetWheels(base));
     logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
@@ -297,32 +277,24 @@ public class RobotContainer {
     // logitechBtnX.whenReleased(moveRachetOut);
     logitechBtnY.whenHeld(hangUp);
     // logitechBtnY.whenReleased(moveRachetOut);
-    
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
     
-    //Intake Controls
-    // xboxBtnX.toggleWhenActive(flywheelSpinWithLimelight);
     xboxBtnX.toggleWhenActive(flywheelSpin);
-    // xboxBtnX.toggleWhenActive(huntMode);
     xboxBtnB.whenHeld(feedShot);
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
 
-
     xboxBtnLB.whenHeld(collectAndIndexBalls);
     xboxBtnLB.whenReleased(stowedMode);
-    // xboxBtnLB.whenReleased(stowedMode);
-    // xboxBtnLB.whenHeld(huntMode);
     xboxBtnLT.whileActiveContinuous(storageCollect);
-    
     xboxBtnRB.whenHeld(storageOut);
     xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
   }
 
   public Command getAutonomousCommand() {
     // return threeBallAuton; //right auton
-    return twoBallAuton; //left/ right assist auton
+    return twoBallAuton; //left / right assist auton
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {

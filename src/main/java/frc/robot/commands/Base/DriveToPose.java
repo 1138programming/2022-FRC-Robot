@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.NeoBase;
 
 public class DriveToPose extends CommandBase {
-  private NeoBase base;
+  private final NeoBase base;
   private Pose2d currentPose;
   private Pose2d targetPose;
 

@@ -30,9 +30,12 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Storage;
 
-// NOTE: Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/*
+Auton Setup:  Robot start facing the ball that we want to intake,
+              line up as close to the line as possible,
+              setup the robot so that the robot can just turn exactly 180 degrees and is aimed at center of the goal.
+              (imagine a straight line connecting the ball and the hub, the robot should be on that line)
+*/
 public class TwoBallAuton extends SequentialCommandGroup {
   public TwoBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(

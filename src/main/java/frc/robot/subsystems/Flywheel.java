@@ -2,15 +2,14 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
-import frc.robot.RobotContainer;
+//ctre
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+//wpilib
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 public class Flywheel extends SubsystemBase {
 
@@ -19,7 +18,6 @@ public class Flywheel extends SubsystemBase {
   private double flywheelControllerKP = 0.16;
   private double flywheelControllerKI = 0.001;
   private double flywheelControllerKD = 0;
-  private boolean isMoving = false;
 
   public Flywheel() {
     flywheelMotor = new TalonFX(KFlywheelMotorTalon);
@@ -45,18 +43,16 @@ public class Flywheel extends SubsystemBase {
   }
   
   //requires input in RPM!
-  public void move(double output) {
-    output *= (512.0 / 75.0); //convert to encoder unit 
-    if (output != 0) {
+  public void move(double RPMOutput) {
+    RPMOutput *= (512.0 / 75.0); //convert to encoder unit 
+    if (RPMOutput != 0) {
       SmartDashboard.putBoolean("Flywheel Spinning", true);
-      flywheelMotor.set(ControlMode.Velocity, output);
+      flywheelMotor.set(ControlMode.Velocity, RPMOutput);
     }
     else {
       SmartDashboard.putBoolean("Flywheel Spinning", false);
       flywheelMotor.set(ControlMode.PercentOutput, 0);
-    }
-    // flywheelMotor.set(ControlMode.PercentOutput, output);
-    
+    }    
   }
   
   public void moveRawPercent(double speed) {
@@ -116,6 +112,8 @@ public class Flywheel extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    //used to tune pid using shuffleboard
     // setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0), 
     //   SmartDashboard.getNumber("Flywheel kI", 0.0), 
     //   SmartDashboard.getNumber("Flywheel kD", 0.0));

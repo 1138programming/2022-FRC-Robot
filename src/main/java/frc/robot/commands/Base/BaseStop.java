@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.NeoBase;
 
 public class BaseStop extends CommandBase {
-  NeoBase base;
+  private final NeoBase base;
   /** Creates a new BaseStop. */
   public BaseStop(NeoBase base) {
     this.base = base;

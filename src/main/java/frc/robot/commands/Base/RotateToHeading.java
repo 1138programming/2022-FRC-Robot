@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.NeoBase;
 
 public class RotateToHeading extends CommandBase {
-  NeoBase base;
-  double heading;
+  private final NeoBase base;
+  private double heading;
 
   public RotateToHeading(NeoBase base, double heading) {
     this.base = base;

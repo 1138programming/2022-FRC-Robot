@@ -16,7 +16,6 @@ public class BottomStorageIn extends CommandBase {
     public void intialize(){}
 
     public void execute(){
-        //First number is the top motor, second number is the bottom motor
         storage.moveBottom(kBottomStoragePWM);
     }
 

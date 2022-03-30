@@ -26,7 +26,7 @@ public class HangStop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hang.moveArmsSpeed(0);
+    hang.moveArmsUnrestricted(0);
     hang.moveLevelHangSpeed(0);
     // hang.moveHangRatchetServo(0);
   }

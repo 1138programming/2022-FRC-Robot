@@ -21,12 +21,14 @@ public class Storage extends SubsystemBase {
 
   //Constructor is constructing
   public Storage(){
-    //set the motor
+    //Storage Motors Init
     bottomStorageMotor = new VictorSPX(KBottomStorageVictor);
     topStorageMotor = new VictorSPX(KTopStorageVictor);
+    //Storage Sensor Init
     ballSensorBottom = new DigitalInput(KStorageSensorBottom);
     ballSensorTop = new DigitalInput(KStorageSensorTop);
 
+    //invert motors
     bottomStorageMotor.setInverted(true);
     topStorageMotor.setInverted(true);
   }
@@ -37,11 +39,6 @@ public class Storage extends SubsystemBase {
     SmartDashboard.putBoolean("storage bott limit", getBallSensorBottom());
   }
 
-  //move function, to make top run bottom not run, (1,0), vice versa
-  public void move(double topSpeed, double bottomSpeed) {
-    topStorageMotor.set(VictorSPXControlMode.PercentOutput, topSpeed);
-    bottomStorageMotor.set(VictorSPXControlMode.PercentOutput, bottomSpeed);
-  }
   public void moveTop(double speed) {
     topStorageMotor.set(VictorSPXControlMode.PercentOutput, speed);
   }

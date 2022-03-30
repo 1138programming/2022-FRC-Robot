@@ -123,6 +123,7 @@ public final class Constants {
     public static final double kDesiredYOffset = 1;
     public static final double kDesiredXOffset = 1;
     public static final double kLimelightXOffsetDeadzone = 0.05;
+    public static final double kDistanceWhenNoTarget = 46.0;
 
     //Hang Constants
     public static final double kHangRatchetDistance = 0.55;

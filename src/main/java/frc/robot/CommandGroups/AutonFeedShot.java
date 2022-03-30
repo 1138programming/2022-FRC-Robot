@@ -17,8 +17,7 @@ import frc.robot.subsystems.Storage;
 public class AutonFeedShot extends SequentialCommandGroup {
   /** Creates a new FeedShot. */
   public AutonFeedShot(Storage storage) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+
     addCommands(
         new WaitCommand(0.8),
       new ParallelRaceGroup(

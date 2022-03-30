@@ -13,8 +13,8 @@ import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.NeoBase;
 
 public class AimWithLimelight extends CommandBase {
-  private Camera camera;
-  private NeoBase base;
+  private final Camera camera;
+  private final NeoBase base;
   private PIDController rotationController;
   private double rot;
   private final double kLimglightP = 1;

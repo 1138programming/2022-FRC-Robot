@@ -4,8 +4,8 @@
 
 package frc.robot.subsystems;
 
+//wpilib
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -51,20 +51,17 @@ public class Camera extends SubsystemBase {
     area = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
     SmartDashboard.putBoolean("Limelight Target Found", getTargetFound());
     
-    // SmartDashboard.putNumber("LimelightX", x);
-    // SmartDashboard.putNumber("LimelightY", y);
-    // SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putNumber("Distance to Hub", getDistance());
   }
   public void LEDOn() {
     //Eye Protection
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3); //(turns limelight on) For Testing only
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3); //(turns limelight on)
   }
   public void LEDOff() {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1); //(turns limelight off) For Testing only
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1); //(turns limelight off)
   }
   public void LEDBlink() {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(2); //(blinks limelight) For Testing only
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(2); //(blinks limelight)
   }
   
   public boolean getTargetFound() {
@@ -94,7 +91,7 @@ public class Camera extends SubsystemBase {
       return distance + 8; //constant offset
     }
     else {
-      return 46.0;
+      return kDistanceWhenNoTarget;
     }
   }
 }
