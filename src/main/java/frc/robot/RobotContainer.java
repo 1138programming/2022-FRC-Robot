@@ -90,8 +90,6 @@ import frc.robot.CommandGroups.CollectAndIndexBalls;
 import frc.robot.CommandGroups.FeedShot;
 import frc.robot.CommandGroups.FlywheelLowGoalShot;
 
-
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -280,20 +278,25 @@ public class RobotContainer {
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
     
-    xboxBtnX.toggleWhenActive(flywheelSpin);
-    xboxBtnB.whenHeld(feedShot);
+    //Intake Controls
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
-
     xboxBtnLB.whenHeld(collectAndIndexBalls);
     xboxBtnLB.whenReleased(stowedMode);
+    
+    //Storage Controls
+    xboxBtnX.toggleWhenActive(flywheelSpin);
+    xboxBtnB.whenHeld(feedShot);
+    xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
+
+    //Storage Controls
     xboxBtnLT.whileActiveContinuous(storageCollect);
     xboxBtnRB.whenHeld(storageOut);
-    xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
   }
 
   public Command getAutonomousCommand() {
     // return null; //no auton
+    // return driveBackAndShoot; //1 ball auton
     return threeBallAuton; //right auton
     // return twoBallAuton; //left / right assist auton
   }
