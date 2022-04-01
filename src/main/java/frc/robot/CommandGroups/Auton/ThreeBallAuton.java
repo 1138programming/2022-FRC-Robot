@@ -58,7 +58,7 @@ public class ThreeBallAuton extends SequentialCommandGroup {
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(2),
-        new DriveToPose(base, new Pose2d(1.55, 0, Rotation2d.fromDegrees(0))),
+        new DriveToPose(base, new Pose2d(1.55, -0.2, Rotation2d.fromDegrees(0))),
         new StorageCollect(storage),
         new IntakeSpinForward(intake)
       ),
@@ -68,7 +68,7 @@ public class ThreeBallAuton extends SequentialCommandGroup {
       new ParallelRaceGroup(new WaitCommand(3),
       new StorageCollect(storage),
       new IntakeSpinForward(intake),
-      new DriveToPose(base, new Pose2d(0.6, 2.48, Rotation2d.fromDegrees(85)))
+      new DriveToPose(base, new Pose2d(-0.6, 2.71, Rotation2d.fromDegrees(85)))
       ),
       
       new ResetGyro(base),
@@ -86,16 +86,18 @@ public class ThreeBallAuton extends SequentialCommandGroup {
       
       new ResetGyro(base),
       new ResetOdometry(base),
-      new ParallelDeadlineGroup(new WaitCommand(4.5),
-      new DriveToPose(base, new Pose2d(1.3, 0, Rotation2d.fromDegrees(0))),
-      new FlywheelAutonSpin(flywheel, 2100),
-      new AutonFeedShot(storage)
+      new ParallelRaceGroup(new WaitCommand(1.5),
+        new DriveToPose(base, new Pose2d(1.3, 0, Rotation2d.fromDegrees(0)))
+        ),
+      new ParallelRaceGroup(new WaitCommand(3.5),
+        new FlywheelAutonSpin(flywheel, 2100),
+        new AutonFeedShot(storage)
       ),
-
+        
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(2),
-        new DriveToPose(base, new Pose2d(-1.5, 0, Rotation2d.fromDegrees(0)))
+        new DriveToPose(base, new Pose2d(-1.6, 0, Rotation2d.fromDegrees(0)))
       )
     );
     }

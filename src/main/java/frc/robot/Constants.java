@@ -87,7 +87,7 @@ public final class Constants {
     public static final double kXOffsetDeadzone = 2;
 
     //storage
-    public static final double kTopStoragePWM = 0.5;
+    public static final double kTopStoragePWM = 0.7;
     public static final double kBottomStoragePWM = 0.7;
 
     //Hang 
