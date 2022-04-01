@@ -16,7 +16,7 @@ import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.DriveToPose;
 import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Base.ResetOdometry;
-import frc.robot.commands.Flywheel.FlywheelAutonSpin;
+import frc.robot.commands.Flywheel.FlywheelSpinAtRPM;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Intake.StowedMode;
 import frc.robot.subsystems.Camera;
@@ -42,7 +42,7 @@ public class DriveBackAndShoot extends SequentialCommandGroup {
       new ParallelRaceGroup(
         new WaitCommand(3),
         new AutonFeedShot(storage),
-        new FlywheelAutonSpin(flywheel, 1950)
+        new FlywheelSpinAtRPM(flywheel, 1950)
       ),
 
       //base move back 1.5 m

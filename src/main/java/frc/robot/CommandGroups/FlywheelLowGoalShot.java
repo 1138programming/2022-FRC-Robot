@@ -6,7 +6,7 @@ package frc.robot.CommandGroups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.commands.Flywheel.FlywheelAutonSpin;
+import frc.robot.commands.Flywheel.FlywheelSpinAtRPM;
 import frc.robot.commands.Storage.BottomStorageIn;
 import frc.robot.commands.Storage.StorageSpinIntoFlywheel;
 import frc.robot.commands.Storage.TopStorageIn;
@@ -23,7 +23,7 @@ public class FlywheelLowGoalShot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ParallelCommandGroup(
-        new FlywheelAutonSpin(flywheel, 1150),
+        new FlywheelSpinAtRPM(flywheel, 1150),
         new StorageSpinIntoFlywheel(storage)
       )     
     );  

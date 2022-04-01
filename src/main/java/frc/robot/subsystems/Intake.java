@@ -77,13 +77,20 @@ public class Intake extends SubsystemBase {
     }
     swivelIntakeMotor.set(ControlMode.PercentOutput, calcSpeed);
   }
-
+  
   public void moveSpin(double speed) {
     if (getTopLimitSwitch()) {
       spinIntakeMotor.set(VictorSPXControlMode.PercentOutput, 0);
+      SmartDashboard.putBoolean("Intake Spinning", false);
     }
     else {
       spinIntakeMotor.set(VictorSPXControlMode.PercentOutput, speed);
+      if (speed != 0) {
+        SmartDashboard.putBoolean("Intake Spinning", true);
+      }
+      else {
+        SmartDashboard.putBoolean("Intake Spinning", false);
+      }
     }
   }
   
@@ -95,7 +102,7 @@ public class Intake extends SubsystemBase {
     // swivelMagEncoder.reset();
     swivelIntakeMotor.setSelectedSensorPosition(0);
   }
-
+  
   public void periodicResetEncoder(){
     if (getTopLimitSwitch()) {
       resetEncoder();

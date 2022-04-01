@@ -11,12 +11,6 @@ import java.util.List;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -40,8 +34,9 @@ import frc.robot.subsystems.Storage;
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
 import frc.robot.commands.Flywheel.FlywheelAutoSpinUp;
-import frc.robot.commands.Flywheel.FlywheelAutonSpin;
-import frc.robot.commands.Flywheel.FlywheelSpin;
+import frc.robot.commands.Flywheel.FlywheelSpinAtRPM;
+import frc.robot.commands.Flywheel.FlywheelSpinDefaultSpeed;
+import frc.robot.commands.Flywheel.FlywheelSpinAtRPM;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Flywheel.FlywheelStop; 
 import frc.robot.commands.Base.ResetWheels;
@@ -114,8 +109,9 @@ public class RobotContainer {
   private final BaseDriveHigh baseDriveHigh = new BaseDriveHigh(base);
   private final ResetGyro resetGyro = new ResetGyro(base);
   // Flywheel
-  private final FlywheelSpin flywheelSpin = new FlywheelSpin(flywheel);
+  private final FlywheelSpinDefaultSpeed flywheelSpinDefaultSpeed = new FlywheelSpinDefaultSpeed(flywheel);
   private final FlywheelStop flywheelStop = new FlywheelStop(flywheel);
+  private final FlywheelSpinAtRPM flywheelSpinAt1100 = new FlywheelSpinAtRPM(flywheel, 1100);
   private final FlywheelLowGoalShot flywheelLowGoalShot = new FlywheelLowGoalShot(flywheel, storage);
   private final FlywheelSpinWithLimelight flywheelSpinWithLimelight = new FlywheelSpinWithLimelight(flywheel, camera);
   private final FlywheelAutoSpinUp flywheelAutoSpinUp = new FlywheelAutoSpinUp(flywheel, camera, storage);
@@ -285,7 +281,7 @@ public class RobotContainer {
     xboxBtnLB.whenReleased(stowedMode);
     
     //Storage Controls
-    xboxBtnX.toggleWhenActive(flywheelSpin);
+    xboxBtnX.toggleWhenActive(flywheelSpinAt1100);
     xboxBtnB.whenHeld(feedShot);
     xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
 
@@ -297,8 +293,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return null; //no auton
     // return driveBackAndShoot; //1 ball auton
-    return threeBallAuton; //right auton
-    // return twoBallAuton; //left / right assist auton
+    // return threeBallAuton; //right auton
+    return twoBallAuton; //left / right assist auton
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {

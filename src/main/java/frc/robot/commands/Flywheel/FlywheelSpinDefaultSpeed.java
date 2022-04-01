@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheel;
 import static frc.robot.Constants.*;
 
-public class FlywheelSpin extends CommandBase {
+public class FlywheelSpinDefaultSpeed extends CommandBase {
   private final Flywheel flywheel;
 
-  public FlywheelSpin(Flywheel flywheel) {
+  public FlywheelSpinDefaultSpeed(Flywheel flywheel) {
     this.flywheel = flywheel;
     addRequirements(flywheel);
   }

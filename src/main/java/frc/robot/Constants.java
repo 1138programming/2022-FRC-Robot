@@ -92,7 +92,7 @@ public final class Constants {
 
     //Hang 
     public static final double KArmPWM = 0.4; //Left Arm positive goes back, right arm positive goes forward
-    public static final double KLevelHangSpeed = 0.85; //Negative is up.
+    public static final double KLevelHangSpeed = 0.9; //Negative is up.
     
     //Base Constants
     public static final double kMaxSpeed = 6.09; // 20 feet per second

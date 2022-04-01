@@ -17,7 +17,8 @@ import frc.robot.commands.Base.DriveToPose;
 import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Base.ResetOdometry;
 import frc.robot.commands.Base.RotateToHeading;
-import frc.robot.commands.Flywheel.FlywheelAutonSpin;
+import frc.robot.commands.Flywheel.FlywheelSpinAtRPM
+;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Intake.HuntMode;
 import frc.robot.commands.Intake.IntakeSpinForward;
@@ -39,7 +40,6 @@ Auton Setup:  Robot start facing the ball that we want to intake,
 public class TwoBallAuton extends SequentialCommandGroup {
   public TwoBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(
-      
       
       new ResetGyro(base),
       new ResetOdometry(base),
@@ -70,18 +70,18 @@ public class TwoBallAuton extends SequentialCommandGroup {
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(1.5),
-        new DriveToPose(base, new Pose2d(1.5, 0, Rotation2d.fromDegrees(0)))
+        new DriveToPose(base, new Pose2d(1.2, 0, Rotation2d.fromDegrees(0)))
       ),
       
       new ParallelRaceGroup(new WaitCommand(6),
-      new FlywheelAutonSpin(flywheel, 1950),
+      new FlywheelSpinWithLimelight(flywheel, camera),
       new AutonFeedShot(storage)
       ),
 
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(1.5),
-        new DriveToPose(base, new Pose2d(-1.5, 0, Rotation2d.fromDegrees(0)))
+        new DriveToPose(base, new Pose2d(-1.2, 0, Rotation2d.fromDegrees(0)))
       )
     );
   }

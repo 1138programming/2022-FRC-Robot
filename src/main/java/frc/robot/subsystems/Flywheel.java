@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
+import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
+
 //ctre
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -18,6 +20,8 @@ public class Flywheel extends SubsystemBase {
   private double flywheelControllerKP = 0.16;
   private double flywheelControllerKI = 0.001;
   private double flywheelControllerKD = 0;
+
+  private boolean atRPM = false;
 
   public Flywheel() {
     flywheelMotor = new TalonFX(KFlywheelMotorTalon);
@@ -40,20 +44,27 @@ public class Flywheel extends SubsystemBase {
     SmartDashboard.putNumber("100", 1650);
     SmartDashboard.putNumber("130", 1850);
     
-    
   }
   
   //requires input in RPM!
   public void move(double RPMOutput) {
-    RPMOutput *= (512.0 / 75.0); //convert to encoder unit 
-    if (RPMOutput != 0) {
+    if (Math.abs(getVelocity() - RPMOutput) <= 100) {
+      SmartDashboard.putBoolean("FlywheelAtRPM", true);
+    }
+    else {
+      SmartDashboard.putBoolean("FlywheelAtRPM", false);
+    }
+        
+    double rawOutput = RPMOutput * (512.0 / 75.0); //convert to encoder unit 
+    if (rawOutput != 0) {
       SmartDashboard.putBoolean("Flywheel Spinning", true);
-      flywheelMotor.set(ControlMode.Velocity, RPMOutput);
+      flywheelMotor.set(ControlMode.Velocity, rawOutput);
     }
     else {
       SmartDashboard.putBoolean("Flywheel Spinning", false);
       flywheelMotor.set(ControlMode.PercentOutput, 0);
-    }    
+    }
+    //check and display whether the flywheel is at desired RPM
   }
   
   public void moveRawPercent(double speed) {
@@ -87,16 +98,16 @@ public class Flywheel extends SubsystemBase {
     double flywheelOutput;
     if (distanceFromHub > 60) {
       if (distanceFromHub < 95) {
-        flywheelOutput = 1850 + distanceFromHub * 4.077;
-        // flywheelOutput = SmartDashboard.getNumber("95", 1850) + distanceFromHub * 4.077;
+        flywheelOutput = 1750 + distanceFromHub * 4.077;
+        // flywheelOutput = SmartDashboard.getNumber("95", 1750) + distanceFromHub * 4.077;
       }
       else if (distanceFromHub < 100) {
-        flywheelOutput = 1700 + distanceFromHub * 4.077;
+        flywheelOutput = 1850 + distanceFromHub * 4.077;
         // flywheelOutput = SmartDashboard.getNumber("100", 1750) + distanceFromHub * 4.077;
       }
       else if (distanceFromHub < 130) {
-        flywheelOutput = 1850 + distanceFromHub * 4.077;
-        // flywheelOutput = SmartDashboard.getNumber("130", 1850) + distanceFromHub * 4.077;
+        flywheelOutput = 1750 + distanceFromHub * 4.077;
+        // flywheelOutput = SmartDashboard.getNumber("130", 1750) + distanceFromHub * 4.077;
       }
       else if (distanceFromHub < 150) {
         flywheelOutput = 2200 + distanceFromHub * 4.077;
@@ -118,5 +129,6 @@ public class Flywheel extends SubsystemBase {
     // setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0), 
     //   SmartDashboard.getNumber("Flywheel kI", 0.0), 
     //   SmartDashboard.getNumber("Flywheel kD", 0.0));
+    SmartDashboard.putNumber("flywheel RPM", getVelocity());
   }
 }

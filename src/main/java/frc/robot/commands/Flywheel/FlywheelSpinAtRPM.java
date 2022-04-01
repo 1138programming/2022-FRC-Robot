@@ -9,13 +9,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheel;
 import static frc.robot.Constants.*;
 
-public class FlywheelAutonSpin extends CommandBase {
+public class FlywheelSpinAtRPM extends CommandBase {
   private final Flywheel flywheel;
-  private double RPM;
+  private double desiredRPM;
 
-  public FlywheelAutonSpin(Flywheel flywheel, double RPM) {
+  public FlywheelSpinAtRPM(Flywheel flywheel, double RPM) {
     this.flywheel = flywheel;
-    this.RPM = RPM;
+    desiredRPM = RPM;
     addRequirements(flywheel);
   }
 
@@ -28,7 +28,7 @@ public class FlywheelAutonSpin extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    flywheel.move(RPM);
+    flywheel.move(desiredRPM);
 
   }
 
