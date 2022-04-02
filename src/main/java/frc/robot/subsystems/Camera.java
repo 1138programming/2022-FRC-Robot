@@ -31,20 +31,14 @@ public class Camera extends SubsystemBase {
     y = 0;
     area = 0;
 
-  // Creates UsbCamera and MjpegServer [1] and connects them
-  CameraServer.startAutomaticCapture(0);
-
-  // Creates the CvSink and connects it to the UsbCamera
-  CvSink cvSink = CameraServer.getVideo();
-
-  // Creates the CvSource and MjpegServer [2] and connects them
-  CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+    // Creates UsbCamera and connects them (only this one line is necessary for usb camera to show up on shuffleboard)
+    CameraServer.startAutomaticCapture(0);
 
   }
   
   @Override
   public void periodic() {
-    //getting networktable values
+    //getting limelight networktable values
     targetFound = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     x = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     y = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
@@ -53,11 +47,13 @@ public class Camera extends SubsystemBase {
     
     SmartDashboard.putNumber("Distance to Hub", getDistance());
   }
+
   public void LEDOn() {
     //Eye Protection
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3); //(turns limelight on)
   }
   public void LEDOff() {
+    //Eye Protection
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1); //(turns limelight off)
   }
   public void LEDBlink() {
@@ -88,9 +84,10 @@ public class Camera extends SubsystemBase {
   public double getDistance() {
     if (getTargetFound()) {
       double distance = KHeightDifference / Math.tan(Math.toRadians(KLimelightAngle + y));
-      return distance + 8; //constant offset
+      return distance + 8; //constant offset for this specific bot
     }
     else {
+      //default value to return when limelight does not see target
       return kDistanceWhenNoTarget;
     }
   }

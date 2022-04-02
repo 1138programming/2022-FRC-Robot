@@ -42,15 +42,15 @@ public class Hang extends SubsystemBase {
   private TalonFXConfiguration tFxConfiguration;
 
   public Hang() {
+    //this is necessary if we want to read absolute encoder value from the TalonFX integrated encoder
     tFxConfiguration = new TalonFXConfiguration();
     tFxConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-    
+    leftArmMotor.configAllSettings(tFxConfiguration);
+    rightArmMotor.configAllSettings(tFxConfiguration);
 
     leftArmMotor = new TalonFX(KLeftHangFalcon);
     rightArmMotor = new TalonFX(KRightHangFalcon);
     levelHangMotor = new CANSparkMax(KLevelHangNeo, MotorType.kBrushless);
-
-    leftArmMotor.configAllSettings(tFxConfiguration);
 
     levelHangMotor.setInverted(true);
 
@@ -66,15 +66,14 @@ public class Hang extends SubsystemBase {
     leftClawServo = new Servo(KLeftClawServo);
     rightClawServo = new Servo(KRightClawServo);
     ratchetServo = new Servo(KRatchetServo);
-
+    
+    //linear servo config
     leftClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     rightClawServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     ratchetServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
-
+    
     hangLimitBottom = new DigitalInput(KHangLimitBottom);
 
-    leftArmMotor.configAllSettings(tFxConfiguration);
-    rightArmMotor.configAllSettings(tFxConfiguration);
   }
 
   @Override

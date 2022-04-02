@@ -2,31 +2,23 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
-import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
-
 //ctre
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 //wpilib
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Flywheel extends SubsystemBase {
 
   private TalonFX flywheelMotor;
-  private PIDController flywheelController;
   private double flywheelControllerKP = 0.16;
   private double flywheelControllerKI = 0.001;
   private double flywheelControllerKD = 0;
 
-  private boolean atRPM = false;
-
   public Flywheel() {
     flywheelMotor = new TalonFX(KFlywheelMotorTalon);
-    flywheelController = new PIDController(flywheelControllerKP, flywheelControllerKI, flywheelControllerKD);
-    // flywheelMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
     flywheelMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     flywheelMotor.setInverted(true);
 
@@ -36,35 +28,41 @@ public class Flywheel extends SubsystemBase {
     
     SmartDashboard.putBoolean("Flywheel Spinning", false);
 
+    //shuffleboard flywheel pid tuning fields
     // SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
     // SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
     // SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
     
-    SmartDashboard.putNumber("95", 1800);
-    SmartDashboard.putNumber("100", 1650);
-    SmartDashboard.putNumber("130", 1850);
+    //shuffleboard flywheel shooting speed tuning fields
+    // SmartDashboard.putNumber("95", 1800);
+    // SmartDashboard.putNumber("100", 1650);
+    // SmartDashboard.putNumber("130", 1850);
     
   }
   
   //requires input in RPM!
   public void move(double RPMOutput) {
-    if (Math.abs(getVelocity() - RPMOutput) <= 100) {
+    //display on shuffleboard to let the driver know whether flywheel is at desired RPM or not
+    if (Math.abs(getVelocity() - RPMOutput) <= 50) {
       SmartDashboard.putBoolean("FlywheelAtRPM", true);
     }
     else {
       SmartDashboard.putBoolean("FlywheelAtRPM", false);
     }
-        
-    double rawOutput = RPMOutput * (512.0 / 75.0); //convert to encoder unit 
+
+    //convert to encoder unit 
+    double rawOutput = RPMOutput * (512.0 / 75.0); 
+
     if (rawOutput != 0) {
+      //Falcons (TalonFX) has built-in encoder and built-in pid for velocity and position, so we just plug and use
       SmartDashboard.putBoolean("Flywheel Spinning", true);
       flywheelMotor.set(ControlMode.Velocity, rawOutput);
     }
     else {
+      //when we want the flywheel to stop, cut power and let it coast to stop instead of using pid (pid will apply reverse power to make flywheel stop faster, but requires tuning and we don't really need that)
       SmartDashboard.putBoolean("Flywheel Spinning", false);
-      flywheelMotor.set(ControlMode.PercentOutput, 0);
+      flywheelMotor.set(ControlMode.PercentOutput, 0); 
     }
-    //check and display whether the flywheel is at desired RPM
   }
   
   public void moveRawPercent(double speed) {

@@ -5,27 +5,17 @@ import static frc.robot.Constants.*;
 //All WPILib imports
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.HolonomicDriveController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 
 //REV Robotics Imports
 import com.revrobotics.CANSparkMax;
@@ -71,17 +61,13 @@ public class NeoBase extends SubsystemBase {
   private double maxDriveSpeedPercent = kBaseDriveLowSpeed;
   private double maxDriveSpeedMPS = maxDriveSpeedPercent * kPhysicalMaxDriveSpeedMPS;
   private final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
-
   private final double KMaxAutonSpeed = 3.5;
 
   //distance in inches of a module from the center of mass (we use a square base so only 1 number is needed)
   private double kSwerveModuleLocationFromCoM = 14.5; 
-  private Pose2d pose;
 
-  private PIDController rotController;
-  private PIDController xTrajectoryController;
-  private PIDController yTrajectoryController;
-  private ProfiledPIDController rotTrajectoryController;
+  //keeps track of the robot's position on the field using encoders, updated periodically
+  private Pose2d pose;
 
   public NeoBase() {
 
@@ -89,7 +75,6 @@ public class NeoBase extends SubsystemBase {
     gyro = new AHRS(SPI.Port.kMXP); //axis calibration and reset (OmniMount): https://pdocs.kauailabs.com/navx-mxp/installation/omnimount/
 
     //defining the physical position of the swerve modules
-
     kinematics = new SwerveDriveKinematics(
       new Translation2d(
         Units.inchesToMeters(kSwerveModuleLocationFromCoM),
@@ -126,15 +111,6 @@ public class NeoBase extends SubsystemBase {
     //Reset the gyro's heading
     gyro.reset();
 
-    rotController = new PIDController(10, 0, 0);
-
-
-    xTrajectoryController = new PIDController(0.047116, 0, 0);
-    yTrajectoryController = new PIDController(0.047116, 0, 0);
-    rotTrajectoryController = 
-      new ProfiledPIDController(0.69, 0, 0, 
-      new TrapezoidProfile.Constraints(1, 1)
-    );
   }
 
   /**
@@ -194,12 +170,13 @@ public class NeoBase extends SubsystemBase {
     }
 }
 
-
+  //recalibrates gyro offset
   public void resetGyro() {
-    gyro.reset(); //recalibrates gyro offset
+    gyro.reset(); 
     gyro.setAngleAdjustment(0);
   }
 
+  //maybe no work
   public void resetGyro(double offsetAngle) {
     gyro.reset();
     gyro.setAngleAdjustment(offsetAngle);
@@ -226,22 +203,14 @@ public class NeoBase extends SubsystemBase {
     SmartDashboard.putNumber("gyro", gyro.getAngle());
   }
 
+  //move all wheels so they point forward
   public void resetWheelAngles() {
     modules[0].resetWheelAngle();
     modules[1].resetWheelAngle();
     modules[2].resetWheelAngle();
     modules[3].resetWheelAngle();
   }
-
-  public void rotateToHeading(double angleDeg) {
-    if (Math.abs(angleDeg - getHeadingDeg()) < 180) {
-      drive(0, 0, rotController.calculate(getHeadingDeg() / 360, angleDeg / 360), false);
-    }
-    else {
-      drive(0, 0, -rotController.calculate(getHeadingDeg() / 360, angleDeg / 360), false);
-    }
-  }
-
+  
   public void setAllModuleGains() {
     modules[0].setDriveGains();
     modules[1].setDriveGains();
@@ -257,6 +226,7 @@ public class NeoBase extends SubsystemBase {
     modules[3].resetRelEncoders();
   }
   
+  //check see if the wheels are reset
   public boolean getWheelsHavereset() {
     return modules[0].getWheelHasReset() && 
       modules[1].getWheelHasReset() &&
@@ -268,7 +238,6 @@ public class NeoBase extends SubsystemBase {
   public void setMaxDriveSpeedPercent(double speed) {
     maxDriveSpeedPercent = speed;
     maxDriveSpeedMPS = maxDriveSpeedPercent * kPhysicalMaxDriveSpeedMPS;
-
   }
 
   @Override
@@ -296,7 +265,7 @@ public class NeoBase extends SubsystemBase {
     return Rotation2d.fromDegrees(gyro.getAngle());
   }
 
-  //return wheel speeds, used to set odometry.  (return negative driveEncoderVel if module is reversed (in SwerveX[] init array), positive if not reversed)
+  //return wheel speeds, used to set odometry.  (return negative driveEncoderVel if module is reversed (check in SwerveX[] init array), positive if not reversed)
   public SwerveModuleState[] getSpeeds() {
     SwerveModuleState[] states = new SwerveModuleState[4];
 
@@ -308,10 +277,12 @@ public class NeoBase extends SubsystemBase {
     return states;
   }
 
+  //emmm
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     applyModuleStates(desiredStates);
   }  
 
+  //applies wheel speeds
   public void applyModuleStates(SwerveModuleState[] desiredStates) {
     desiredStates[0].speedMetersPerSecond = -desiredStates[0].speedMetersPerSecond;
     desiredStates[0].angle = new Rotation2d(-desiredStates[0].angle.getRadians());

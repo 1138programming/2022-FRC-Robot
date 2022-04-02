@@ -40,7 +40,6 @@ import frc.robot.commands.Flywheel.FlywheelSpinAtRPM;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Flywheel.FlywheelStop; 
 import frc.robot.commands.Base.ResetWheels;
-import frc.robot.commands.Base.RotateToHeading;
 import frc.robot.commands.Camera.LEDOff;
 import frc.robot.commands.Camera.LEDOn;
 import frc.robot.CommandGroups.Auton.DriveBackAndShoot;
