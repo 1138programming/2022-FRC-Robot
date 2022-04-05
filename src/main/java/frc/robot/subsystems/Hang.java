@@ -45,12 +45,13 @@ public class Hang extends SubsystemBase {
     //this is necessary if we want to read absolute encoder value from the TalonFX integrated encoder
     tFxConfiguration = new TalonFXConfiguration();
     tFxConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-    leftArmMotor.configAllSettings(tFxConfiguration);
-    rightArmMotor.configAllSettings(tFxConfiguration);
-
+    
     leftArmMotor = new TalonFX(KLeftHangFalcon);
     rightArmMotor = new TalonFX(KRightHangFalcon);
     levelHangMotor = new CANSparkMax(KLevelHangNeo, MotorType.kBrushless);
+    
+    leftArmMotor.configAllSettings(tFxConfiguration);
+    rightArmMotor.configAllSettings(tFxConfiguration);
 
     levelHangMotor.setInverted(true);
 

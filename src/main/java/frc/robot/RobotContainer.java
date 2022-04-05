@@ -292,8 +292,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return null; //no auton
     // return driveBackAndShoot; //1 ball auton
-    // return threeBallAuton; //right auton
-    return twoBallAuton; //left / right assist auton
+    return threeBallAuton; //right auton
+    // return twoBallAuton; //left / right assist auton
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {

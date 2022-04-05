@@ -95,13 +95,13 @@ public class Flywheel extends SubsystemBase {
   public double calculateFlywheelSpeedFromDist(double distanceFromHub) {
     double flywheelOutput;
     if (distanceFromHub > 60) {
-      if (distanceFromHub < 95) {
-        flywheelOutput = 1750 + distanceFromHub * 4.077;
-        // flywheelOutput = SmartDashboard.getNumber("95", 1750) + distanceFromHub * 4.077;
-      }
-      else if (distanceFromHub < 100) {
-        flywheelOutput = 1850 + distanceFromHub * 4.077;
-        // flywheelOutput = SmartDashboard.getNumber("100", 1750) + distanceFromHub * 4.077;
+      // if (distanceFromHub < 95) {
+      //   flywheelOutput = 1750 + distanceFromHub * 4.077;
+      //   // flywheelOutput = SmartDashboard.getNumber("95", 1750) + distanceFromHub * 4.077;
+      // }
+      if (distanceFromHub < 100) {
+        flywheelOutput = 1750 + distanceFromHub * 3.5;
+        // flywheelOutput = SmartDashboard.getNumber("100", 1800) + distanceFromHub * 4.077;
       }
       else if (distanceFromHub < 130) {
         flywheelOutput = 1750 + distanceFromHub * 4.077;
