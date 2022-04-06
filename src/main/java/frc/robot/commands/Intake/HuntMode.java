@@ -25,8 +25,6 @@ import io.github.pseudoresonance.pixy2api.*;
 public class HuntMode extends CommandBase {
   /** Creates a new HuntMode. */
   private final Intake intake;
-  private int state = -1;
-  private boolean isCamera = false ;
   public HuntMode(Intake intake) {
     this.intake = intake;
     addRequirements(intake);
@@ -35,26 +33,28 @@ public class HuntMode extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    intake.swivelToPos(KIntakePos); // Sets the intake to hunt mode.
   }
   
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {  
     intake.swivelToPos(KIntakePos); // Sets the intake to hunt mode.
-    // intake.swivelToPos(kStowedPos); // Sets the intake to hunt mode.
+    intake.moveSpin(KIntakeSpinPWM);
 
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intake.moveSwivel(0);
+    intake.moveSpin(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     // return (Math.abs(intake.getIntakeEncoderRaw() - 1000) < 50);
-    return Math.abs(intake.getIntakeEncoderRaw() - KIntakePos) < 100 || intake.getBottomLimitSwitch();
-    // return false;
+    // return Math.abs(intake.getIntakeEncoderRaw() - KIntakePos) < 100 || intake.getBottomLimitSwitch();
+    return false;
   }
 }

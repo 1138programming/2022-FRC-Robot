@@ -42,9 +42,6 @@ import frc.robot.commands.Flywheel.FlywheelStop;
 import frc.robot.commands.Base.ResetWheels;
 import frc.robot.commands.Camera.LEDOff;
 import frc.robot.commands.Camera.LEDOn;
-import frc.robot.CommandGroups.Auton.DriveBackAndShoot;
-import frc.robot.CommandGroups.Auton.ThreeBallAuton;
-import frc.robot.CommandGroups.Auton.TwoBallAuton;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.BaseDriveLow;
 import frc.robot.commands.Base.BaseDriveHigh;
@@ -83,6 +80,11 @@ import frc.robot.commands.Hang.MoveRachetOut;
 import frc.robot.CommandGroups.CollectAndIndexBalls;
 import frc.robot.CommandGroups.FeedShot;
 import frc.robot.CommandGroups.FlywheelLowGoalShot;
+//Auton
+import frc.robot.CommandGroups.Auton.DriveBackAndShoot;
+import frc.robot.CommandGroups.Auton.ThreeBallAuton;
+import frc.robot.CommandGroups.Auton.TwoBallAuton;
+import frc.robot.CommandGroups.Auton.OptimizedThreeBallAuton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -155,6 +157,7 @@ public class RobotContainer {
   private final DriveBackAndShoot driveBackAndShoot = new DriveBackAndShoot(base, camera, storage, intake, flywheel);
   private final ThreeBallAuton threeBallAuton = new ThreeBallAuton(base, camera, storage, intake, flywheel);
   private final TwoBallAuton twoBallAuton = new TwoBallAuton(base, camera, storage, intake, flywheel);
+  private final OptimizedThreeBallAuton optimizedThreeBallAuton = new OptimizedThreeBallAuton(base, camera, storage, intake, flywheel);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -276,7 +279,7 @@ public class RobotContainer {
     //Intake Controls
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
-    xboxBtnLB.whenHeld(collectAndIndexBalls);
+    xboxBtnLB.whenHeld(huntMode);
     xboxBtnLB.whenReleased(stowedMode);
     
     //Storage Controls
@@ -292,8 +295,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return null; //no auton
     // return driveBackAndShoot; //1 ball auton
-    return threeBallAuton; //right auton
+    // return threeBallAuton; //right auton
     // return twoBallAuton; //left / right assist auton
+    return optimizedThreeBallAuton; //better right auton
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {
