@@ -46,9 +46,9 @@ public class NeoBase extends SubsystemBase {
   private final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
   private final double kAngleMotorShaftToWheelRatio = 1 / 10.285714; //1/(72/7)
   private final double kAngleEncoderRot2Deg = kAngleMotorShaftToWheelRatio * 360;
-  private final double kMagEncoderPeriod = 0.04; //slower than robot code period (0.02s), which makes the mag encoder not suitable 
+  private final double kMagEncoderPeriod = 0.04; //slower than robot code period (0.02s), which makes the mag encoder not suitable as primary wheel angle position checking method
   private final double kticksPerRevolution = 4096;
-  private final double kNeoMaxRPM = 5700; //4.62 MPS
+  private final double kNeoMaxRPM = 5700;
 
   //Offset of each module, in degrees
   private double frontLeftOffset = -318.3;
@@ -56,12 +56,12 @@ public class NeoBase extends SubsystemBase {
   private double backLeftOffset = -183.2; 
   private double backRightOffset = -237.2;
 
-  //Max Speed of Drive Motors, default is set to Low
+  //Max Speed of Linear and Angular motion
   private final double kPhysicalMaxDriveSpeedMPS = kDriveEncoderRPM2MeterPerSec * kNeoMaxRPM; //about 4.63 Meters Per Sec, or 15 ft/s
-  private double maxDriveSpeedPercent = kBaseDriveLowSpeed;
-  private double maxDriveSpeedMPS = maxDriveSpeedPercent * kPhysicalMaxDriveSpeedMPS;
-  private final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+  private final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second (software limit)
   private final double KMaxAutonSpeed = 3.5;
+  private double maxDriveSpeedPercent = kBaseDriveLowSpeed; //default max drive speed (software limit) is set to Low (45%)
+  private double maxDriveSpeedMPS = maxDriveSpeedPercent * kPhysicalMaxDriveSpeedMPS;
 
   //distance in inches of a module from the center of mass (we use a square base so only 1 number is needed)
   private double kSwerveModuleLocationFromCoM = 14.5; 
@@ -120,7 +120,6 @@ public class NeoBase extends SubsystemBase {
    * @param ySpeed Speed of the robot in the y direction (sideways).
    * @param rot Angular rate of the robot.
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
-   * @param maxSpeed Max speed for the drive motors (from 0 to 1.0).
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     xSpeed *= maxDriveSpeedMPS;
@@ -142,13 +141,12 @@ public class NeoBase extends SubsystemBase {
     }
 }
   /**
-   * Function to drive the robot using joystick info.
+   * Function to drive the robot in Auton (with auton software speed limit, aka fake motion profiling).
    *
    * @param xSpeed Speed of the robot in the x direction (forward).
    * @param ySpeed Speed of the robot in the y direction (sideways).
    * @param rot Angular rate of the robot.
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
-   * @param maxSpeed Max speed for the drive motors (from 0 to 1.0).
    */
   public void autonDrive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     xSpeed *= maxDriveSpeedMPS;
