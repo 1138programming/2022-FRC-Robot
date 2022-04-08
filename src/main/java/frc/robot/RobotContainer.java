@@ -84,7 +84,7 @@ import frc.robot.CommandGroups.FlywheelLowGoalShot;
 import frc.robot.CommandGroups.Auton.DriveBackAndShoot;
 import frc.robot.CommandGroups.Auton.ThreeBallAuton;
 import frc.robot.CommandGroups.Auton.TwoBallAuton;
-import frc.robot.CommandGroups.Auton.OptimizedThreeBallAuton;
+import frc.robot.CommandGroups.Auton.OptimizedFiveBallAuton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -157,7 +157,7 @@ public class RobotContainer {
   private final DriveBackAndShoot driveBackAndShoot = new DriveBackAndShoot(base, camera, storage, intake, flywheel);
   private final ThreeBallAuton threeBallAuton = new ThreeBallAuton(base, camera, storage, intake, flywheel);
   private final TwoBallAuton twoBallAuton = new TwoBallAuton(base, camera, storage, intake, flywheel);
-  private final OptimizedThreeBallAuton optimizedThreeBallAuton = new OptimizedThreeBallAuton(base, camera, storage, intake, flywheel);
+  private final OptimizedFiveBallAuton optimizedThreeBallAuton = new OptimizedFiveBallAuton(base, camera, storage, intake, flywheel);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -270,16 +270,14 @@ public class RobotContainer {
     logitechBtnA.whenHeld(moveClawIn);
     logitechBtnB.whenHeld(moveClawOut);
     logitechBtnX.whenHeld(hangDown);
-    // logitechBtnX.whenReleased(moveRachetOut);
-    logitechBtnY.whenHeld(hangUp);
-    // logitechBtnY.whenReleased(moveRachetOut);
+    // logitechBtnY.whenHeld(hangUp);
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
-    xboxBtnLB.whenHeld(huntMode);
+    xboxBtnLB.whenHeld(collectAndIndexBalls);
     xboxBtnLB.whenReleased(stowedMode);
     
     //Storage Controls

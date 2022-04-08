@@ -19,15 +19,14 @@ public class AutonFeedShot extends SequentialCommandGroup {
   public AutonFeedShot(Storage storage) {
 
     addCommands(
-        new WaitCommand(0.35),
       new ParallelRaceGroup(
         new WaitCommand(0.3),
         new StorageSpinIntoFlywheel(storage)
       ),
-      new WaitCommand(0.8),
+      new WaitCommand(0.4),
 
       new ParallelRaceGroup(
-        new WaitCommand(0.8),
+        new WaitCommand(0.2),
         new StorageSpinIntoFlywheel(storage)
       )      
     );

@@ -61,7 +61,7 @@ public class NeoBase extends SubsystemBase {
   private double maxDriveSpeedPercent = kBaseDriveLowSpeed;
   private double maxDriveSpeedMPS = maxDriveSpeedPercent * kPhysicalMaxDriveSpeedMPS;
   private final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
-  private final double KMaxAutonSpeed = 3.5;
+  private final double KMaxAutonSpeed = 4;
 
   //distance in inches of a module from the center of mass (we use a square base so only 1 number is needed)
   private double kSwerveModuleLocationFromCoM = 14.5; 
