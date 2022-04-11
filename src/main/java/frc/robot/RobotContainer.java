@@ -267,26 +267,26 @@ public class RobotContainer {
     logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
-    logitechBtnA.whenHeld(moveClawIn);
-    logitechBtnB.whenHeld(moveClawOut);
-    logitechBtnX.whenHeld(hangDown);
+    // logitechBtnA.whenHeld(moveClawIn);
+    // logitechBtnB.whenHeld(moveClawOut);
+    // logitechBtnX.whenHeld(hangDown);
     // logitechBtnY.whenHeld(hangUp);
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
-    xboxBtnY.whenHeld(swivelUp);
-    xboxBtnA.whenHeld(swivelDown);
-    xboxBtnLB.whenHeld(collectAndIndexBalls);
-    xboxBtnLB.whenReleased(stowedMode);
+    // xboxBtnY.whenHeld(swivelUp);
+    // xboxBtnA.whenHeld(swivelDown);
+    // xboxBtnLB.whenHeld(collectAndIndexBalls);
+    // xboxBtnLB.whenReleased(stowedMode);
     
     //Storage Controls
     xboxBtnX.toggleWhenActive(flywheelSpinAt1100);
-    xboxBtnB.whenHeld(feedShot);
-    xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
+    // xboxBtnB.whenHeld(feedShot);
+    // xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
 
     //Storage Controls
-    xboxBtnLT.whileActiveContinuous(storageCollect);
+    // xboxBtnLT.whileActiveContinuous(storageCollect);
     xboxBtnRB.whenHeld(storageOut);
   }
 
