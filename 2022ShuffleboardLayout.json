@@ -7,11 +7,11 @@
       "widgetPane": {
         "gridSize": 128.0,
         "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
+        "hgap": 65.0,
+        "vgap": 10.0,
         "titleType": 0,
         "tiles": {
-          "8,4": {
+          "3,4": {
             "size": [
               1,
               1
@@ -22,7 +22,7 @@
               "_title": "Module 0 Raw Angle"
             }
           },
-          "9,4": {
+          "4,4": {
             "size": [
               1,
               1
@@ -33,7 +33,7 @@
               "_title": "Module 1 Raw Angle"
             }
           },
-          "10,4": {
+          "5,4": {
             "size": [
               1,
               1
@@ -44,7 +44,7 @@
               "_title": "Module 2 Raw Angle"
             }
           },
-          "11,4": {
+          "6,4": {
             "size": [
               1,
               1
@@ -55,9 +55,9 @@
               "_title": "Module 3 Raw Angle"
             }
           },
-          "0,2": {
+          "3,1": {
             "size": [
-              4,
+              3,
               1
             ],
             "content": {
@@ -66,7 +66,7 @@
               "_title": "Pose"
             }
           },
-          "12,4": {
+          "7,4": {
             "size": [
               1,
               1
@@ -77,9 +77,9 @@
               "_title": "gyro"
             }
           },
-          "3,0": {
+          "2,0": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -88,7 +88,7 @@
               "_title": "Distance to Hub"
             }
           },
-          "11,0": {
+          "7,0": {
             "size": [
               1,
               1
@@ -101,7 +101,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "11,2": {
+          "6,2": {
             "size": [
               1,
               1
@@ -114,9 +114,9 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "2,1": {
+          "0,1": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -125,9 +125,9 @@
               "_title": "intake Encoder raw"
             }
           },
-          "4,1": {
+          "1,1": {
             "size": [
-              4,
+              2,
               4
             ],
             "content": {
@@ -144,7 +144,7 @@
               "imageHeight": 0
             }
           },
-          "12,2": {
+          "7,2": {
             "size": [
               1,
               1
@@ -157,9 +157,9 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "6,0": {
+          "4,0": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -170,7 +170,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "2,0": {
+          "1,0": {
             "size": [
               1,
               1
@@ -216,7 +216,7 @@
               "_title": "limelight_Interface"
             }
           },
-          "9,2": {
+          "5,2": {
             "size": [
               1,
               1
@@ -229,7 +229,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "9,0": {
+          "6,0": {
             "size": [
               1,
               1
@@ -275,7 +275,7 @@
               "_title": "135"
             }
           },
-          "5,0": {
+          "3,0": {
             "size": [
               1,
               1
@@ -286,7 +286,7 @@
               "_title": "flywheel RPM"
             }
           },
-          "1,0": {
+          "0,0": {
             "size": [
               1,
               1
@@ -299,7 +299,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "8,0": {
+          "5,0": {
             "size": [
               1,
               1
@@ -895,9 +895,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.0,
-    "y": 2.0,
-    "width": 1932.0,
-    "height": 1045.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 848.0
   }
 }

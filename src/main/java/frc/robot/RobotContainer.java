@@ -211,8 +211,8 @@ public class RobotContainer {
     base.setDefaultCommand(driveWithJoysticks);
     hang.setDefaultCommand(hangStop);
     intake.setDefaultCommand(intakeStop);
-    // flywheel.setDefaultCommand(flywheelStop);
-    flywheel.setDefaultCommand(flywheelAutoSpinUp);
+    flywheel.setDefaultCommand(flywheelStop);
+    // flywheel.setDefaultCommand(flywheelAutoSpinUp);
     intake.setDefaultCommand(intakeStop);
     storage.setDefaultCommand(storageStop);
     // camera.setDefaultCommand(ledOff);

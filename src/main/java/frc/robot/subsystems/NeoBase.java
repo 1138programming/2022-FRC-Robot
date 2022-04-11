@@ -51,10 +51,15 @@ public class NeoBase extends SubsystemBase {
   private final double kNeoMaxRPM = 5700; //4.62 MPS
 
   //Offset of each module, in degrees
-  private double frontLeftOffset = -318.3;
-  private double frontRightOffset = -71.5;
-  private double backLeftOffset = -183.2; 
-  private double backRightOffset = -237.2;
+  // private double frontLeftOffset = -318.3; //Dedication
+  // private double frontRightOffset = -71.5;
+  // private double backLeftOffset = -183.2; 
+  // private double backRightOffset = -237.2;
+
+  private double frontLeftOffset = -63.9; //Eternity
+  private double frontRightOffset = -282.5;
+  private double backLeftOffset = -266.8; 
+  private double backRightOffset = -15.5;
 
   //Max Speed of Drive Motors, default is set to Low
   private final double kPhysicalMaxDriveSpeedMPS = kDriveEncoderRPM2MeterPerSec * kNeoMaxRPM; //about 4.63 Meters Per Sec, or 15 ft/s
@@ -99,11 +104,11 @@ public class NeoBase extends SubsystemBase {
       // Back Left
       new SwerveX(new CANSparkMax(backLeftDriveId, MotorType.kBrushless), new CANSparkMax(backLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(backLeftMagEncoderId), Rotation2d.fromDegrees(backLeftOffset), false), 
       // Back Right
-      new SwerveX(new CANSparkMax(backRightDriveId, MotorType.kBrushless), new CANSparkMax(backRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(backRightMagEncoderId), Rotation2d.fromDegrees(backRightOffset), true),
+      new SwerveX(new CANSparkMax(backRightDriveId, MotorType.kBrushless), new CANSparkMax(backRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(backRightMagEncoderId), Rotation2d.fromDegrees(backRightOffset), false),
       // Front Left
       new SwerveX(new CANSparkMax(frontLeftDriveId, MotorType.kBrushless), new CANSparkMax(frontLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontLeftMagEncoderId), Rotation2d.fromDegrees(frontLeftOffset), false), 
       // Front Right
-      new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), false) 
+      new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), true) 
     };
 
     odometry = new SwerveDriveOdometry(kinematics, new Rotation2d());
@@ -265,14 +270,14 @@ public class NeoBase extends SubsystemBase {
     return Rotation2d.fromDegrees(gyro.getAngle());
   }
 
-  //return wheel speeds, used to set odometry.  (return negative driveEncoderVel if module is reversed (check in SwerveX[] init array), positive if not reversed)
+  //return wheel speeds, used to set odometry.  (return positive driveEncoderVel if module is reversed (check in SwerveX[] init array), negative if not reversed)
   public SwerveModuleState[] getSpeeds() {
     SwerveModuleState[] states = new SwerveModuleState[4];
 
     states[0] = new SwerveModuleState(-modules[0].getDriveEncoderVel(), modules[0].getAngleR2D());
-    states[1] = new SwerveModuleState(modules[1].getDriveEncoderVel(), modules[1].getAngleR2D());
+    states[1] = new SwerveModuleState(-modules[1].getDriveEncoderVel(), modules[1].getAngleR2D());
     states[2] = new SwerveModuleState(-modules[2].getDriveEncoderVel(), modules[2].getAngleR2D());
-    states[3] = new SwerveModuleState(-modules[3].getDriveEncoderVel(), modules[3].getAngleR2D());
+    states[3] = new SwerveModuleState(modules[3].getDriveEncoderVel(), modules[3].getAngleR2D());
 
     return states;
   }
