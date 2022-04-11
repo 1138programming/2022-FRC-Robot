@@ -37,12 +37,14 @@ public class FlywheelAutoSpinUp extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // SmartDashboard.putNumber("inputRPM", 0);
     // SmartDashboard.putNumber("manual dist", 0);
   }
   
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     //nolan testing data: 202 in. is 85% (2602 rpm), 60 in.(closest we can get to hub) is 65% flywheel speed (1950 rpm)
     //assume linear relationship between distance and RPM required to score, (2462-1883)/(202-60) = 4.077
     distanceFromHub = camera.getDistance();
@@ -50,20 +52,14 @@ public class FlywheelAutoSpinUp extends CommandBase {
 
     flywheelOutput = flywheel.calculateFlywheelSpeedFromDist(distanceFromHub);
 
-    // SmartDashboard.putNumber("flywheel output (RPM)", flywheelOutput);
-    // double flywheelOutputPercent = RobotContainer.scaleBetween(flywheelOutput, -1, 1, -kFlywheelMaxRPM, kFlywheelMaxRPM);
-    // SmartDashboard.putNumber("flywheel output (percent)", flywheelOutput);
-    // encoderUnitOutput = flywheelOutput * (512.0 / 75.0);
-    // SmartDashboard.putNumber("flywheel output (u/100ms)", encoderUnitOutput);
-    // SmartDashboard.putNumber("flywheel output (Percent)", flywheelOutput);
-    // if (storage.getBallSensorMid() || storage.getBallSensorTop()) {
     if (storage.getBallSensorTop()) {
-      // flywheel.move(flywheelOutputPercent); 
       flywheel.move(flywheelOutput); 
+      // flywheel.move(SmartDashboard.getNumber("inputRPM", 0));
     }
     else {
       flywheel.move(0);
     }
+    SmartDashboard.putNumber("calculated RPM", flywheelOutput);
   }
 
   // Called once the command ends or is interrupted.

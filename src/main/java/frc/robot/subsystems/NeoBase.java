@@ -265,7 +265,7 @@ public class NeoBase extends SubsystemBase {
     return Rotation2d.fromDegrees(gyro.getAngle());
   }
 
-  //return wheel speeds, used to set odometry.  (return negative driveEncoderVel if module is reversed (check in SwerveX[] init array), positive if not reversed)
+  //return wheel speeds, used to set odometry.  (return positive driveEncoderVel if module is reversed (check in SwerveX[] init array), negative if not reversed)
   public SwerveModuleState[] getSpeeds() {
     SwerveModuleState[] states = new SwerveModuleState[4];
 

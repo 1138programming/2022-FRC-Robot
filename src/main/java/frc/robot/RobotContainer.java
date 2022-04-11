@@ -267,12 +267,12 @@ public class RobotContainer {
     logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
-    logitechBtnA.whenHeld(moveClawIn);
-    logitechBtnB.whenHeld(moveClawOut);
-    logitechBtnX.whenHeld(hangDown);
+    // logitechBtnA.whenHeld(moveClawIn);
+    // logitechBtnB.whenHeld(moveClawOut);
+    // logitechBtnX.whenHeld(hangDown);
     // logitechBtnY.whenHeld(hangUp);
-    logitechBtnLB.whenHeld(moveArmForward);
-    logitechBtnRB.whenHeld(moveArmBackward);
+    // logitechBtnLB.whenHeld(moveArmForward);
+    // logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
     xboxBtnY.whenHeld(swivelUp);
@@ -281,7 +281,7 @@ public class RobotContainer {
     xboxBtnLB.whenReleased(stowedMode);
     
     //Storage Controls
-    xboxBtnX.toggleWhenActive(flywheelSpinAt1100);
+    // xboxBtnX.toggleWhenActive(flywheelSpinAt1100);
     xboxBtnB.whenHeld(feedShot);
     xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
 
