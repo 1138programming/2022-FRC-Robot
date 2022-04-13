@@ -101,7 +101,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "6,2": {
+          "7,2": {
             "size": [
               1,
               1
@@ -125,26 +125,7 @@
               "_title": "intake Encoder raw"
             }
           },
-          "1,1": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://USB Camera 0",
-              "_title": "USB Camera 0",
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": 49.5,
-              "fps": -1,
-              "imageWidth": 0,
-              "imageHeight": 0
-            }
-          },
-          "7,2": {
+          "7,3": {
             "size": [
               1,
               1
@@ -216,7 +197,7 @@
               "_title": "limelight_Interface"
             }
           },
-          "5,2": {
+          "6,2": {
             "size": [
               1,
               1
@@ -310,6 +291,28 @@
               "_title": "FlywheelAtRPM",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "1,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/LeftArmVel",
+              "_title": "LeftArmVel"
+            }
+          },
+          "2,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/RightArmVel",
+              "_title": "RightArmVel"
             }
           }
         }

@@ -260,25 +260,25 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //Drive Controls
-    logitechBtnRT.whileHeld(driveWithLimelight);
-    logitechBtnLT.whenPressed(baseDriveHigh);
-    logitechBtnLT.whenReleased(baseDriveLow);
+    // logitechBtnRT.whileHeld(driveWithLimelight);
+    // logitechBtnLT.whenPressed(baseDriveHigh);
+    // logitechBtnLT.whenReleased(baseDriveLow);
     logitechBtnY.whenPressed(resetGyro);
     logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
-    // logitechBtnA.whenHeld(moveClawIn);
-    // logitechBtnB.whenHeld(moveClawOut);
+    logitechBtnA.whenHeld(moveClawIn);
+    logitechBtnB.whenHeld(moveClawOut);
     // logitechBtnX.whenHeld(hangDown);
     // logitechBtnY.whenHeld(hangUp);
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
-    // xboxBtnY.whenHeld(swivelUp);
-    // xboxBtnA.whenHeld(swivelDown);
-    // xboxBtnLB.whenHeld(collectAndIndexBalls);
-    // xboxBtnLB.whenReleased(stowedMode);
+    xboxBtnY.whenHeld(swivelUp);
+    xboxBtnA.whenHeld(swivelDown);
+    xboxBtnLB.whenHeld(collectAndIndexBalls);
+    xboxBtnLB.whenReleased(stowedMode);
     
     //Storage Controls
     xboxBtnX.toggleWhenActive(flywheelSpinAt1100);
@@ -286,7 +286,7 @@ public class RobotContainer {
     // xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
 
     //Storage Controls
-    // xboxBtnLT.whileActiveContinuous(storageCollect);
+    xboxBtnLT.whileActiveContinuous(storageCollect);
     xboxBtnRB.whenHeld(storageOut);
   }
 

@@ -81,6 +81,8 @@ public class Hang extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("hangLimitBottom", getHangLimitBottom());
+    SmartDashboard.putNumber("LeftArmVel", getLeftArmEncoderVel());
+    SmartDashboard.putNumber("RightArmVel", getRightArmEncoderVel());
   }
 
 
@@ -132,11 +134,17 @@ public class Hang extends SubsystemBase {
     return !(hangLimitBottom.get());
   }
 
-  public double getLeftArmEncoder() {
+  public double getLeftArmEncoderPos() {
     return leftArmMotor.getSelectedSensorPosition();
   }
-  public double getRightArmEncoder() {
+  public double getRightArmEncoderPos() {
     return rightArmMotor.getSelectedSensorPosition();
+  }
+  public double getLeftArmEncoderVel() {
+    return leftArmMotor.getSelectedSensorVelocity();
+  }
+  public double getRightArmEncoderVel() {
+    return rightArmMotor.getSelectedSensorVelocity();
   }
   public double getLevelHangEncoder() {
     return levelEncoder.getPosition();

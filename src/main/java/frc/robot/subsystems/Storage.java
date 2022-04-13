@@ -27,7 +27,7 @@ public class Storage extends SubsystemBase {
     ballSensorBottom = new DigitalInput(KStorageSensorBottom);
     ballSensorTop = new DigitalInput(KStorageSensorTop);
 
-    bottomStorageMotor.setInverted(true);
+    bottomStorageMotor.setInverted(false);
     topStorageMotor.setInverted(true);
   }
 
