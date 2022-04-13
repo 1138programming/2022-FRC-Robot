@@ -261,25 +261,26 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //Drive Controls
     // logitechBtnRT.whileHeld(driveWithLimelight);
-    // logitechBtnLT.whenPressed(baseDriveHigh);
-    // logitechBtnLT.whenReleased(baseDriveLow);
+    logitechBtnLT.whenPressed(baseDriveHigh);
+    logitechBtnLT.whenReleased(baseDriveLow);
     logitechBtnY.whenPressed(resetGyro);
     logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
     logitechBtnA.whenHeld(moveClawIn);
     logitechBtnB.whenHeld(moveClawOut);
-    // logitechBtnX.whenHeld(hangDown);
-    // logitechBtnY.whenHeld(hangUp);
+    logitechBtnX.whenHeld(hangDown);
+    logitechBtnY.whenHeld(hangUp);
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
     
     //Intake Controls
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
-    xboxBtnLB.whenHeld(collectAndIndexBalls);
-    xboxBtnLB.whenReleased(stowedMode);
-    
+    // xboxBtnLB.whenHeld(collectAndIndexBalls);
+    // xboxBtnLB.whenReleased(stowedMode);
+    xboxBtnLB.whenHeld(intakeSpinForward);
+
     //Storage Controls
     xboxBtnX.toggleWhenActive(flywheelSpinAt1100);
     // xboxBtnB.whenHeld(feedShot);
