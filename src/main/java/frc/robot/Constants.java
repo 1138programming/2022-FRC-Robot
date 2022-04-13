@@ -87,11 +87,12 @@ public final class Constants {
     public static final double kXOffsetDeadzone = 2;
 
     //storage
-    public static final double kTopStoragePWM = 0.7;
+    public static final double kTopStoragePWM = 0.6;
     public static final double kBottomStoragePWM = 0.7;
 
     //Hang 
     public static final double KArmPWM = 0.4; //Left Arm positive goes back, right arm positive goes forward
+    public static final double KArmVelocity = 8100; // optimal velocity unkown (this is way too low for now)
     public static final double KLevelHangSpeed = 0.9; //Negative is up.
     
     //Base Constants
@@ -111,8 +112,8 @@ public final class Constants {
     public static final double kFlywheelMaxRPM = 3060.0; //Max Flywheel RPM From Testing
 
     //Intake Constants
-    public static final int KIntakePos = 3200; //all the way down (encoder units)
-    public static final int kStowedPos = 700; //not quite all the way up (encoder units)
+    public static final int kIntakeHuntPos = 3200; //all the way down (encoder units)
+    public static final int kIntakeStowedPos = 700; //not quite all the way up (encoder units)
 
     // Limelight Constants
     public static final double KLimelightHeight = 37.5; // inches

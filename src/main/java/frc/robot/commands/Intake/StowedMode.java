@@ -24,7 +24,7 @@ public class StowedMode extends CommandBase {
   @Override
   public void execute() 
   {
-    intake.swivelToPos(kStowedPos);
+    intake.swivelToPos(kIntakeStowedPos);
   }
 
   // Called once the command ends or is interrupted.
@@ -36,6 +36,6 @@ public class StowedMode extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(intake.getIntakeEncoderRaw() - kStowedPos) < 100);
+    return (Math.abs(intake.getIntakeEncoderRaw() - kIntakeStowedPos) < 100);
   }
 }

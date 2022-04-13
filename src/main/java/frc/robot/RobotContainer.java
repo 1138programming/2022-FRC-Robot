@@ -281,7 +281,7 @@ public class RobotContainer {
     xboxBtnLB.whenReleased(stowedMode);
     
     //Storage Controls
-    // xboxBtnX.toggleWhenActive(flywheelSpinAt1100);
+    xboxBtnX.toggleWhenActive(flywheelSpinAt1100);
     xboxBtnB.whenHeld(feedShot);
     xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
 

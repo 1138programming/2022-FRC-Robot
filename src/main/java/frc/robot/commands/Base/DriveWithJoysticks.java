@@ -22,7 +22,7 @@ public class DriveWithJoysticks extends CommandBase {
   private PIDController rotationCorrectionPID;
   private double initHeading;
 
-  private double kRotationP = 0.05;
+  private double kRotationP = 0.005;
   private double kRotationI = 0;
   private double kRotationD = 0;
 

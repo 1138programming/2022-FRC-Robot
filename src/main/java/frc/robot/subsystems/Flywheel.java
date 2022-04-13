@@ -8,14 +8,18 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 //wpilib
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Flywheel extends SubsystemBase {
-
+  
   private TalonFX flywheelMotor;
-  private double flywheelControllerKP = 0.16;
-  private double flywheelControllerKI = 0.001;
+  private double flywheelControllerKP = 0.1;
+  private double flywheelControllerKI = 0.0005;
   private double flywheelControllerKD = 0;
+
+  // private double flywheelLimitSpeed = 1000;
+  // private SlewRateLimiter flywheelLimiter;
 
   public Flywheel() {
     flywheelMotor = new TalonFX(KFlywheelMotorTalon);
@@ -25,13 +29,20 @@ public class Flywheel extends SubsystemBase {
     flywheelMotor.config_kP(0, flywheelControllerKP);
     flywheelMotor.config_kI(0, flywheelControllerKI);
     flywheelMotor.config_kD(0, flywheelControllerKD);
+    // flywheelMotor.con
     
-    SmartDashboard.putBoolean("Flywheel Spinning", false);
+    // SmartDashboard.putBoolean("Flywheel Spinning", false);
 
     //shuffleboard flywheel pid tuning fields
-    // SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
-    // SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
-    // SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
+    SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
+    SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
+    SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
+
+    // SmartDashboard.putNumber("Flywheel limiter", flywheelLimitSpeed);
+
+    // flywheelLimiter = new SlewRateLimiter(flywheelLimitSpeed);
+
+    // SmartDashboard.putBoolean("changeLimiter", false);
     
     //shuffleboard flywheel shooting speed tuning fields
     // SmartDashboard.putNumber("95", 1800);
@@ -42,6 +53,7 @@ public class Flywheel extends SubsystemBase {
   
   //requires input in RPM!
   public void move(double RPMOutput) {
+    SmartDashboard.putNumber("flyP", 0);
     //display on shuffleboard to let the driver know whether flywheel is at desired RPM or not
     if (Math.abs(getVelocity() - RPMOutput) <= 50) {
       SmartDashboard.putBoolean("FlywheelAtRPM", true);
@@ -118,8 +130,11 @@ public class Flywheel extends SubsystemBase {
     //   flywheelOutput = 1900;
     // }
       
-    // polynomial curve from testing: 0.157 x^2 - 19.84 x + 2592.2
-    flywheelOutput = 0.157 * Math.pow(distanceFromHub, 2) - 19.84 * distanceFromHub + 2600;
+    // polynomial curve from testing: 0.1819 x^2 - 23.439 x + 2727.8
+
+    
+
+    flywheelOutput = 0.1728 * Math.pow(distanceFromHub, 2) - 21.795 * distanceFromHub + 2658.4;
 
     return flywheelOutput;
   }
@@ -128,9 +143,14 @@ public class Flywheel extends SubsystemBase {
     // This method will be called once per scheduler run
 
     //used to tune pid using shuffleboard
-    // setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0), 
-    //   SmartDashboard.getNumber("Flywheel kI", 0.0), 
-    //   SmartDashboard.getNumber("Flywheel kD", 0.0));
+    setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0), 
+      SmartDashboard.getNumber("Flywheel kI", 0.0), 
+      SmartDashboard.getNumber("Flywheel kD", 0.0));
     SmartDashboard.putNumber("flywheel RPM", getVelocity());
+
+    // if (SmartDashboard.getBoolean("changeLimiter", false)) {
+    //   flywheelLimiter.reset(SmartDashboard.getNumber("Flywheel limiter", 0));
+    // }
+    // flywheelControllerKP = SmartDashboard.getNumber("flyP", 0);
   }
 }
