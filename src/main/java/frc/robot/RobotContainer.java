@@ -277,9 +277,9 @@ public class RobotContainer {
     //Intake Controls
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
-    // xboxBtnLB.whenHeld(collectAndIndexBalls);
-    // xboxBtnLB.whenReleased(stowedMode);
-    xboxBtnLB.whenHeld(intakeSpinForward);
+    xboxBtnLB.whenHeld(collectAndIndexBalls);
+    xboxBtnLB.whenReleased(stowedMode);
+    // xboxBtnLB.whenHeld(intakeSpinForward);
 
     //Storage Controls
     xboxBtnX.toggleWhenActive(flywheelSpinAt1100);
