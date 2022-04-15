@@ -44,8 +44,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
       new ParallelRaceGroup(new WaitCommand(2),
         new DriveToPose(base, new Pose2d(1.4, 0, Rotation2d.fromDegrees(0))),
         new HuntMode(intake),
-        new StorageCollect(storage),
-        new IntakeSpinForward(intake)
+        new StorageCollect(storage)
       ),
 
       new ParallelRaceGroup(new WaitCommand(1),

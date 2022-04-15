@@ -4,6 +4,7 @@
 
 package frc.robot.CommandGroups;
 
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -26,10 +27,13 @@ public class AutonFeedShot extends SequentialCommandGroup {
         new StorageSpinIntoFlywheel(storage)
       ),
 
-      new WaitCommand(0.2),
+      new ParallelDeadlineGroup(
+        new WaitCommand(0.2),
+        new StorageCollect(storage)
+      ),
 
       new ParallelRaceGroup(
-        new WaitCommand(0.3),
+        new WaitCommand(0.35),
         new StorageSpinIntoFlywheel(storage, KTopStorageAutonPWM)
       )      
     );
