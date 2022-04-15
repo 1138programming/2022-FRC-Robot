@@ -269,8 +269,8 @@ public class RobotContainer {
     //Hang Controls
     // logitechBtnA.whenHeld(moveClawIn);
     // logitechBtnB.whenHeld(moveClawOut);
-    // logitechBtnX.whenHeld(hangDown);
-    // logitechBtnY.whenHeld(hangUp);
+    logitechBtnX.whenHeld(hangDown);
+    logitechBtnY.whenHeld(hangUp);
     // logitechBtnLB.whenHeld(moveArmForward);
     // logitechBtnRB.whenHeld(moveArmBackward);
     

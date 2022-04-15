@@ -322,17 +322,6 @@
               "_title": "calculated RPM"
             }
           },
-          "4,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/flyP",
-              "_title": "flyP"
-            }
-          },
           "6,4": {
             "size": [
               1,
@@ -366,15 +355,48 @@
               "_title": "Flywheel kD"
             }
           },
-          "5,2": {
+          "2,4": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/flywheel RPM",
               "_title": "/SmartDashboard/flywheel RPM"
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/LeftArmVel",
+              "_title": "LeftArmVel"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/RightArmVel",
+              "_title": "RightArmVel"
+            }
+          },
+          "10,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/flyP",
+              "_title": "flyP"
             }
           }
         }

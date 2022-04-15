@@ -88,6 +88,7 @@ public final class Constants {
 
     //storage
     public static final double kTopStoragePWM = 0.6;
+    public static final double KTopStorageAutonPWM = 0.7;
     public static final double kBottomStoragePWM = 0.7;
 
     //Hang 

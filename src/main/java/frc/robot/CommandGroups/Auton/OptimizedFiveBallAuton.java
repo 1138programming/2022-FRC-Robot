@@ -43,17 +43,17 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
       new ResetGyro(base),
       new ResetOdometry(base),
 
-      new ParallelRaceGroup(new WaitCommand(0.3),
+      new ParallelDeadlineGroup(new WaitCommand(0.8),
         new FlywheelSpinAtRPM(flywheel, 1900),
         new AimWithLimelight(base, camera),
         new StowedMode(intake)
       ),
       
       new ParallelRaceGroup(new WaitCommand(1),
-        new ParallelRaceGroup(new WaitCommand(1),
-          new FlywheelSpinWithLimelight(flywheel, camera),
-          new StorageSpinIntoFlywheel(storage))
+        new FlywheelSpinWithLimelight(flywheel, camera),
+        new StorageSpinIntoFlywheel(storage)
       ),
+
       new ParallelRaceGroup(new WaitCommand(1.4),
         new FlywheelSpinAtRPM(flywheel, 1950),
         new HuntMode(intake),
@@ -70,7 +70,7 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new StorageCollect(storage),
         new IntakeSpinForward(intake),
-        new DriveToPose(base, new Pose2d(0.48, 2.44, Rotation2d.fromDegrees(82)))
+        new DriveToPose(base, new Pose2d(0.7, 2.44, Rotation2d.fromDegrees(82)))
       ),
 
       new ResetGyro(base),
@@ -90,11 +90,11 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
 
       new ResetGyro(base),
       new ResetOdometry(base),
-      new ParallelRaceGroup(new WaitCommand(3),
+      new ParallelRaceGroup(new WaitCommand(4),
         new FlywheelSpinAtRPM(flywheel, 1950),
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(-1.35, -5.2, Rotation2d.fromDegrees(-125)))
+        new DriveToPose(base, new Pose2d(-1.6, -5.45, Rotation2d.fromDegrees(-125)))
       ),
 
       new ResetGyro(base),
@@ -110,10 +110,9 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new AimWithLimelight(base, camera),
         new ParallelRaceGroup(new WaitCommand(2),
           new StorageSpinIntoFlywheel(storage)),
-        new FlywheelSpinAtRPM(flywheel, 1950)
-      )
+          new FlywheelSpinWithLimelight(flywheel, camera)
+        )
       );
-      
     }
   }
   
