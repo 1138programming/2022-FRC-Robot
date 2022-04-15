@@ -33,7 +33,7 @@ import frc.robot.subsystems.Storage;
 
 /*
 Auton Setup:  Robot should start in far right corner of the tarmac,
-              Line up robot on right tarmac so that it is aimed the goal,
+              Line up robot on right tarmac so that it's back bumper lines up with the back tarmac line',
               robot should be as close to the far right corner as possible while still aimed at the goal.
 */
 public class OptimizedFiveBallAuton extends SequentialCommandGroup {
@@ -58,8 +58,8 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         // new HuntMode(intake),
         // new ParallelCommandGroup(
-          new IntakeSpinForward(intake),
-          new StorageCollect(storage),
+          // new IntakeSpinForward(intake),
+          // new StorageCollect(storage),
           // ),
         new DriveToPose(base, new Pose2d(-1, -0.8, Rotation2d.fromDegrees(-147)))
       ),
@@ -68,8 +68,8 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(1.8),
         new FlywheelSpinAtRPM(flywheel, 1950),
-        new StorageCollect(storage),
-        new IntakeSpinForward(intake),
+        // new StorageCollect(storage),
+        // new IntakeSpinForward(intake),
         new DriveToPose(base, new Pose2d(0.7, 2.44, Rotation2d.fromDegrees(82)))
       ),
 
@@ -77,8 +77,8 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(2),
         new FlywheelSpinAtRPM(flywheel, 1950),
-        new IntakeSpinForward(intake),
-        new StorageCollect(storage),
+        // new IntakeSpinForward(intake),
+        // new StorageCollect(storage),
         new DriveToPose(base, new Pose2d(-1.38, 1, Rotation2d.fromDegrees(77)))
       ),
       
@@ -90,20 +90,20 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
 
       new ResetGyro(base),
       new ResetOdometry(base),
-      new ParallelRaceGroup(new WaitCommand(4),
+      new ParallelDeadlineGroup(new WaitCommand(4),
         new FlywheelSpinAtRPM(flywheel, 1950),
-        new IntakeSpinForward(intake),
-        new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(-1.4, -5.45, Rotation2d.fromDegrees(-125)))
+        // new IntakeSpinForward(intake),
+        // new StorageCollect(storage),
+        new DriveToPose(base, new Pose2d(-1.05, -5.1, Rotation2d.fromDegrees(-125)))
       ),
 
       new ResetGyro(base),
       new ResetOdometry(base),
       new ParallelRaceGroup(new WaitCommand(2.6),
         new FlywheelSpinAtRPM(flywheel, 1950),
-        new IntakeSpinForward(intake),
-        new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(-4.8, -0.5, Rotation2d.fromDegrees(153)))
+        // new IntakeSpinForward(intake),
+        // new StorageCollect(storage),
+        new DriveToPose(base, new Pose2d(-4.4, -0.5, Rotation2d.fromDegrees(153)))
       ),
 
       new ParallelCommandGroup(
