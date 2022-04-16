@@ -2,9 +2,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 //ctre
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 //wpilib
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -19,7 +17,7 @@ public class Storage extends SubsystemBase {
   private DigitalInput ballSensorBottom;
   private DigitalInput ballSensorTop;
 
-  public Storage(){
+  public Storage() {
 
     bottomStorageMotor = new VictorSPX(KBottomStorageVictor);
     topStorageMotor = new VictorSPX(KTopStorageVictor);
@@ -43,10 +41,10 @@ public class Storage extends SubsystemBase {
   public void moveBottom(double speed) {
     bottomStorageMotor.set(VictorSPXControlMode.PercentOutput, speed);
   }
-  public boolean getBallSensorTop(){
+  public boolean getBallSensorTop() {
     return ballSensorTop.get();
   }
-  public boolean getBallSensorBottom(){
+  public boolean getBallSensorBottom() {
     return ballSensorBottom.get();
   }
 }

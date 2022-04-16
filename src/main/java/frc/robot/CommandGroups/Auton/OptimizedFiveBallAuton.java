@@ -40,7 +40,6 @@ Auton Setup:  Robot should start in far right corner of the tarmac,
 public class OptimizedFiveBallAuton extends SequentialCommandGroup {
   public OptimizedFiveBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(
-            
       new ResetGyro(base),
       new ResetOdometry(base),
 
@@ -67,7 +66,7 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new StorageCollect(storage),
         new IntakeSpinForward(intake),
-        new DriveToPose(base, new Pose2d(0.7, 2.44, Rotation2d.fromDegrees(82)))
+        new DriveToPose(base, new Pose2d(0.85, 2.44, Rotation2d.fromDegrees(82)))
       ),
 
       new ResetGyro(base),
@@ -76,7 +75,7 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(-1.38, 1, Rotation2d.fromDegrees(77)))
+        new DriveToPose(base, new Pose2d(-1.38, 1.15, Rotation2d.fromDegrees(77)))
       ),
       
       new AimWithLimelight(base, camera),
@@ -91,7 +90,8 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(-1.05, -5.1, Rotation2d.fromDegrees(-125)))
+        // new DriveToPose(base, new Pose2d(-1.1, -5.1, Rotation2d.fromDegrees(-125)))
+        new DriveToPose(base, new Pose2d(-1.48, -5.45, Rotation2d.fromDegrees(-125)))
       ),
 
       new ResetGyro(base),

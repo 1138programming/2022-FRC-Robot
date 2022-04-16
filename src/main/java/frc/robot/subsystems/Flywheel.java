@@ -132,10 +132,10 @@ public class Flywheel extends SubsystemBase {
       
     // polynomial curve from testing: 0.1819 x^2 - 23.439 x + 2727.8
 
+    flywheelOutput = 0.1728 * Math.pow(distanceFromHub, 2) - 21.795 * distanceFromHub + 2550;
+    // flywheelOutput = 0.1728 * Math.pow(distanceFromHub, 2) - 21.795 * distanceFromHub + 2658.4;
     
-
-    flywheelOutput = 0.1728 * Math.pow(distanceFromHub, 2) - 21.795 * distanceFromHub + 2658.4;
-
+    // flywheelOutput = 0.1824 * Math.pow(distanceFromHub, 2) - 24.2668 * distanceFromHub + 2774; // outlier removed
     return flywheelOutput;
   }
   @Override
@@ -143,8 +143,8 @@ public class Flywheel extends SubsystemBase {
     // This method will be called once per scheduler run
 
     //used to tune pid using shuffleboard
-    setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0), 
-      SmartDashboard.getNumber("Flywheel kI", 0.0), 
+    setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0),
+      SmartDashboard.getNumber("Flywheel kI", 0.0),
       SmartDashboard.getNumber("Flywheel kD", 0.0));
     SmartDashboard.putNumber("flywheel RPM", getVelocity());
 
