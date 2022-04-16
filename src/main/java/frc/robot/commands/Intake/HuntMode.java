@@ -33,13 +33,13 @@ public class HuntMode extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.swivelToPos(KIntakePos); // Sets the intake to hunt mode.
+    intake.swivelToPos(kIntakeHuntPos); // Sets the intake to hunt mode.
   }
   
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {  
-    intake.swivelToPos(KIntakePos); // Sets the intake to hunt mode.
+    intake.swivelToPos(kIntakeHuntPos); // Sets the intake to hunt mode.
     intake.moveSpin(KIntakeSpinPWM);
 
   }

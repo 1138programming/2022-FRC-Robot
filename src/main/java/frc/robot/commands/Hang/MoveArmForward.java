@@ -29,6 +29,7 @@ public class MoveArmForward extends CommandBase {
   public void execute() {
     // hang.moveArmsSpeed(KArmPWM);
     hang.moveArmsUnrestricted(KArmPWM);
+    // hang.moveArmsUnrestrictedVelocity(KArmVelocity); untested constant and function
   }
 
   // Called once the command ends or is interrupted.

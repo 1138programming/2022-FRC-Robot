@@ -223,39 +223,6 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "9,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/95",
-              "_title": "95"
-            }
-          },
-          "9,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/100",
-              "_title": "100"
-            }
-          },
-          "9,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/130",
-              "_title": "135"
-            }
-          },
           "3,3": {
             "size": [
               3,
@@ -386,6 +353,17 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/RightArmVel",
               "_title": "RightArmVel"
+            }
+          },
+          "10,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/flyP",
+              "_title": "flyP"
             }
           }
         }

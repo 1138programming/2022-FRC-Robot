@@ -4,12 +4,16 @@
 
 package frc.robot.CommandGroups;
 
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
+import frc.robot.commands.Intake.IntakeSpinForward;
+import frc.robot.commands.Storage.StorageCollect;
 import frc.robot.commands.Storage.StorageSpinIntoFlywheel;
 import frc.robot.subsystems.Storage;
+import static frc.robot.Constants.*;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -23,11 +27,15 @@ public class AutonFeedShot extends SequentialCommandGroup {
         new WaitCommand(0.3),
         new StorageSpinIntoFlywheel(storage)
       ),
-      new WaitCommand(0.4),
+
+      new ParallelDeadlineGroup(
+        new WaitCommand(0.2),
+        new StorageCollect(storage)
+      ),
 
       new ParallelRaceGroup(
-        new WaitCommand(0.2),
-        new StorageSpinIntoFlywheel(storage)
+        new WaitCommand(0.35),
+        new StorageSpinIntoFlywheel(storage, KTopStorageAutonPWM)
       )      
     );
   }

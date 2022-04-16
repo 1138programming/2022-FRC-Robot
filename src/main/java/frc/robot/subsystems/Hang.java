@@ -109,8 +109,14 @@ public class Hang extends SubsystemBase {
   
   //Arm mvoement in this function is unrestricted, can crush the bot
   public void moveArmsUnrestricted(double speed) {
-      leftArmMotor.set(ControlMode.PercentOutput, speed);
-      rightArmMotor.set(ControlMode.PercentOutput, -speed);
+    leftArmMotor.set(ControlMode.PercentOutput, speed);
+    rightArmMotor.set(ControlMode.PercentOutput, -speed);
+  }
+
+  // untested
+  public void moveArmsUnrestrictedVelocity(double velocity) {
+    leftArmMotor.set(ControlMode.Velocity, velocity);
+    rightArmMotor.set(ControlMode.Velocity, -velocity);
   }
   
   //Hang mvoement in this function is unrestricted, can crush the bot
