@@ -91,7 +91,7 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
         // new DriveToPose(base, new Pose2d(-1.1, -5.1, Rotation2d.fromDegrees(-125)))
-        new DriveToPose(base, new Pose2d(-1.48, -5.45, Rotation2d.fromDegrees(-125)))
+        new DriveToPose(base, new Pose2d(-1.3, -5.25, Rotation2d.fromDegrees(-125)))
       ),
 
       new ResetGyro(base),
@@ -106,7 +106,8 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new AimWithLimelight(base, camera),
         new ParallelRaceGroup(new WaitCommand(2),
-          new StorageSpinIntoFlywheel(storage)),
+          new StorageSpinIntoFlywheel(storage)
+          ),
           new FlywheelSpinWithLimelight(flywheel, camera)
         )
       );
