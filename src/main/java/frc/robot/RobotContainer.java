@@ -82,9 +82,11 @@ import frc.robot.CommandGroups.FeedShot;
 import frc.robot.CommandGroups.FlywheelLowGoalShot;
 //Auton
 import frc.robot.CommandGroups.Auton.DriveBackAndShoot;
+import frc.robot.CommandGroups.Auton.FiveBallAuton;
 import frc.robot.CommandGroups.Auton.ThreeBallAuton;
 import frc.robot.CommandGroups.Auton.TwoBallAuton;
 import frc.robot.CommandGroups.Auton.OptimizedFiveBallAuton;
+import frc.robot.CommandGroups.Auton.OptimizedThreeBallAuton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -155,9 +157,11 @@ public class RobotContainer {
   
   //Auton
   private final DriveBackAndShoot driveBackAndShoot = new DriveBackAndShoot(base, camera, storage, intake, flywheel);
-  private final ThreeBallAuton threeBallAuton = new ThreeBallAuton(base, camera, storage, intake, flywheel);
   private final TwoBallAuton twoBallAuton = new TwoBallAuton(base, camera, storage, intake, flywheel);
-  private final OptimizedFiveBallAuton optimizedThreeBallAuton = new OptimizedFiveBallAuton(base, camera, storage, intake, flywheel);
+  private final ThreeBallAuton threeBallAuton = new ThreeBallAuton(base, camera, storage, intake, flywheel);
+  private final OptimizedThreeBallAuton optimizedThreeBallAuton = new OptimizedThreeBallAuton(base, camera, storage, intake, flywheel);
+  private final FiveBallAuton fiveBallAuton = new FiveBallAuton(base, camera, storage, intake, flywheel);
+  private final OptimizedFiveBallAuton optimizedFiveBallAuton = new OptimizedFiveBallAuton(base, camera, storage, intake, flywheel);
 
   //Controller Ports
   private static final int KLogitechPort = 0;
@@ -281,7 +285,7 @@ public class RobotContainer {
     xboxBtnLB.whenReleased(stowedMode);
 
     //Storage Controls
-    xboxBtnX.toggleWhenActive(flywheelSpinAt1100);
+    xboxBtnX.toggleWhenActive(flywheelStop);
     xboxBtnB.whenHeld(feedShot);
     xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
 
@@ -293,9 +297,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return null; //no auton
     // return driveBackAndShoot; //1 ball auton
+    return twoBallAuton; //left / right assist auton
     // return threeBallAuton; //right auton
-    // return twoBallAuton; //left / right assist auton
-    return optimizedThreeBallAuton; //better right auton
+    // return fiveBallAuton; //op Auton
+    // return optimizedFiveBallAuton; //testing
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {

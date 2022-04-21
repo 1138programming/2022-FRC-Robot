@@ -34,9 +34,9 @@ public class Flywheel extends SubsystemBase {
     // SmartDashboard.putBoolean("Flywheel Spinning", false);
 
     //shuffleboard flywheel pid tuning fields
-    SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
-    SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
-    SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
+    // SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
+    // SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
+    // SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
 
     // SmartDashboard.putNumber("Flywheel limiter", flywheelLimitSpeed);
 
@@ -53,7 +53,6 @@ public class Flywheel extends SubsystemBase {
   
   //requires input in RPM!
   public void move(double RPMOutput) {
-    SmartDashboard.putNumber("flyP", 0);
     //display on shuffleboard to let the driver know whether flywheel is at desired RPM or not
     if (Math.abs(getVelocity() - RPMOutput) <= 50) {
       SmartDashboard.putBoolean("FlywheelAtRPM", true);
@@ -143,9 +142,9 @@ public class Flywheel extends SubsystemBase {
     // This method will be called once per scheduler run
 
     //used to tune pid using shuffleboard
-    setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0),
-      SmartDashboard.getNumber("Flywheel kI", 0.0),
-      SmartDashboard.getNumber("Flywheel kD", 0.0));
+    // setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0),
+    //   SmartDashboard.getNumber("Flywheel kI", 0.0),
+    //   SmartDashboard.getNumber("Flywheel kD", 0.0));
     SmartDashboard.putNumber("flywheel RPM", getVelocity());
 
     // if (SmartDashboard.getBoolean("changeLimiter", false)) {

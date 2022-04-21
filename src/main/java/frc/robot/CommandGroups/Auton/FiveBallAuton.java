@@ -37,8 +37,8 @@ Auton Setup:  Robot should start in far right corner of the tarmac,
               Line up robot on right tarmac so that it's back bumper lines up with the back tarmac line',
               robot should be as close to the far right corner as possible while still aimed at the goal.
 */
-public class OptimizedFiveBallAuton extends SequentialCommandGroup {
-  public OptimizedFiveBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
+public class FiveBallAuton extends SequentialCommandGroup {
+  public FiveBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(
       new ResetGyro(base),
       new ResetOdometry(base),
@@ -57,7 +57,7 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
       new ParallelRaceGroup(new WaitCommand(1.4),
         new FlywheelSpinAtRPM(flywheel, 1950),
         new CollectAndIndexBalls(intake, storage),
-        new DriveToPose(base, new Pose2d(-1.16, -0.8, Rotation2d.fromDegrees(-151)))
+        new DriveToPose(base, new Pose2d(-1, -0.8, Rotation2d.fromDegrees(-147)))
       ),
       
       new ResetGyro(base),
@@ -66,7 +66,7 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new StorageCollect(storage),
         new IntakeSpinForward(intake),
-        new DriveToPose(base, new Pose2d(0.1, 2.5, Rotation2d.fromDegrees(88)))
+        new DriveToPose(base, new Pose2d(0.85, 2.44, Rotation2d.fromDegrees(82)))
       ),
 
       new ResetGyro(base),
@@ -75,10 +75,13 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(-0.83, 1.1, Rotation2d.fromDegrees(108)))
+        new DriveToPose(base, new Pose2d(-1.38, 1.15, Rotation2d.fromDegrees(77)))
       ),
       
-      new AimWithLimelight(base, camera),
+      new ParallelRaceGroup(new WaitCommand(0.3),
+        new AimWithLimelight(base, camera)
+      ),
+
       new ParallelDeadlineGroup(new WaitCommand(1),
         new FlywheelSpinWithLimelight(flywheel, camera),
         new AutonFeedShot(storage)
@@ -91,7 +94,7 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
         // new DriveToPose(base, new Pose2d(-1.1, -5.1, Rotation2d.fromDegrees(-125)))
-        new DriveToPose(base, new Pose2d(-4, -3.5, Rotation2d.fromDegrees(-179)))
+        new DriveToPose(base, new Pose2d(-1.15, -5.1, Rotation2d.fromDegrees(-125)))
       ),
 
       new ResetGyro(base),
@@ -100,7 +103,7 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(-4.11, -3.58, Rotation2d.fromDegrees(173)))
+        new DriveToPose(base, new Pose2d(-4.4, -0.5, Rotation2d.fromDegrees(153)))
       ),
 
       new ParallelCommandGroup(

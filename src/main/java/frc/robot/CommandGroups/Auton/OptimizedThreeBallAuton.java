@@ -37,8 +37,8 @@ Auton Setup:  Robot should start in far right corner of the tarmac,
               Line up robot on right tarmac so that it's back bumper lines up with the back tarmac line',
               robot should be as close to the far right corner as possible while still aimed at the goal.
 */
-public class OptimizedFiveBallAuton extends SequentialCommandGroup {
-  public OptimizedFiveBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
+public class OptimizedThreeBallAuton extends SequentialCommandGroup {
+  public OptimizedThreeBallAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(
       new ResetGyro(base),
       new ResetOdometry(base),
@@ -66,7 +66,7 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new StorageCollect(storage),
         new IntakeSpinForward(intake),
-        new DriveToPose(base, new Pose2d(0.1, 2.5, Rotation2d.fromDegrees(88)))
+        new DriveToPose(base, new Pose2d(0.04, 2.42, Rotation2d.fromDegrees(88)))
       ),
 
       new ResetGyro(base),
@@ -75,42 +75,15 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(-0.83, 1.1, Rotation2d.fromDegrees(108)))
+        new DriveToPose(base, new Pose2d(-0.83, 1.1, Rotation2d.fromDegrees(110)))
       ),
       
       new AimWithLimelight(base, camera),
       new ParallelDeadlineGroup(new WaitCommand(1),
         new FlywheelSpinWithLimelight(flywheel, camera),
         new AutonFeedShot(storage)
-      ),
-
-      new ResetGyro(base),
-      new ResetOdometry(base),
-      new ParallelDeadlineGroup(new WaitCommand(4),
-        new FlywheelSpinAtRPM(flywheel, 1950),
-        new IntakeSpinForward(intake),
-        new StorageCollect(storage),
-        // new DriveToPose(base, new Pose2d(-1.1, -5.1, Rotation2d.fromDegrees(-125)))
-        new DriveToPose(base, new Pose2d(-4, -3.5, Rotation2d.fromDegrees(-179)))
-      ),
-
-      new ResetGyro(base),
-      new ResetOdometry(base),
-      new ParallelRaceGroup(new WaitCommand(2.6),
-        new FlywheelSpinAtRPM(flywheel, 1950),
-        new IntakeSpinForward(intake),
-        new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(-4.11, -3.58, Rotation2d.fromDegrees(173)))
-      ),
-
-      new ParallelCommandGroup(
-        new AimWithLimelight(base, camera),
-        new ParallelRaceGroup(new WaitCommand(2),
-          new StorageSpinIntoFlywheel(storage)
-          ),
-          new FlywheelSpinWithLimelight(flywheel, camera)
-        )
-      );
+      )
+    );
     }
   }
   

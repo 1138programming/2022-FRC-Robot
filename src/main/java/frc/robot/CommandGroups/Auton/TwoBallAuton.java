@@ -4,6 +4,8 @@
 
 package frc.robot.CommandGroups.Auton;
 
+import org.opencv.features2d.Feature2D;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.CommandGroups.AutonFeedShot;
+import frc.robot.CommandGroups.FeedShot;
 import frc.robot.commands.Base.AimWithLimelight;
 import frc.robot.commands.Base.DriveToPose;
 import frc.robot.commands.Base.ResetGyro;
@@ -59,26 +62,23 @@ public class TwoBallAuton extends SequentialCommandGroup {
         new StorageCollect(storage),
         new DriveToPose(base, new Pose2d(0, 0, Rotation2d.fromDegrees(180)))
       ),
+      
+      new ResetGyro(base),
+      new ResetOdometry(base),
+      new ParallelRaceGroup(new WaitCommand(1.5),
+      new FlywheelSpinAtRPM(flywheel, 1950),
+      new DriveToPose(base, new Pose2d(1.25, 0, Rotation2d.fromDegrees(0)))
+      ),
+      
       new ParallelRaceGroup(new WaitCommand(1),
         new StowedMode(intake),
         new AimWithLimelight(base, camera)
       ),
 
-      new ResetGyro(base),
-      new ResetOdometry(base),
-      new ParallelRaceGroup(new WaitCommand(1.5),
-        new DriveToPose(base, new Pose2d(1.2, 0, Rotation2d.fromDegrees(0)))
-      ),
-      
       new ParallelRaceGroup(new WaitCommand(6),
       new FlywheelSpinWithLimelight(flywheel, camera),
-      new AutonFeedShot(storage)
-      ),
-
-      new ResetGyro(base),
-      new ResetOdometry(base),
-      new ParallelRaceGroup(new WaitCommand(1.5),
-        new DriveToPose(base, new Pose2d(-1.2, 0, Rotation2d.fromDegrees(0)))
+      // new AutonFeedShot(storage)
+      new FeedShot(storage)
       )
     );
   }

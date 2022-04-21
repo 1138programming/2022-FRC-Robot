@@ -37,7 +37,7 @@ public class FlywheelAutoSpinUp extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("inputRPM", 0);
+    // SmartDashboard.putNumber("inputRPM", 0);
     // SmartDashboard.putNumber("manual dist", 0);
   }
   
@@ -53,17 +53,17 @@ public class FlywheelAutoSpinUp extends CommandBase {
     flywheelOutput = flywheel.calculateFlywheelSpeedFromDist(distanceFromHub);
 
     if (storage.getBallSensorTop()) {
-      if (SmartDashboard.getNumber("inputRPM", 0) != 0) {
-        flywheel.move(SmartDashboard.getNumber("inputRPM", 0));
-      }
-      else {
+      // if (SmartDashboard.getNumber("inputRPM", 0) != 0) {
+        // flywheel.move(SmartDashboard.getNumber("inputRPM", 0));
+      // }
+      // else {
         flywheel.move(flywheelOutput); 
-      }
+      // }
     }
     else {
       flywheel.move(0);
     }
-    SmartDashboard.putNumber("calculated RPM", flywheelOutput);
+    // SmartDashboard.putNumber("calculated RPM", flywheelOutput);
   }
 
   // Called once the command ends or is interrupted.
