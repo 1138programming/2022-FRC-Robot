@@ -54,7 +54,7 @@ public class Flywheel extends SubsystemBase {
   //requires input in RPM!
   public void move(double RPMOutput) {
     //display on shuffleboard to let the driver know whether flywheel is at desired RPM or not
-    if (Math.abs(getVelocity() - RPMOutput) <= 50) {
+    if (Math.abs(getVelocity() - RPMOutput) <= 30) {
       SmartDashboard.putBoolean("FlywheelAtRPM", true);
     }
     else {

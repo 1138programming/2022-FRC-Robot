@@ -70,7 +70,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
       new DriveToPose(base, new Pose2d(1.25, 0, Rotation2d.fromDegrees(0)))
       ),
       
-      new ParallelRaceGroup(new WaitCommand(1),
+      new ParallelRaceGroup(new WaitCommand(2),
         new StowedMode(intake),
         new AimWithLimelight(base, camera)
       ),

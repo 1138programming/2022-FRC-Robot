@@ -23,7 +23,7 @@ public class FlywheelLowGoalShot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ParallelCommandGroup(
-        new FlywheelSpinAtRPM(flywheel, 1150),
+        new FlywheelSpinAtRPM(flywheel, 1000),
         new StorageSpinIntoFlywheel(storage)
       )     
     );  

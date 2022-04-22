@@ -287,6 +287,7 @@ public class RobotContainer {
     //Storage Controls
     xboxBtnX.toggleWhenActive(flywheelStop);
     xboxBtnB.whenHeld(feedShot);
+    // xboxBtnB.whenHeld(new StorageSpinIntoFlywheel(storage, 0.45));
     xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
 
     //Storage Controls
@@ -295,12 +296,22 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    // SmartDashboard.putString("Auton", "NoBall");
     // return null; //no auton
+
+    // SmartDashboard.putString("Auton", "OneBall");
     // return driveBackAndShoot; //1 ball auton
-    return twoBallAuton; //left / right assist auton
+    
+    // SmartDashboard.putString("Auton", "TwoBall");
+    // return twoBallAuton; //left / right assist auton
+    
+    // SmartDashboard.putString("Auton", "THreeBall");
     // return threeBallAuton; //right auton
+    // return optimizedThreeBallAuton;
+
+    SmartDashboard.putString("Auton", "FiveBall");
     // return fiveBallAuton; //op Auton
-    // return optimizedFiveBallAuton; //testing
+    return optimizedFiveBallAuton; 
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {

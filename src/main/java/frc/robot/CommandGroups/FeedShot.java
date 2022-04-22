@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Storage.StorageCollect;
 import frc.robot.commands.Storage.StorageSpinIntoFlywheel;
+import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Storage;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -23,15 +25,15 @@ public class FeedShot extends SequentialCommandGroup {
     addCommands(
       new ParallelRaceGroup(
         new WaitCommand(0.3),
-        new StorageSpinIntoFlywheel(storage)
+        new StorageSpinIntoFlywheel(storage, 0.45)
       ),
       new ParallelRaceGroup(
-        new WaitCommand(0.7),
-        new StorageCollect(storage)
+        new WaitCommand(0.9),
+        new StorageCollect(storage)        
       ),
       new ParallelRaceGroup(
         new WaitCommand(0.8),
-        new StorageSpinIntoFlywheel(storage)
+        new StorageSpinIntoFlywheel(storage, 0.45)
       )      
     );
   }

@@ -66,7 +66,7 @@ public class OptimizedThreeBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new StorageCollect(storage),
         new IntakeSpinForward(intake),
-        new DriveToPose(base, new Pose2d(0.04, 2.42, Rotation2d.fromDegrees(88)))
+        new DriveToPose(base, new Pose2d(0.15, 2.5, Rotation2d.fromDegrees(88)))
       ),
 
       new ResetGyro(base),
@@ -75,7 +75,7 @@ public class OptimizedThreeBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
-        new DriveToPose(base, new Pose2d(-0.83, 1.1, Rotation2d.fromDegrees(110)))
+        new DriveToPose(base, new Pose2d(-0.83, 1.1, Rotation2d.fromDegrees(108)))
       ),
       
       new AimWithLimelight(base, camera),
