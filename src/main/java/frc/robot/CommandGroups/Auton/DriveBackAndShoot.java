@@ -38,12 +38,18 @@ public class DriveBackAndShoot extends SequentialCommandGroup {
         new StowedMode(intake)
       ),
 
+      new ParallelRaceGroup(new WaitCommand(1),
+        new FlywheelSpinAtRPM(flywheel, 1950)
+      ),
+
       // flywheel spinup and shoot for 3 secs
       new ParallelRaceGroup(
         new WaitCommand(3),
         new AutonFeedShot(storage),
         new FlywheelSpinAtRPM(flywheel, 1950)
       ),
+
+      new WaitCommand(10),
 
       //base move back 1.5 m
       new ResetGyro(base),

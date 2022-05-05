@@ -268,29 +268,29 @@ public class RobotContainer {
     logitechBtnLT.whenPressed(baseDriveHigh);
     logitechBtnLT.whenReleased(baseDriveLow);
     logitechBtnY.whenPressed(resetGyro);
-    logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
+    // logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
     logitechBtnA.whenHeld(moveClawIn);
-    logitechBtnB.whenHeld(moveClawOut);
+    logitechBtnB.whenHeld(moveClawOut);  
     logitechBtnX.whenHeld(hangDown);
     logitechBtnY.whenHeld(hangUp);
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
     
-    //Intake Controls
+    // //Intake Controls
     xboxBtnY.whenHeld(swivelUp);
     xboxBtnA.whenHeld(swivelDown);
     xboxBtnLB.whenHeld(collectAndIndexBalls);
     xboxBtnLB.whenReleased(stowedMode);
 
-    //Storage Controls
+    // //Storage Controls
     xboxBtnX.toggleWhenActive(flywheelStop);
     xboxBtnB.whenHeld(feedShot);
     // xboxBtnB.whenHeld(new StorageSpinIntoFlywheel(storage, 0.45));
     xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
 
-    //Storage Controls
+    // //Storage Controls
     xboxBtnLT.whileActiveContinuous(storageCollect);
     xboxBtnRB.whenHeld(storageOut);
   }
@@ -299,8 +299,8 @@ public class RobotContainer {
     // SmartDashboard.putString("Auton", "NoBall");
     // return null; //no auton
 
-    // SmartDashboard.putString("Auton", "OneBall");
-    // return driveBackAndShoot; //1 ball auton
+    SmartDashboard.putString("Auton", "OneBall");
+    return twoBallAuton; //1 ball auton
     
     // SmartDashboard.putString("Auton", "TwoBall");
     // return twoBallAuton; //left / right assist auton
@@ -309,9 +309,9 @@ public class RobotContainer {
     // return threeBallAuton; //right auton
     // return optimizedThreeBallAuton;
 
-    SmartDashboard.putString("Auton", "FiveBall");
+    // SmartDashboard.putString("Auton", "FiveBall");
     // return fiveBallAuton; //op Auton
-    return optimizedFiveBallAuton; 
+    // return optimizedFiveBallAuton; 
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {

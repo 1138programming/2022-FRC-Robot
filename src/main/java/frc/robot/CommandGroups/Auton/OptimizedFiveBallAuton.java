@@ -91,7 +91,7 @@ public class OptimizedFiveBallAuton extends SequentialCommandGroup {
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
         // new DriveToPose(base, new Pose2d(-1.1, -5.1, Rotation2d.fromDegrees(-125))) //old data
-        new DriveToPose(base, new Pose2d(-3.57, -3.69, Rotation2d.fromDegrees(-179)))
+        new DriveToPose(base, new Pose2d(-3.65, -3.6, Rotation2d.fromDegrees(-179)))
       ),
 
       new ResetGyro(base),
