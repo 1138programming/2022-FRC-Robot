@@ -6,7 +6,6 @@ package frc.robot.commands.Flywheel;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheel;
-import pabeles.concurrency.IntOperatorTask.Max;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Camera;
@@ -37,6 +36,7 @@ public class FlywheelAutoSpinUp extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //Used to manually input distance and RPM during flywheel tuning
     // SmartDashboard.putNumber("inputRPM", 0);
     // SmartDashboard.putNumber("manual dist", 0);
   }
