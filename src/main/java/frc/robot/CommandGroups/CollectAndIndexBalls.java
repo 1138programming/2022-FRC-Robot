@@ -23,12 +23,9 @@ public class CollectAndIndexBalls extends SequentialCommandGroup {
   public CollectAndIndexBalls(Intake intake, Storage storage) {
     addCommands(
       new ParallelCommandGroup(
-        new HuntMode(intake),
-        new SequentialCommandGroup(new WaitCommand(0.6),
-          new ParallelCommandGroup(
-            new IntakeSpinForward(intake),
+        new ParallelCommandGroup(
+            new HuntMode(intake),
             new StorageCollect(storage)
-          )
         )
       )
     );

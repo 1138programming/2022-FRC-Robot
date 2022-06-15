@@ -51,17 +51,18 @@ public class NeoBase extends SubsystemBase {
   private final double kNeoMaxRPM = 5700;
 
   //Offset of each module, in degrees
-  private double frontLeftOffset = -318.3;
-  private double frontRightOffset = -71.5;
-  private double backLeftOffset = -183.2; 
-  private double backRightOffset = -237.2;
+  //Eternity
+  private double frontLeftOffset = -63.9; 
+  private double frontRightOffset = -282.5;
+  private double backLeftOffset = -266.8; 
+  private double backRightOffset = -15.5;
 
   //Max Speed of Linear and Angular motion
   private final double kPhysicalMaxDriveSpeedMPS = kDriveEncoderRPM2MeterPerSec * kNeoMaxRPM; //about 4.63 Meters Per Sec, or 15 ft/s
-  private final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second (software limit)
-  private final double KMaxAutonSpeed = 3.5;
-  private double maxDriveSpeedPercent = kBaseDriveLowSpeed; //default max drive speed (software limit) is set to Low (45%)
+  private double maxDriveSpeedPercent = kBaseDriveLowSpeed;
   private double maxDriveSpeedMPS = maxDriveSpeedPercent * kPhysicalMaxDriveSpeedMPS;
+  private final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+  private final double KMaxAutonSpeed = 4;
 
   //distance in inches of a module from the center of mass (we use a square base so only 1 number is needed)
   private double kSwerveModuleLocationFromCoM = 14.5; 
@@ -99,11 +100,11 @@ public class NeoBase extends SubsystemBase {
       // Back Left
       new SwerveX(new CANSparkMax(backLeftDriveId, MotorType.kBrushless), new CANSparkMax(backLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(backLeftMagEncoderId), Rotation2d.fromDegrees(backLeftOffset), false), 
       // Back Right
-      new SwerveX(new CANSparkMax(backRightDriveId, MotorType.kBrushless), new CANSparkMax(backRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(backRightMagEncoderId), Rotation2d.fromDegrees(backRightOffset), true),
+      new SwerveX(new CANSparkMax(backRightDriveId, MotorType.kBrushless), new CANSparkMax(backRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(backRightMagEncoderId), Rotation2d.fromDegrees(backRightOffset), false),
       // Front Left
       new SwerveX(new CANSparkMax(frontLeftDriveId, MotorType.kBrushless), new CANSparkMax(frontLeftSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontLeftMagEncoderId), Rotation2d.fromDegrees(frontLeftOffset), false), 
       // Front Right
-      new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), false) 
+      new SwerveX(new CANSparkMax(frontRightDriveId, MotorType.kBrushless), new CANSparkMax(frontRightSteerId, MotorType.kBrushless), new DutyCycleEncoder(frontRightMagEncoderId), Rotation2d.fromDegrees(frontRightOffset), true) 
     };
 
     odometry = new SwerveDriveOdometry(kinematics, new Rotation2d());
@@ -182,16 +183,11 @@ public class NeoBase extends SubsystemBase {
 
   @Override
   public void periodic() {
+    //Prints all angle motor readings 
     SmartDashboard.putNumber("Module 0 Raw Angle", modules[0].getAngleDegRaw());
     SmartDashboard.putNumber("Module 1 Raw Angle", modules[1].getAngleDegRaw());
     SmartDashboard.putNumber("Module 2 Raw Angle", modules[2].getAngleDegRaw());
     SmartDashboard.putNumber("Module 3 Raw Angle", modules[3].getAngleDegRaw());
-
-    // SmartDashboard.putNumber("Module 0 Drive Speed", modules[0].getDriveEncoderVel());
-    // SmartDashboard.putNumber("Module 1 Drive Speed", modules[1].getDriveEncoderVel());
-    // SmartDashboard.putNumber("Module 2 Drive Speed", modules[2].getDriveEncoderVel());
-    // SmartDashboard.putNumber("Module 3 Drive Speed", modules[3].getDriveEncoderVel());
-
 
     //used for testing pid
     // setAllModuleGains();
@@ -255,22 +251,21 @@ public class NeoBase extends SubsystemBase {
   }
   
   public double getHeadingDeg() {
-    return (gyro.getAngle());
-    // return (-gyro.getAngle()); //for testbed
+    return gyro.getAngle();
   }
 
   public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(gyro.getAngle());
   }
 
-  //return wheel speeds, used to set odometry.  (return negative driveEncoderVel if module is reversed (check in SwerveX[] init array), positive if not reversed)
+  //return wheel speeds, used to set odometry.  (return positive driveEncoderVel if module is reversed (check in SwerveX[] init array), negative if not reversed)
   public SwerveModuleState[] getSpeeds() {
     SwerveModuleState[] states = new SwerveModuleState[4];
 
     states[0] = new SwerveModuleState(-modules[0].getDriveEncoderVel(), modules[0].getAngleR2D());
-    states[1] = new SwerveModuleState(modules[1].getDriveEncoderVel(), modules[1].getAngleR2D());
+    states[1] = new SwerveModuleState(-modules[1].getDriveEncoderVel(), modules[1].getAngleR2D());
     states[2] = new SwerveModuleState(-modules[2].getDriveEncoderVel(), modules[2].getAngleR2D());
-    states[3] = new SwerveModuleState(-modules[3].getDriveEncoderVel(), modules[3].getAngleR2D());
+    states[3] = new SwerveModuleState(modules[3].getDriveEncoderVel(), modules[3].getAngleR2D());
 
     return states;
   }

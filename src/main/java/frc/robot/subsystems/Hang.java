@@ -80,6 +80,8 @@ public class Hang extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("LEFTArmSpeed", getLeftArmEncoderVel());
+    SmartDashboard.putNumber("RIGHTArmSpeed", getRightArmEncoderVel());
     SmartDashboard.putBoolean("hangLimitBottom", getHangLimitBottom());
   }
 
@@ -107,13 +109,18 @@ public class Hang extends SubsystemBase {
   
   //Arm mvoement in this function is unrestricted, can crush the bot
   public void moveArmsUnrestricted(double speed) {
-      leftArmMotor.set(ControlMode.PercentOutput, speed);
-      rightArmMotor.set(ControlMode.PercentOutput, -speed);
+    leftArmMotor.set(ControlMode.PercentOutput, speed);
+    rightArmMotor.set(ControlMode.PercentOutput, -speed);
+  }
+
+  // untested
+  public void moveArmsUnrestrictedVelocity(double velocity) {
+    leftArmMotor.set(ControlMode.Velocity, velocity);
+    rightArmMotor.set(ControlMode.Velocity, -velocity);
   }
   
   //Hang mvoement in this function is unrestricted, can crush the bot
   public void moveLeveHangUnrestricted(double speed) {
-    // ratchetServo.set(kHangRatchetDistance);
     levelHangMotor.set(-speed);
   }
   
@@ -123,7 +130,6 @@ public class Hang extends SubsystemBase {
 
   public void moveLevelToPosition(double position) {
     PIDController speedController = new PIDController(1, 0, 0);
-    
     levelHangMotor.set(speedController.calculate(getLevelHangEncoder(), position));
   }
     
@@ -132,11 +138,17 @@ public class Hang extends SubsystemBase {
     return !(hangLimitBottom.get());
   }
 
-  public double getLeftArmEncoder() {
+  public double getLeftArmEncoderPos() {
     return leftArmMotor.getSelectedSensorPosition();
   }
-  public double getRightArmEncoder() {
+  public double getRightArmEncoderPos() {
     return rightArmMotor.getSelectedSensorPosition();
+  }
+  public double getLeftArmEncoderVel() {
+    return leftArmMotor.getSelectedSensorVelocity();
+  }
+  public double getRightArmEncoderVel() {
+    return rightArmMotor.getSelectedSensorVelocity();
   }
   public double getLevelHangEncoder() {
     return levelEncoder.getPosition();

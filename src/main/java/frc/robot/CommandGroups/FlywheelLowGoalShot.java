@@ -19,11 +19,10 @@ import frc.robot.subsystems.Storage;
 public class FlywheelLowGoalShot extends SequentialCommandGroup {
   /** Creates a new FlywheelLowGoalShot. */
   public FlywheelLowGoalShot(Flywheel flywheel, Storage storage) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+
     addCommands(
       new ParallelCommandGroup(
-        new FlywheelSpinAtRPM(flywheel, 1150),
+        new FlywheelSpinAtRPM(flywheel, 1000),
         new StorageSpinIntoFlywheel(storage)
       )     
     );  

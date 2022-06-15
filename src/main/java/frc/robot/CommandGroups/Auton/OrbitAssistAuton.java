@@ -29,13 +29,17 @@ import frc.robot.subsystems.Storage;
 Auton Setup:  Robot can be setup anywhere in the tarmac,
               Robot should be as close to the back line as possible and aimed at the goal. 
 */
-public class DriveBackAndShoot extends SequentialCommandGroup {
-  public DriveBackAndShoot(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
+public class OrbitAssistAuton extends SequentialCommandGroup {
+  public OrbitAssistAuton(NeoBase base, Camera camera, Storage storage, Intake intake, Flywheel flywheel) {
     addCommands(
 
       //move intake slightly down to avoid contact with flywheel
       new ParallelRaceGroup(new WaitCommand(0.3),
         new StowedMode(intake)
+      ),
+
+      new ParallelRaceGroup(new WaitCommand(1),
+        new FlywheelSpinAtRPM(flywheel, 1950)
       ),
 
       // flywheel spinup and shoot for 3 secs
@@ -44,6 +48,9 @@ public class DriveBackAndShoot extends SequentialCommandGroup {
         new AutonFeedShot(storage),
         new FlywheelSpinAtRPM(flywheel, 1950)
       ),
+
+      //Wait until orbit passes behind our bot
+      new WaitCommand(10),
 
       //base move back 1.5 m
       new ResetGyro(base),

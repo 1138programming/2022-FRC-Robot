@@ -30,6 +30,7 @@ public class MoveArmBackward extends CommandBase {
   public void execute() {
     // hang.moveArmsSpeed(-KArmPWM);
     hang.moveArmsUnrestricted(-KArmPWM);
+    // hang.moveArmsUnrestrictedVelocity(-KArmVelocity);
   }
 
   // Called once the command ends or is interrupted.

@@ -22,7 +22,7 @@ public class DriveWithJoysticks extends CommandBase {
   private PIDController rotationCorrectionPID;
   private double initHeading;
 
-  private double kRotationP = 0.05;
+  private double kRotationP = 0.005;
   private double kRotationI = 0;
   private double kRotationD = 0;
 
@@ -52,7 +52,7 @@ public class DriveWithJoysticks extends CommandBase {
     
     rot = (-Robot.robotContainer.getLogiRightXAxis());
     
-    if (Math.abs(rot) <= 0.01 && (Math.abs(fbSpeed) >= 0.01 || Math.abs(lrSpeed) >= 0.01)){
+    if (Math.abs(rot) <= 0.01 && (Math.abs(fbSpeed) >= 0.01 || Math.abs(lrSpeed) >= 0.01)) {
       rot = rotationCorrectionPID.calculate(base.getHeadingDeg(), initHeading);
     }
     else {

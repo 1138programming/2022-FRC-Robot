@@ -10,9 +10,16 @@ import static frc.robot.Constants.*;
 
 public class StorageSpinIntoFlywheel extends CommandBase {
   private Storage storage;
+  private double topStorageSpeed;
   /** Creates a new IntakeSpinIntoFlyWheel. */
   public StorageSpinIntoFlywheel(Storage storage) {
     this.storage = storage;
+    topStorageSpeed = kTopStoragePWM;
+    addRequirements(storage);
+  }
+  public StorageSpinIntoFlywheel(Storage storage, double topStorageSpeed) {
+    this.storage = storage;
+    this.topStorageSpeed = topStorageSpeed;
     addRequirements(storage);
   }
 
@@ -23,7 +30,7 @@ public class StorageSpinIntoFlywheel extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    storage.moveTop(kTopStoragePWM);
+    storage.moveTop(topStorageSpeed);
     storage.moveBottom(kBottomStoragePWM);
   }
   

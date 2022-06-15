@@ -5,8 +5,6 @@
 package frc.robot;
 import static frc.robot.Constants.*;
 
-import java.lang.reflect.Array;
-import java.util.List;
 //wpilib
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -30,27 +28,25 @@ import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.NeoBase;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Storage;
+
 // Commands:
 import frc.robot.commands.Base.DriveWithJoysticks;
 import frc.robot.commands.Base.DriveWithLimelight;
+import frc.robot.commands.Base.AimWithLimelight;
+import frc.robot.commands.Base.BaseDriveLow;
+import frc.robot.commands.Base.BaseDriveHigh;
+import frc.robot.commands.Base.BaseStop;
+import frc.robot.commands.Base.DriveToPose;
+import frc.robot.commands.Base.ResetWheels;
+import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Flywheel.FlywheelAutoSpinUp;
 import frc.robot.commands.Flywheel.FlywheelSpinAtRPM;
 import frc.robot.commands.Flywheel.FlywheelSpinDefaultSpeed;
 import frc.robot.commands.Flywheel.FlywheelSpinAtRPM;
 import frc.robot.commands.Flywheel.FlywheelSpinWithLimelight;
 import frc.robot.commands.Flywheel.FlywheelStop; 
-import frc.robot.commands.Base.ResetWheels;
 import frc.robot.commands.Camera.LEDOff;
 import frc.robot.commands.Camera.LEDOn;
-import frc.robot.CommandGroups.Auton.DriveBackAndShoot;
-import frc.robot.CommandGroups.Auton.ThreeBallAuton;
-import frc.robot.CommandGroups.Auton.TwoBallAuton;
-import frc.robot.commands.Base.AimWithLimelight;
-import frc.robot.commands.Base.BaseDriveLow;
-import frc.robot.commands.Base.BaseDriveHigh;
-import frc.robot.commands.Base.BaseStop;
-import frc.robot.commands.Base.DriveToPose;
-import frc.robot.commands.Base.ResetGyro;
 import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Intake.IntakeSwivelDown;
 import frc.robot.commands.Intake.IntakeSwivelUp;
@@ -79,10 +75,19 @@ import frc.robot.commands.Hang.MoveHangUp;
 import frc.robot.commands.Hang.MoveLevelHangTo;
 import frc.robot.commands.Hang.MoveRachetIn;
 import frc.robot.commands.Hang.MoveRachetOut;
+
 //Command Groups:
 import frc.robot.CommandGroups.CollectAndIndexBalls;
 import frc.robot.CommandGroups.FeedShot;
 import frc.robot.CommandGroups.FlywheelLowGoalShot;
+
+//Autons:
+import frc.robot.CommandGroups.Auton.OrbitAssistAuton;
+import frc.robot.CommandGroups.Auton.FiveBallAuton;
+import frc.robot.CommandGroups.Auton.ThreeBallAuton;
+import frc.robot.CommandGroups.Auton.TwoBallAuton;
+import frc.robot.CommandGroups.Auton.OptimizedFiveBallAuton;
+import frc.robot.CommandGroups.Auton.OptimizedThreeBallAuton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -91,7 +96,8 @@ import frc.robot.CommandGroups.FlywheelLowGoalShot;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  //The robot's subsystems
+  //The Robot's Subsystems 
+  //Use these final instances in commands, do NOT make new subsystem instances anywhere else!
   private final NeoBase base  = new NeoBase();
   private final Hang hang = new Hang();
   private final Camera camera = new Camera();
@@ -99,14 +105,14 @@ public class RobotContainer {
   private final Flywheel flywheel = new Flywheel();
   private final Storage storage = new Storage();
   
-  //Each subsystems' commands
+  //Each subsystem's commands
   // Base
   private final DriveWithJoysticks driveWithJoysticks = new DriveWithJoysticks(base);
-  private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
-  private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
   private final BaseDriveLow baseDriveLow = new BaseDriveLow(base);
   private final BaseDriveHigh baseDriveHigh = new BaseDriveHigh(base);
   private final ResetGyro resetGyro = new ResetGyro(base);
+  private final DriveWithLimelight driveWithLimelight = new DriveWithLimelight(base, camera);
+  private final AimWithLimelight aimWithLimelight = new AimWithLimelight(base, camera);
   // Flywheel
   private final FlywheelSpinDefaultSpeed flywheelSpinDefaultSpeed = new FlywheelSpinDefaultSpeed(flywheel);
   private final FlywheelStop flywheelStop = new FlywheelStop(flywheel);
@@ -124,7 +130,6 @@ public class RobotContainer {
   private final MoveHangUp hangUp = new MoveHangUp(hang);
   private final MoveRachetIn moveRachetIn = new MoveRachetIn(hang);
   private final MoveRachetOut moveRachetOut = new MoveRachetOut(hang);
-
   // Intake
   private final IntakeSpinBackward intakeSpinBackward = new IntakeSpinBackward(intake);  
   private final IntakeSpinForward intakeSpinForward = new IntakeSpinForward(intake);  
@@ -134,7 +139,6 @@ public class RobotContainer {
   private final IntakeSwivelDown swivelDown = new IntakeSwivelDown(intake);
   private final IntakeSwivelUp swivelUp = new IntakeSwivelUp(intake);
   private final CollectAndIndexBalls collectAndIndexBalls = new CollectAndIndexBalls(intake, storage);
-
   // Storage
   private final StorageStop storageStop= new StorageStop(storage);
   private final BottomStorageOut bottomStorageOut = new BottomStorageOut(storage);
@@ -146,22 +150,30 @@ public class RobotContainer {
   private final StorageCollect storageCollect = new StorageCollect(storage);
   private final StorageSpinIntoFlywheel storageSpinIntoFlyWheel = new StorageSpinIntoFlywheel(storage);
   private final FeedShot feedShot = new FeedShot(storage);
-  
   //Camera
   private final LEDOff ledOff = new LEDOff(camera);
   private final LEDOn ledOn = new LEDOn(camera);
   
   //Auton
-  private final DriveBackAndShoot driveBackAndShoot = new DriveBackAndShoot(base, camera, storage, intake, flywheel);
-  private final ThreeBallAuton threeBallAuton = new ThreeBallAuton(base, camera, storage, intake, flywheel);
+  private final OrbitAssistAuton orbitAssistAuton = new OrbitAssistAuton(base, camera, storage, intake, flywheel);
   private final TwoBallAuton twoBallAuton = new TwoBallAuton(base, camera, storage, intake, flywheel);
+  private final ThreeBallAuton threeBallAuton = new ThreeBallAuton(base, camera, storage, intake, flywheel);
+  private final OptimizedThreeBallAuton optimizedThreeBallAuton = new OptimizedThreeBallAuton(base, camera, storage, intake, flywheel);
+  private final FiveBallAuton fiveBallAuton = new FiveBallAuton(base, camera, storage, intake, flywheel);
+  private final OptimizedFiveBallAuton optimizedFiveBallAuton = new OptimizedFiveBallAuton(base, camera, storage, intake, flywheel);
 
-  //Controller Ports
+  //Controller Ports (check in Driver Station, IDs may be different for each computer)
   private static final int KLogitechPort = 0;
   private static final int KXboxPort = 1;  
 
   //Deadzone
   private static final double KDeadZone = 0.05;
+  
+  //Joystick Axis IDs 
+  private static final int KLeftYAxis = 1;
+  private static final int KRightYAxis = 3;
+  private static final int KLeftXAxis = 0;
+  private static final int KRightXAxis = 2;
 
   //Logitech Button Constants
   public static final int KLogitechButtonX = 1;
@@ -172,11 +184,6 @@ public class RobotContainer {
   public static final int KLogitechRightBumper = 6;
   public static final int KLogitechLeftTrigger = 7;
   public static final int KLogitechRightTrigger = 8;
-
-  private static final int KLeftYAxis = 1;
-  private static final int KRightYAxis = 3;
-  private static final int KLeftXAxis = 0;
-  private static final int KRightXAxis = 2;
 
   //Xbox Button Constants
   public static final int KXboxButtonA = 1; 
@@ -193,13 +200,10 @@ public class RobotContainer {
   //Game Controllers
   public static Joystick logitech;
   public static XboxController xbox; 
+  //Controller Buttons/Triggers
   public JoystickButton logitechBtnX, logitechBtnA, logitechBtnB, logitechBtnY, logitechBtnLB, logitechBtnRB, logitechBtnLT, logitechBtnRT; //Logitech Button
   public JoystickButton xboxBtnA, xboxBtnB, xboxBtnX, xboxBtnY, xboxBtnLB, xboxBtnRB, xboxBtnStrt, xboxBtnSelect;
   public Trigger xboxBtnRT, xboxBtnLT;
-
-  //Misc.
-  public static boolean storageBottomLimit = false;
-  public static boolean storageTopLimit = false;  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -261,15 +265,13 @@ public class RobotContainer {
     logitechBtnLT.whenPressed(baseDriveHigh);
     logitechBtnLT.whenReleased(baseDriveLow);
     logitechBtnY.whenPressed(resetGyro);
-    logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
+    // logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
 
     //Hang Controls
     logitechBtnA.whenHeld(moveClawIn);
-    logitechBtnB.whenHeld(moveClawOut);
+    logitechBtnB.whenHeld(moveClawOut);  
     logitechBtnX.whenHeld(hangDown);
-    // logitechBtnX.whenReleased(moveRachetOut);
     logitechBtnY.whenHeld(hangUp);
-    // logitechBtnY.whenReleased(moveRachetOut);
     logitechBtnLB.whenHeld(moveArmForward);
     logitechBtnRB.whenHeld(moveArmBackward);
     
@@ -278,22 +280,34 @@ public class RobotContainer {
     xboxBtnA.whenHeld(swivelDown);
     xboxBtnLB.whenHeld(collectAndIndexBalls);
     xboxBtnLB.whenReleased(stowedMode);
-    
-    //Storage Controls
-    xboxBtnX.toggleWhenActive(flywheelSpinAt1100);
-    xboxBtnB.whenHeld(feedShot);
-    xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
 
-    //Storage Controls
+    //Other Controls
+    xboxBtnX.toggleWhenActive(flywheelStop);
+    xboxBtnB.whenHeld(feedShot);
+    // xboxBtnB.whenHeld(new StorageSpinIntoFlywheel(storage, 0.45));
+    xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
     xboxBtnLT.whileActiveContinuous(storageCollect);
     xboxBtnRB.whenHeld(storageOut);
   }
 
   public Command getAutonomousCommand() {
+
+    // SmartDashboard.putString("Auton", "NoBall");
     // return null; //no auton
-    // return driveBackAndShoot; //1 ball auton
-    return threeBallAuton; //right auton
+
+    SmartDashboard.putString("Auton", "OneBall");
+    return twoBallAuton; //1 ball auton
+    
+    // SmartDashboard.putString("Auton", "TwoBall");
     // return twoBallAuton; //left / right assist auton
+    
+    // SmartDashboard.putString("Auton", "THreeBall");
+    // return threeBallAuton; //right auton
+    // return optimizedThreeBallAuton;
+
+    // SmartDashboard.putString("Auton", "FiveBall");
+    // return fiveBallAuton; //op Auton
+    // return optimizedFiveBallAuton; 
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {
