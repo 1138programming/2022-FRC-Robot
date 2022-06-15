@@ -51,12 +51,8 @@ public class NeoBase extends SubsystemBase {
   private final double kNeoMaxRPM = 5700; //4.62 MPS
 
   //Offset of each module, in degrees
-  // private double frontLeftOffset = -318.3; //Dedication
-  // private double frontRightOffset = -71.5;
-  // private double backLeftOffset = -183.2; 
-  // private double backRightOffset = -237.2;
-
-  private double frontLeftOffset = -63.9; //Eternity
+  //Eternity
+  private double frontLeftOffset = -63.9; 
   private double frontRightOffset = -282.5;
   private double backLeftOffset = -266.8; 
   private double backRightOffset = -15.5;
@@ -189,16 +185,11 @@ public class NeoBase extends SubsystemBase {
 
   @Override
   public void periodic() {
+    //Prints all angle motor readings 
     SmartDashboard.putNumber("Module 0 Raw Angle", modules[0].getAngleDegRaw());
     SmartDashboard.putNumber("Module 1 Raw Angle", modules[1].getAngleDegRaw());
     SmartDashboard.putNumber("Module 2 Raw Angle", modules[2].getAngleDegRaw());
     SmartDashboard.putNumber("Module 3 Raw Angle", modules[3].getAngleDegRaw());
-
-    // SmartDashboard.putNumber("Module 0 Drive Speed", modules[0].getDriveEncoderVel());
-    // SmartDashboard.putNumber("Module 1 Drive Speed", modules[1].getDriveEncoderVel());
-    // SmartDashboard.putNumber("Module 2 Drive Speed", modules[2].getDriveEncoderVel());
-    // SmartDashboard.putNumber("Module 3 Drive Speed", modules[3].getDriveEncoderVel());
-
 
     //used for testing pid
     // setAllModuleGains();
@@ -262,8 +253,7 @@ public class NeoBase extends SubsystemBase {
   }
   
   public double getHeadingDeg() {
-    return (gyro.getAngle());
-    // return (-gyro.getAngle()); //for testbed
+    return gyro.getAngle();
   }
 
   public Rotation2d getHeading() {

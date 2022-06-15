@@ -29,7 +29,6 @@ public class Intake extends SubsystemBase {
   private double intakeControllerkP = 0.00028;
   private double intakeControllerkI = 0.000008;
   private double  intakeControllerkD = 0;
-  // private final Pixy2 pixy; //Not used
   
   public Intake() {
     swivelIntakeMotor = new TalonSRX(KSwivelIntakeTalon); //watch out for data port limit https://docs.ctre-phoenix.com/en/stable/ch13_MC.html#limit-switches
@@ -104,7 +103,6 @@ public class Intake extends SubsystemBase {
     return !(topLimitSwitch.get());
   }
   public double getIntakeEncoderRaw() {
-    // return (swivelMagEncoder.get() % 360);
     return swivelIntakeMotor.getSelectedSensorPosition();
   }
   

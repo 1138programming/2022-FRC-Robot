@@ -32,7 +32,7 @@ public class Camera extends SubsystemBase {
     area = 0;
 
     // Creates UsbCamera and connects them (only this one line is necessary for usb camera to show up on shuffleboard)
-    // CameraServer.startAutomaticCapture(0);
+    CameraServer.startAutomaticCapture(0);
 
   }
   
