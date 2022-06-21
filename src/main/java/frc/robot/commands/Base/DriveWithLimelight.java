@@ -59,7 +59,7 @@ public class DriveWithLimelight extends CommandBase {
     rot -= rotationController.calculate(camera.getXOffset()/KLimelightRange, 0);
     
     base.drive(fbSpeed, lrSpeed, rot, true);
-    // base.drive(fbSpeed, lrSpeed, rot, true);
+    // base.drive(fbSpeed, lrSpeed, rot, false);
     SmartDashboard.putBoolean("Limelight Target Found", camera.getTargetFound());
     
   }

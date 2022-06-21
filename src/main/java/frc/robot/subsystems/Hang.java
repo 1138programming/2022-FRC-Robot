@@ -121,7 +121,6 @@ public class Hang extends SubsystemBase {
   
   //Hang mvoement in this function is unrestricted, can crush the bot
   public void moveLeveHangUnrestricted(double speed) {
-    // ratchetServo.set(kHangRatchetDistance);
     levelHangMotor.set(-speed);
   }
   
@@ -131,7 +130,6 @@ public class Hang extends SubsystemBase {
 
   public void moveLevelToPosition(double position) {
     PIDController speedController = new PIDController(1, 0, 0);
-    
     levelHangMotor.set(speedController.calculate(getLevelHangEncoder(), position));
   }
     

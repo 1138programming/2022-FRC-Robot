@@ -93,7 +93,6 @@ public class FiveBallAuton extends SequentialCommandGroup {
         new FlywheelSpinAtRPM(flywheel, 1950),
         new IntakeSpinForward(intake),
         new StorageCollect(storage),
-        // new DriveToPose(base, new Pose2d(-1.1, -5.1, Rotation2d.fromDegrees(-125)))
         new DriveToPose(base, new Pose2d(-1.15, -5.1, Rotation2d.fromDegrees(-125)))
       ),
 

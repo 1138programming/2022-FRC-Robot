@@ -47,19 +47,6 @@ public class FlywheelSpinWithLimelight extends CommandBase {
     flywheelOutput = flywheel.calculateFlywheelSpeedFromDist(distanceFromHub);
 
     flywheel.move(flywheelOutput);
-
-    // SmartDashboard.putNumber("flywheel output (RPM)", flywheelOutput);
-    // double flywheelOutputPercent = RobotContainer.scaleBetween(flywheelOutput, -1, 1, -kFlywheelMaxRPM, kFlywheelMaxRPM);
-    // SmartDashboard.putNumber("flywheel output (percent)", flywheelOutput);
-    // encoderUnitOutput = flywheelOutput * (512.0 / 75.0);
-    // SmartDashboard.putNumber("flywheel output (u/100ms)", encoderUnitOutput);
-    // SmartDashboard.putNumber("flywheel output (Percent)", flywheelOutput);
-    // if (ballInTopStorage || ballInBottomStorage) {
-      // flywheel.move(flywheelOutputPercent); 
-    // }
-    // else {
-    //   flywheel.move(0);
-    // }
   }
 
   // Called once the command ends or is interrupted.

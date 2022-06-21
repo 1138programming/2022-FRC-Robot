@@ -18,9 +18,6 @@ public class Flywheel extends SubsystemBase {
   private double flywheelControllerKI = 0.0005;
   private double flywheelControllerKD = 0;
 
-  // private double flywheelLimitSpeed = 1000;
-  // private SlewRateLimiter flywheelLimiter;
-
   public Flywheel() {
     flywheelMotor = new TalonFX(KFlywheelMotorTalon);
     flywheelMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -29,20 +26,11 @@ public class Flywheel extends SubsystemBase {
     flywheelMotor.config_kP(0, flywheelControllerKP);
     flywheelMotor.config_kI(0, flywheelControllerKI);
     flywheelMotor.config_kD(0, flywheelControllerKD);
-    // flywheelMotor.con
     
-    // SmartDashboard.putBoolean("Flywheel Spinning", false);
-
     //shuffleboard flywheel pid tuning fields
     // SmartDashboard.putNumber("Flywheel kP", flywheelControllerKP);
     // SmartDashboard.putNumber("Flywheel kI", flywheelControllerKI);
     // SmartDashboard.putNumber("Flywheel kD", flywheelControllerKD);
-
-    // SmartDashboard.putNumber("Flywheel limiter", flywheelLimitSpeed);
-
-    // flywheelLimiter = new SlewRateLimiter(flywheelLimitSpeed);
-
-    // SmartDashboard.putBoolean("changeLimiter", false);
     
     //shuffleboard flywheel shooting speed tuning fields
     // SmartDashboard.putNumber("95", 1800);
@@ -51,7 +39,7 @@ public class Flywheel extends SubsystemBase {
     
   }
   
-  //requires input in RPM!
+  //requires input in RPM not ticks!
   public void move(double RPMOutput) {
     //display on shuffleboard to let the driver know whether flywheel is at desired RPM or not
     if (Math.abs(getVelocity() - RPMOutput) <= 30) {
@@ -105,51 +93,23 @@ public class Flywheel extends SubsystemBase {
 
   public double calculateFlywheelSpeedFromDist(double distanceFromHub) {
     double flywheelOutput;
-    // if (distanceFromHub > 60) {
-    //   // if (distanceFromHub < 95) {
-    //   //   flywheelOutput = 1750 + distanceFromHub * 4.077;
-    //   //   // flywheelOutput = SmartDashboard.getNumber("95", 1750) + distanceFromHub * 4.077;
-    //   // }
-    //   if (distanceFromHub < 100) {
-    //     flywheelOutput = 1750 + distanceFromHub * 3.5;
-    //     // flywheelOutput = SmartDashboard.getNumber("100", 1800) + distanceFromHub * 4.077;
-    //   }
-    //   else if (distanceFromHub < 130) {
-    //     flywheelOutput = 1750 + distanceFromHub * 4.077;
-    //     // flywheelOutput = SmartDashboard.getNumber("130", 1750) + distanceFromHub * 4.077;
-    //   }
-    //   else if (distanceFromHub < 150) {
-    //     flywheelOutput = 2200 + distanceFromHub * 4.077;
-    //   }
-    //   else {
-    //     flywheelOutput = 2450 + distanceFromHub * 4.077;
-    //   }
-    // }
-    // else {
-    //   flywheelOutput = 1900;
-    // }
-      
-    // polynomial curve from testing: 0.1819 x^2 - 23.439 x + 2727.8
 
-    flywheelOutput = 0.1728 * Math.pow(distanceFromHub, 2) - 21.795 * distanceFromHub + 2580;
-    // flywheelOutput = 0.1728 * Math.pow(distanceFromHub, 2) - 21.795 * distanceFromHub + 2658.4;
-    
+    // polynomial curve from testing: 0.1819 x^2 - 23.439 x + 2727.8
     // flywheelOutput = 0.1824 * Math.pow(distanceFromHub, 2) - 24.2668 * distanceFromHub + 2774; // outlier removed
+    flywheelOutput = 0.1728 * Math.pow(distanceFromHub, 2) - 21.795 * distanceFromHub + 2580; //manually tuned at worlds
+    
     return flywheelOutput;
   }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
+    SmartDashboard.putNumber("flywheel RPM", getVelocity());
 
     //used to tune pid using shuffleboard
     // setFlywheelGains(SmartDashboard.getNumber("Flywheel kP", 0.0),
     //   SmartDashboard.getNumber("Flywheel kI", 0.0),
     //   SmartDashboard.getNumber("Flywheel kD", 0.0));
-    SmartDashboard.putNumber("flywheel RPM", getVelocity());
 
-    // if (SmartDashboard.getBoolean("changeLimiter", false)) {
-    //   flywheelLimiter.reset(SmartDashboard.getNumber("Flywheel limiter", 0));
-    // }
-    // flywheelControllerKP = SmartDashboard.getNumber("flyP", 0);
   }
 }

@@ -15,9 +15,7 @@ public class BottomStorageOut extends CommandBase {
         addRequirements(storage);
     }
 
-    public void intialize(){
-
-    }
+    public void intialize(){}
 
     public void execute(){
         storage.moveBottom(-kBottomStoragePWM);
