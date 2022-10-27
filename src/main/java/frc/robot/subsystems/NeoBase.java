@@ -57,6 +57,12 @@ public class NeoBase extends SubsystemBase {
   private double backLeftOffset = -266.8; 
   private double backRightOffset = -15.5;
 
+  //Dedication
+  // private double frontLeftOffset = -69.3;
+  // private double frontRightOffset = -254.1;
+  // private double backLeftOffset = -186.6; 
+  // private double backRightOffset = -59.2;
+
   //Max Speed of Linear and Angular motion
   private final double kPhysicalMaxDriveSpeedMPS = kDriveEncoderRPM2MeterPerSec * kNeoMaxRPM; //about 4.63 Meters Per Sec, or 15 ft/s
   private double maxDriveSpeedPercent = kBaseDriveLowSpeed;

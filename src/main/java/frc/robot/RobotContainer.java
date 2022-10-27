@@ -260,34 +260,41 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    //Blue Bot
     //Drive Controls
     logitechBtnRT.whileHeld(driveWithLimelight);
-    logitechBtnLT.whenPressed(baseDriveHigh);
-    logitechBtnLT.whenReleased(baseDriveLow);
-    logitechBtnY.whenPressed(resetGyro);
+    logitechBtnRB.whenPressed(baseDriveHigh);
+    logitechBtnRB.whenReleased(baseDriveLow);
+    logitechBtnX.whenPressed(resetGyro);
     // logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
-
+ 
     //Hang Controls
-    logitechBtnA.whenHeld(moveClawIn);
-    logitechBtnB.whenHeld(moveClawOut);  
-    logitechBtnX.whenHeld(hangDown);
-    logitechBtnY.whenHeld(hangUp);
-    logitechBtnLB.whenHeld(moveArmForward);
-    logitechBtnRB.whenHeld(moveArmBackward);
+    xboxBtnX.whenHeld(moveClawOut); 
+    xboxBtnA.whenHeld(moveClawIn);
+    xboxBtnLT.whenActive(moveArmForward);
+    xboxBtnLB.whenHeld(moveArmBackward);
+    xboxBtnRT.whenActive(hangUp);
+    xboxBtnLB.whenHeld(hangDown);
     
     //Intake Controls
-    xboxBtnY.whenHeld(swivelUp);
-    xboxBtnA.whenHeld(swivelDown);
-    xboxBtnLB.whenHeld(collectAndIndexBalls);
-    xboxBtnLB.whenReleased(stowedMode);
-
+    logitechBtnY.whenHeld(swivelUp);
+    logitechBtnA.whenHeld(swivelDown);
+    logitechBtnLB.whenHeld(collectAndIndexBalls);
+    logitechBtnLB.whenReleased(stowedMode);
+ 
     //Other Controls
-    xboxBtnX.toggleWhenActive(flywheelStop);
+    // xboxBtnY.toggleWhenActive(flywheelStop);
     xboxBtnB.whenHeld(feedShot);
     // xboxBtnB.whenHeld(new StorageSpinIntoFlywheel(storage, 0.45));
-    xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
-    xboxBtnLT.whileActiveContinuous(storageCollect);
-    xboxBtnRB.whenHeld(storageOut);
+    // xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
+    xboxBtnSelect.whileHeld(storageCollect);
+    logitechBtnB.whenHeld(storageOut);
+ 
+    //Gray Bot
+    // logitechBtnRT.whileHeld(driveWithLimelight);
+    // logitechBtnRB.whenPressed(baseDriveHigh);
+    // logitechBtnRB.whenReleased(baseDriveLow);
+    // logitechBtnX.whenPressed(resetGyro);
   }
 
   public Command getAutonomousCommand() {
