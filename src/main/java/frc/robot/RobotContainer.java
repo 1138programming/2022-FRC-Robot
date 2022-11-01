@@ -83,11 +83,11 @@ import frc.robot.CommandGroups.FlywheelLowGoalShot;
 
 //Autons:
 import frc.robot.CommandGroups.Auton.OrbitAssistAuton;
-import frc.robot.CommandGroups.Auton.FiveBallAuton;
+// import frc.robot.CommandGroups.Auton.FiveBallAuton;
 import frc.robot.CommandGroups.Auton.ThreeBallAuton;
 import frc.robot.CommandGroups.Auton.TwoBallAuton;
 import frc.robot.CommandGroups.Auton.OptimizedFiveBallAuton;
-import frc.robot.CommandGroups.Auton.OptimizedThreeBallAuton;
+// import frc.robot.CommandGroups.Auton.OptimizedThreeBallAuton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -158,8 +158,8 @@ public class RobotContainer {
   private final OrbitAssistAuton orbitAssistAuton = new OrbitAssistAuton(base, camera, storage, intake, flywheel);
   private final TwoBallAuton twoBallAuton = new TwoBallAuton(base, camera, storage, intake, flywheel);
   private final ThreeBallAuton threeBallAuton = new ThreeBallAuton(base, camera, storage, intake, flywheel);
-  private final OptimizedThreeBallAuton optimizedThreeBallAuton = new OptimizedThreeBallAuton(base, camera, storage, intake, flywheel);
-  private final FiveBallAuton fiveBallAuton = new FiveBallAuton(base, camera, storage, intake, flywheel);
+  // private final OptimizedThreeBallAuton optimizedThreeBallAuton = new OptimizedThreeBallAuton(base, camera, storage, intake, flywheel);
+  // private final FiveBallAuton fiveBallAuton = new FiveBallAuton(base, camera, storage, intake, flywheel);
   private final OptimizedFiveBallAuton optimizedFiveBallAuton = new OptimizedFiveBallAuton(base, camera, storage, intake, flywheel);
 
   //Controller Ports (check in Driver Station, IDs may be different for each computer)
@@ -213,7 +213,7 @@ public class RobotContainer {
     hang.setDefaultCommand(hangStop);
     intake.setDefaultCommand(intakeStop);
     // flywheel.setDefaultCommand(flywheelStop);
-    flywheel.setDefaultCommand(flywheelAutoSpinUp);
+    flywheel.setDefaultCommand(flywheelStop);
     intake.setDefaultCommand(intakeStop);
     storage.setDefaultCommand(storageStop);
     // camera.setDefaultCommand(ledOff);
@@ -268,13 +268,14 @@ public class RobotContainer {
     logitechBtnX.whenPressed(resetGyro);
     // logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
  
+
     //Hang Controls
     xboxBtnX.whenHeld(moveClawOut); 
     xboxBtnA.whenHeld(moveClawIn);
-    xboxBtnLT.whenActive(moveArmForward);
+    xboxBtnLT.whileActiveContinuous(moveArmForward);
     xboxBtnLB.whenHeld(moveArmBackward);
-    xboxBtnRT.whenActive(hangUp);
-    xboxBtnLB.whenHeld(hangDown);
+    xboxBtnRT.whileActiveContinuous(hangDown);
+    xboxBtnRB.whenHeld(hangUp);
     
     //Intake Controls
     logitechBtnY.whenHeld(swivelUp);
