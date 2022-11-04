@@ -86,6 +86,7 @@ import frc.robot.CommandGroups.Auton.OrbitAssistAuton;
 // import frc.robot.CommandGroups.Auton.FiveBallAuton;
 import frc.robot.CommandGroups.Auton.ThreeBallAuton;
 import frc.robot.CommandGroups.Auton.TwoBallAuton;
+import frc.robot.CommandGroups.Auton.TwoBallPreload;
 import frc.robot.CommandGroups.Auton.OptimizedFiveBallAuton;
 // import frc.robot.CommandGroups.Auton.OptimizedThreeBallAuton;
 
@@ -158,6 +159,7 @@ public class RobotContainer {
   private final OrbitAssistAuton orbitAssistAuton = new OrbitAssistAuton(base, camera, storage, intake, flywheel);
   private final TwoBallAuton twoBallAuton = new TwoBallAuton(base, camera, storage, intake, flywheel);
   private final ThreeBallAuton threeBallAuton = new ThreeBallAuton(base, camera, storage, intake, flywheel);
+  private final TwoBallPreload twoBallPreload = new TwoBallPreload(base, camera, storage, intake, flywheel);
   // private final OptimizedThreeBallAuton optimizedThreeBallAuton = new OptimizedThreeBallAuton(base, camera, storage, intake, flywheel);
   // private final FiveBallAuton fiveBallAuton = new FiveBallAuton(base, camera, storage, intake, flywheel);
   private final OptimizedFiveBallAuton optimizedFiveBallAuton = new OptimizedFiveBallAuton(base, camera, storage, intake, flywheel);
@@ -213,7 +215,8 @@ public class RobotContainer {
     hang.setDefaultCommand(hangStop);
     intake.setDefaultCommand(intakeStop);
     // flywheel.setDefaultCommand(flywheelStop);
-    flywheel.setDefaultCommand(flywheelStop);
+    flywheel.setDefaultCommand(flywheelAutoSpinUp);
+    // flywheel.setDefaultCommand(flywheelSpinDefaultSpeed);
     intake.setDefaultCommand(intakeStop);
     storage.setDefaultCommand(storageStop);
     // camera.setDefaultCommand(ledOff);
@@ -266,10 +269,10 @@ public class RobotContainer {
     logitechBtnRB.whenPressed(baseDriveHigh);
     logitechBtnRB.whenReleased(baseDriveLow);
     logitechBtnX.whenPressed(resetGyro);
-    // logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
+    logitechBtnY.whenPressed(() -> base.resetOdometry(new Pose2d()));
  
 
-    //Hang Controls
+    // Hang Controls
     xboxBtnX.whenHeld(moveClawOut); 
     xboxBtnA.whenHeld(moveClawIn);
     xboxBtnLT.whileActiveContinuous(moveArmForward);
@@ -277,17 +280,17 @@ public class RobotContainer {
     xboxBtnRT.whileActiveContinuous(hangDown);
     xboxBtnRB.whenHeld(hangUp);
     
-    //Intake Controls
+    // Intake Controls
     logitechBtnY.whenHeld(swivelUp);
     logitechBtnA.whenHeld(swivelDown);
     logitechBtnLB.whenHeld(collectAndIndexBalls);
     logitechBtnLB.whenReleased(stowedMode);
  
-    //Other Controls
-    // xboxBtnY.toggleWhenActive(flywheelStop);
+    // Other Controls
+    xboxBtnY.toggleWhenActive(flywheelStop);
     xboxBtnB.whenHeld(feedShot);
-    // xboxBtnB.whenHeld(new StorageSpinIntoFlywheel(storage, 0.45));
-    // xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
+    xboxBtnB.whenHeld(new StorageSpinIntoFlywheel(storage, 0.45));
+    xboxBtnRT.whileActiveContinuous(flywheelLowGoalShot);
     xboxBtnSelect.whileHeld(storageCollect);
     logitechBtnB.whenHeld(storageOut);
  
@@ -296,6 +299,12 @@ public class RobotContainer {
     // logitechBtnRB.whenPressed(baseDriveHigh);
     // logitechBtnRB.whenReleased(baseDriveLow);
     // logitechBtnX.whenPressed(resetGyro);
+
+    // logitechBtnY.whenHeld(swivelUp);
+    // logitechBtnA.whenHeld(swivelDown);
+    // logitechBtnLB.whenHeld(collectAndIndexBalls);
+    // logitechBtnLB.whenReleased(stowedMode);
+    // logitechBtnB.whenHeld(storageOut);
   }
 
   public Command getAutonomousCommand() {
@@ -303,8 +312,11 @@ public class RobotContainer {
     // SmartDashboard.putString("Auton", "NoBall");
     // return null; //no auton
 
+    // SmartDashboard.putString("Auton", "OneBall");
+    // return twoBallAuton; //1 ball auton
+
     SmartDashboard.putString("Auton", "OneBall");
-    return twoBallAuton; //1 ball auton
+    return twoBallPreload; //1 ball auton
     
     // SmartDashboard.putString("Auton", "TwoBall");
     // return twoBallAuton; //left / right assist auton
@@ -316,6 +328,8 @@ public class RobotContainer {
     // SmartDashboard.putString("Auton", "FiveBall");
     // return fiveBallAuton; //op Auton
     // return optimizedFiveBallAuton; 
+
+  
   }
 
   public static double scaleBetween(double unscaledNum, double minAllowed, double maxAllowed, double min, double max) {

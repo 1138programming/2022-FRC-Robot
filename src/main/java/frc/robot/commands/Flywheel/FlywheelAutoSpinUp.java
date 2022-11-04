@@ -38,6 +38,7 @@ public class FlywheelAutoSpinUp extends CommandBase {
   public void initialize() {
     //Used to manually input distance and RPM during flywheel tuning
     // SmartDashboard.putNumber("inputRPM", 0);
+    
     // SmartDashboard.putNumber("manual dist", 0);
   }
   
@@ -51,14 +52,19 @@ public class FlywheelAutoSpinUp extends CommandBase {
     // distanceFromHub = SmartDashboard.getNumber("manual dist", 0);
 
     flywheelOutput = flywheel.calculateFlywheelSpeedFromDist(distanceFromHub);
+    if (!camera.getTargetFound()) {
+      flywheelOutput = 0;
+    }
 
     if (storage.getBallSensorTop()) {
-      // if (SmartDashboard.getNumber("inputRPM", 0) != 0) {
-        // flywheel.move(SmartDashboard.getNumber("inputRPM", 0));
-      // }
-      // else {
-        flywheel.move(flywheelOutput); 
-      // }
+    //   if (SmartDashboard.getNumber("inputRPM", 0) != 0) {
+    //     flywheel.move(SmartDashboard.getNumber("inputRPM", 0));
+    //   }
+    //   else {
+    //     flywheel.moveRawPercent(flywheelOutput); 
+    //   }
+    // }
+      flywheel.move(flywheelOutput);
     }
     else {
       flywheel.move(0);

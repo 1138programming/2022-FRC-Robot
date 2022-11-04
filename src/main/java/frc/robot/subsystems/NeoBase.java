@@ -55,7 +55,7 @@ public class NeoBase extends SubsystemBase {
   private double frontLeftOffset = -63.9; 
   private double frontRightOffset = -282.5;
   private double backLeftOffset = -266.8; 
-  private double backRightOffset = -15.5;
+  private double backRightOffset = -195.5;
 
   //Dedication
   // private double frontLeftOffset = -69.3;
